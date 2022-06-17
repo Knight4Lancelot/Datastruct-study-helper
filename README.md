@@ -1,24 +1,6 @@
 # datastruct
-
-## Project setup
+## 需要的配置：
+#### 1、配置Element-UI
 ```
-npm install
+npm install element-ui -S
 ```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

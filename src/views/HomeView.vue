@@ -1,6 +1,6 @@
 <template>
   <div>
-    <treecanvas></treecanvas>
+    <treecanvas class="tree-canvas-show"></treecanvas>
   </div>
 </template>
 
@@ -14,3 +14,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.tree-canvas-show {
+	width: 800px;
+	height: 600px;
+}
+</style>
