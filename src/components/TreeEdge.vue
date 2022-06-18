@@ -1,6 +1,9 @@
 <template>
 	<div class="edge-attrs">
-		<img src="../assets/both.png" :style="{'width':imgwidth+'px', 'height':imgheight+'px'}" class="img-edge">
+		<img
+			:src="iconShow"
+			:style="{'width':imgwidth+'px', 'height':imgheight+'px'}"
+			class="img-edge">
 	</div>
 </template>
 
@@ -10,7 +13,15 @@ export default {
   components: {},
   props: {
 	imgwidth: String,
-	imgheight: String
+	imgheight: String,
+	direction: String
+  },
+  computed: {
+	iconShow() {
+		if (this.direction==='left') { return require('@/assets/left.png') }
+		else if (this.direction==='right') { return require('@/assets/right.png') }
+		else { return require('@/assets/both.png') }
+	}
   }
 }
 </script>

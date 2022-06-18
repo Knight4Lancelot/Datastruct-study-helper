@@ -1,6 +1,6 @@
 <template>
   <div>
-    <treecanvas class="tree-canvas-show"></treecanvas>
+    <treecanvas class="tree-canvas-show" :elementList="['1', '2', '3', 'nil', '4', '5', '6', '7']"></treecanvas>
   </div>
 </template>
 

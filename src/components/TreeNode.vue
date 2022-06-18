@@ -22,6 +22,11 @@ export default {
 	border: 3px solid #5C5E63;
 	background-color: white;
 	font-size: 16px;
+	user-select: none;
+}
+.tree-node:hover {
+	color: #66B1FF;
+	border: 3px solid #66B1FF;
 	cursor: pointer;
 }
 </style>
