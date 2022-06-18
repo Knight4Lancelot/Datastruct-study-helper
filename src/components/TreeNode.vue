@@ -29,7 +29,8 @@ export default {
   name: 'TreeEdge',
   components: {},
   props: {
-	valElement: String
+	valElement: String,
+	index: Number
   },
   data() {
 	return {
@@ -47,6 +48,9 @@ export default {
 		this.nodeTextBuffer = this.valElement
 	},
 	changeStatus() {
+		if (!this.isShowInfo) {
+			this.nodeTextBuffer=this.nodeText
+		}
 		this.isShowInfo = !this.isShowInfo
 	},
 	changeText() {
@@ -56,6 +60,14 @@ export default {
 				showClose: true,
 				message: '注意，节点的文本长度不能小于1！',
 				type: 'error'})
+			return
+		}
+		if (this.nodeTextBuffer==='nil') {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '若要修改为nil，建议直接删除该节点',
+				type: 'warning'})
 			return
 		}
 		this.nodeText = this.nodeTextBuffer
