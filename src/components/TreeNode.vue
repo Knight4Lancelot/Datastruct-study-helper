@@ -1,24 +1,75 @@
 <template>
-	<div>
-		<button v-text="valElement" class="tree-node"></button>
+	<div style="position: inherit;">
+		<button
+			v-text="nodeText"
+			class="tree-node"
+			@click="changeStatus()">
+		</button>
+		<transition name="fade-transform">
+			<div class="node-operate-show" v-if="isShowInfo">
+				<el-button size="mini" type="success" plain round>插入左子节点</el-button>
+				<el-button size="mini" type="success" plain round>插入右子节点</el-button>
+				<el-button size="mini" type="danger" plain round>删除节点</el-button>
+				<el-input
+					v-model="nodeTextBuffer"
+					size="mini"
+					maxlength="3"
+					style="width: 218px; margin: 10px; margin-left: 0; margin-bottom: 0;"
+					show-word-limit/>
+				<el-button size="mini" type="primary" @click="changeText()" plain round>确定修改</el-button>
+			</div>
+		</transition>
 	</div>
 </template>
 
 <script>
+const durationTime=5
+
 export default {
   name: 'TreeEdge',
   components: {},
   props: {
 	valElement: String
+  },
+  data() {
+	return {
+		nodeText: '0',
+		nodeTextBuffer: '0',
+		isShowInfo: false
+	}
+  },
+  mounted() {
+	this.init_data()
+  },
+  methods: {
+	init_data() {
+		this.nodeText = this.valElement
+		this.nodeTextBuffer = this.valElement
+	},
+	changeStatus() {
+		this.isShowInfo = !this.isShowInfo
+	},
+	changeText() {
+		if (this.nodeTextBuffer.length===0) {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '注意，节点的文本长度不能小于1！',
+				type: 'error'})
+			return
+		}
+		this.nodeText = this.nodeTextBuffer
+	}
   }
 }
 </script>
 
 <style>
 .tree-node {
+	float: left;
 	border-radius: 50%;
-	height: 45px;
-	width: 45px;
+	height: 40px;
+	width: 40px;
 	border: 3px solid #5C5E63;
 	background-color: white;
 	font-size: 16px;
@@ -28,5 +79,26 @@ export default {
 	color: #66B1FF;
 	border: 3px solid #66B1FF;
 	cursor: pointer;
+}
+.node-operate-show {
+	position: inherit;
+	margin-left: 50px;
+	padding: 15px;
+	border-radius: 12px;
+	width: 310px;
+	border: 1px solid #C0C4CC;
+	background-color: white;
+	z-index: 4;
+}
+.fade-transform-leave-active, .fade-transform-enter-active { 
+  transition:all 0.4s;
+}
+.fade-transform-enter {
+  opacity:0;
+  transform:translateX(-20px);
+}
+.fade-transform-leave-to { 
+  opacity:0;
+  transform:translateX(-20px);
 }
 </style>

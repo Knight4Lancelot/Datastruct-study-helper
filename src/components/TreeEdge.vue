@@ -1,5 +1,5 @@
 <template>
-	<div class="edge-attrs">
+	<div class="edge-attrs" style="position: inherit;">
 		<img
 			:src="iconShow"
 			:style="{'width':imgwidth+'px', 'height':imgheight+'px'}"
