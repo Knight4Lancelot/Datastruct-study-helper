@@ -5,12 +5,7 @@
 		<div class="aside-body-show"
 			@mouseenter="changeOpacity(true)"
 			@mouseout="changeOpacity(false)">
-			<div class="link-container">
-				<el-link href="./" :underline="false" :style="elLinkStyle">首页</el-link>
-			</div>
-			<div class="link-container">
-				<el-link href="./designtree" :underline="false" :style="elLinkStyle">设计树</el-link>
-			</div>
+			<div ></div>
 		</div>
 		<div class="main-body-show" :style="{'opacity':mainOpacity}">
 			<router-view></router-view>
@@ -28,7 +23,8 @@ export default {
 			isCover: false,
 			mainOpacity: 1,
 			elLinkStyle: {
-				color: 'white'
+				'color': 'white',
+				'text-decoration': 'none'
 			}
 		}
 	},
