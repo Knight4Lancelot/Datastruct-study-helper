@@ -56,19 +56,11 @@ export default {
 		for (i = 0; i < this.elementList.length; i++) {
 			this.nodeArray.push(this.elementList[i])
 		}
-		for (i = 0; i < this.nodeArray.length; i++) {
-			if (this.nodeArray[i]==='nil' && 2*i<this.nodeArray.length-1) {
-				this.nodeArray.splice(2*i+1, 0, 'nil')
-				this.nodeArray.splice(2*i+2, 0, 'nil')
-			}
-		}
-		console.log(this.nodeArray.length)
 		this.maxheight = parseInt(Math.log2(this.nodeArray.length)) + 1
 		this.maxcount = Math.pow(2, this.maxheight)-1
 		while (this.nodeArray.length < this.maxcount) {
 			this.nodeArray.push('nil')
 		}
-		console.log(this.maxheight, this.nodeArray)
 		this.init_showNodes()
 	},
 	init_tree() {
@@ -88,8 +80,8 @@ export default {
 			this.nodePosition.Y.push(50 * this.tree[i].h)
 		}
 		var divideNum = parseInt(this.maxcount/2)
-		for (i = 0; i < this.maxcount; i++) {
-			this.nodePosition.X[i] = 30+(i-divideNum)*50
+		for (i = divideNum; i < this.maxcount; i++) {
+			this.nodePosition.X[i] = 30+(i-divideNum)*45
 		}
 		for (i = divideNum - 1; i >= 0; i--) {
 			this.nodePosition.X[i] = (this.nodePosition.X[this.tree[i].leftchild]+this.nodePosition.X[this.tree[i].rightchild])/2

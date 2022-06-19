@@ -7,9 +7,9 @@
 		</button>
 		<transition name="fade-transform">
 			<div class="node-operate-show" v-if="isShowInfo">
-				<el-button size="mini" type="success" plain round>插入左子节点</el-button>
-				<el-button size="mini" type="success" plain round>插入右子节点</el-button>
-				<el-button size="mini" type="danger" plain round>删除节点</el-button>
+				<el-button size="mini" type="success" @click="grandparentAdd(0)" plain round>插入左子节点</el-button>
+				<el-button size="mini" type="success" @click="grandparentAdd(1)" plain round>插入右子节点</el-button>
+				<el-button size="mini" type="danger" @click="grandparentDel()" plain round>删除节点</el-button>
 				<el-input
 					v-model="nodeTextBuffer"
 					size="mini"
@@ -43,6 +43,12 @@ export default {
 	this.init_data()
   },
   methods: {
+	grandparentAdd(status) {
+		this.$parent.$parent.addNode(this.index, status)
+	},
+	grandparentDel() {
+		this.$parent.$parent.delNode(this.index)
+	},
 	init_data() {
 		this.nodeText = this.valElement
 		this.nodeTextBuffer = this.valElement
