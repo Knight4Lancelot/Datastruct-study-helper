@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import treenode from './TreeNode.vue'
+import treenode from './TreeDesignNode.vue'
 
 export default {
   name: 'TreeCanvas',
