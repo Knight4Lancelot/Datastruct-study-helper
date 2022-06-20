@@ -3,9 +3,30 @@
 	<div class="main-head">head</div>
 	<div class="main-part">
 		<div class="aside-body-show"
-			@mouseenter="changeOpacity(true)"
+			@mouseover="changeOpacity(true)"
 			@mouseout="changeOpacity(false)">
-			<div ></div>
+			<div class="link-container" @click="openHiddenComs()">
+				<div class="selector-head" style="width: 60%;">
+					<i class="el-icon-edit"></i>
+					<transition name="head-word-transform">
+						<span class="selector-head-word" v-if="showHeadWord">设计结构</span>
+					</transition>
+				</div>
+				<div class="hidden-components">
+					
+				</div>
+			</div>
+			<div class="link-container" @click="openHiddenComs()">
+				<div class="selector-head" style="width: 60%;">
+					<i class="el-icon-edit"></i>
+					<transition name="head-word-transform">
+						<span class="selector-head-word" v-if="showHeadWord">其他</span>
+					</transition>
+				</div>
+				<div class="hidden-components">
+					
+				</div>
+			</div>
 		</div>
 		<div class="main-body-show" :style="{'opacity':mainOpacity}">
 			<router-view></router-view>
@@ -22,6 +43,7 @@ export default {
 		return {
 			isCover: false,
 			mainOpacity: 1,
+			showHeadWord: false,
 			elLinkStyle: {
 				'color': 'white',
 				'text-decoration': 'none'
@@ -32,6 +54,10 @@ export default {
 		changeOpacity(status) {
 			this.isCover=status
 			this.mainOpacity = status ? 0.6 : 1
+			this.showHeadWord = status
+		},
+		openHiddenComs() {
+			alert('展开')
 		}
 	}
 }
@@ -71,6 +97,10 @@ export default {
 .aside-body-show:hover {
 	transition: 0.3s;
 	width: 20%;
+	.link-container {
+		transition: 0.2s;
+		left: 15%;
+	}
 }
 .main-body-show {
 	position: inherit;
@@ -90,8 +120,44 @@ export default {
 	opacity: 0.35;
 }
 .link-container {
+	transition: 0.4s;
 	position: relative;
 	left: 30%;
 	margin-top: 30px;
+	position: inherit;
+	z-index: 1;
+}
+.link-container i {
+	position: inherit;
+	z-index: 1;
+	transition: 0.3s;
+	font-size: 28px;
+	color: #DCDFE6;
+}
+.selector-head-word {
+	position: relative;
+	z-index: 2;
+	user-select: none;
+	transition: 0.15s;
+	color:  #DCDFE6;
+	padding-left: 20px;
+}
+.selector-head:hover {
+	cursor: pointer;
+	i,transition span {
+		transition: 0.3s;
+		color: #70B0F2;
+	}
+}
+.head-word-transform-enter-active { 
+  transition:all 0.4s;
+}
+.head-word-transform-enter {
+  opacity:0;
+  transform:translateX(-20px);
+}
+.head-word-transform-leave-to { 
+  opacity:0;
+  transform:translateX(-20px);
 }
 </style>
