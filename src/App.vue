@@ -4,32 +4,63 @@
 	<div class="main-part">
 		<div class="aside-body-show"
 			@mouseover="changeOpacity(true)"
-			@mouseout="changeOpacity(false)">
-			<div class="link-container" @click="openHiddenComs()">
-				<div class="selector-head" style="width: 60%;">
-					<i class="el-icon-edit"></i>
+			@mouseleave="changeOpacity(false)">
+			<div class="link-container">
+				<div class="selector-head"
+					style="width: 60%;">
+					<router-link to="/" exact>
+						<i class="el-icon-house"/>
+						<transition name="head-word-transform">
+							<span class="selector-head-word" v-if="showHeadWord">主页</span>
+						</transition>
+					</router-link>
+				</div>
+			</div>
+			<div class="link-container"
+				@mouseover="openHiddenComs(1,true)"
+				@mouseleave="openHiddenComs(1,false)">
+				<div class="selector-head"
+					style="width: 60%;">
+					<i class="el-icon-edit"/>
 					<transition name="head-word-transform">
 						<span class="selector-head-word" v-if="showHeadWord">设计结构</span>
 					</transition>
 				</div>
-				<div class="hidden-components">
-					
-				</div>
+				<transition name="hidden-list-transform">
+					<div class="hidden-components" v-if="showDesignHidden&&mainOpacity!==1">
+						<div><router-link to="/designtree" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>设计树</span>
+						</router-link></div>
+						<div><router-link to="/designlink" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>设计链表</span>
+						</router-link></div>
+					</div>
+				</transition>
 			</div>
-			<div class="link-container" @click="openHiddenComs()">
-				<div class="selector-head" style="width: 60%;">
-					<i class="el-icon-edit"></i>
+			<div class="link-container"
+				@mouseover="openHiddenComs(2,true)"
+				@mouseleave="openHiddenComs(2,false)">
+				<div class="selector-head"
+					style="width: 60%;">
+					<i class="el-icon-document-remove"/>
 					<transition name="head-word-transform">
-						<span class="selector-head-word" v-if="showHeadWord">其他</span>
+						<span class="selector-head-word" v-if="showHeadWord">生成代码</span>
 					</transition>
 				</div>
-				<div class="hidden-components">
-					
-				</div>
+				<transition name="hidden-list-transform">
+					<div class="hidden-components" v-if="showMakeHidden&&mainOpacity!==1">
+						<div><router-link to="/maketree" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>二叉树</span>
+						</router-link></div>
+						<div><router-link to="/makelink" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>链表</span>
+						</router-link></div>
+					</div>
+				</transition>
 			</div>
 		</div>
 		<div class="main-body-show" :style="{'opacity':mainOpacity}">
-			<router-view></router-view>
+			<transition name="main-view-show"><router-view></router-view></transition>
 		</div>
 		<div class="cover-layer" v-if="isCover"></div>
 	</div>
@@ -44,6 +75,10 @@ export default {
 			isCover: false,
 			mainOpacity: 1,
 			showHeadWord: false,
+			headWordSize: 0.1,
+			showDesignHidden: false, // 控制设计数据结构的隐藏组件是否显示
+			showMakeHidden: false, // 控制生成代码的隐藏组件是否显示
+			fullscreenLoading: false, // 控制加载转圈圈
 			elLinkStyle: {
 				'color': 'white',
 				'text-decoration': 'none'
@@ -55,9 +90,17 @@ export default {
 			this.isCover=status
 			this.mainOpacity = status ? 0.6 : 1
 			this.showHeadWord = status
+			this.headWordSize = status ? 16 : 0.1
 		},
-		openHiddenComs() {
-			alert('展开')
+		openHiddenComs(index, status) {
+			switch (index) {
+				case 1:
+					this.showDesignHidden=true&&status
+					break
+				case 2:
+					this.showMakeHidden=true&&status
+					break
+			}
 		}
 	}
 }
@@ -104,11 +147,11 @@ export default {
 }
 .main-body-show {
 	position: inherit;
-	left: 5%;
-	width: 96%;
-	height: 99%;
+	top: 2%;
+	left: 10%;
+	width: 90%;
+	height: 90%;
 	z-index: 0;
-	border: 2px solid burlywood;
 }
 .cover-layer {
 	position: inherit;
@@ -123,32 +166,77 @@ export default {
 	transition: 0.4s;
 	position: relative;
 	left: 30%;
-	margin-top: 30px;
-	position: inherit;
-	z-index: 1;
+	margin-top: 25px;
+	width: 55%;
+	padding-bottom: 20px;
 }
 .link-container i {
-	position: inherit;
-	z-index: 1;
 	transition: 0.3s;
 	font-size: 28px;
-	color: #DCDFE6;
+	// color: #DCDFE6;
+	color: blanchedalmond;
 }
 .selector-head-word {
-	position: relative;
-	z-index: 2;
+	padding-top: 5px;
+	font-size: 17px;
+	position: absolute;
 	user-select: none;
 	transition: 0.15s;
-	color:  #DCDFE6;
+	// color:  #DCDFE6;
+	color: blanchedalmond;
 	padding-left: 20px;
+}
+.hidden-components {
+	padding-top:10px;
+	position: inherit;
+	margin-left: 20%;
+	div i {
+		font-size: 16px;
+		color: #CFD7DE;
+	}
+	div span {
+		user-select: none;
+		margin-left: 15px;
+		color: #CFD7DE;
+	}
+	div {
+		margin-top: 15px;
+		position: inherit;
+		:hover {
+			cursor: pointer;
+			color: #5EADFF;
+			i { color: #5EADFF; }
+			span { color: #5EADFF; }
+		}
+	}
 }
 .selector-head:hover {
 	cursor: pointer;
-	i,transition span {
+	i,span {
 		transition: 0.3s;
-		color: #70B0F2;
+		color: #5EADFF;
+	}
+	.description {
+		color: black;
 	}
 }
+// 下面为transition的移动动画
+// router-view的过渡动画
+.main-view-show-enter-active { 
+  transition:all 1s;
+}
+.main-view-show-leave-active { 
+  transition:all 0.4s;
+}
+.main-view-show-enter {
+  opacity:0;
+  transform:translateY(1000px);
+}
+.main-view-show-leave-to { 
+  opacity:0;
+  transform:translateY(-20px);
+}
+// 边栏的选项头描述文字的显示与隐藏的过渡动画
 .head-word-transform-enter-active { 
   transition:all 0.4s;
 }
@@ -158,6 +246,21 @@ export default {
 }
 .head-word-transform-leave-to { 
   opacity:0;
-  transform:translateX(-20px);
+  transform:translateX(-30px);
+}
+// 边栏的选项头下的隐藏组件的显示与隐藏的过渡动画
+.hidden-list-transform-enter-active { 
+  transition:all 0.4s;
+}
+.hidden-list-transform-leave-active { 
+  transition:all 0.1s;
+}
+.hidden-list-transform-enter {
+  opacity:0;
+  transform:translateY(-20px);
+}
+.hidden-list-transform-leave-to { 
+  opacity:0;
+  transform:translateY(-20px);
 }
 </style>
