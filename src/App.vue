@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import { Stack, Queue, BinaryTree } from "./utils/DatastructUtils.js"
+
 export default {
 	name: 'App',
 	data() {
@@ -78,12 +80,16 @@ export default {
 			headWordSize: 0.1,
 			showDesignHidden: false, // 控制设计数据结构的隐藏组件是否显示
 			showMakeHidden: false, // 控制生成代码的隐藏组件是否显示
-			fullscreenLoading: false, // 控制加载转圈圈
 			elLinkStyle: {
 				'color': 'white',
 				'text-decoration': 'none'
 			}
 		}
+	},
+	mounted() {
+		var s = new Stack()
+		s.push('1')
+		s.show()
 	},
 	methods: {
 		changeOpacity(status) {

@@ -1,7 +1,7 @@
 <template>
 	<div class='tree-canvas-component'>
 		<div v-text="elementList"></div>
-		<div class="canvas-tree-node">
+		<div class="canvas-+tree-node">
 			<treenode
 				v-for="(stn, k) in showTreeNodes"
 				:key="k"
