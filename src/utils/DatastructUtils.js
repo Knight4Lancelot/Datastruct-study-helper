@@ -4,6 +4,12 @@ function Stack(){
 	this.maxsize=2000
 	this.size=0
 	
+	Stack.prototype.top = function() {
+		return this.elementList[this.size-1]
+	}
+	Stack.prototype.isEmpty = function() {
+		return this.size===0
+	}
 	Stack.prototype.pop = function() {
 		if (this.size===0) {
 			console.log("this size down overflow")
@@ -36,6 +42,9 @@ function Queue(){
 	this.maxsize=2000
 	this.size=0
 	
+	Queue.prototype.isEmpty = function() {
+		return this.size===0
+	}
 	Queue.prototype.pop = function() {
 		if (this.size===0) {
 			console.log("the length of Queue is 0")
@@ -100,6 +109,20 @@ function BinaryTree(list) {
 	}
 	BinaryTree.prototype.PreOrderIndexList = function() { // 返回先序遍历的index列表
 		var res = []
+		var temp = []
+		var s = new Stack()
+		var n
+		for (var i = 0; i < this.binarytreelist.length; i++) {
+			temp.push({ node: this.binarytreelist[i], isRead: false, index: i })
+		}
+		s.push(temp[0])
+		while (!s.isEmpty()) {
+			n = s.pop()
+			n.isRead = true
+			res.push(n.index)
+			if (n.node.right!==-1) { s.push(temp[n.node.right]) }
+			if (n.node.left!==-1) { s.push(temp[n.node.left]) }
+		}
 		return res
 	}
 	BinaryTree.prototype.PreOrderList = function() { // 返回先序遍历的元素列表
@@ -111,6 +134,23 @@ function BinaryTree(list) {
 	}
 	BinaryTree.prototype.PostOrderIndexList = function() { // 返回后续遍历的index列表
 		var res = []
+		var temp = []
+		var s = new Stack()
+		var n
+		for (var i = 0; i < this.binarytreelist.length; i++) {
+			temp.push({ node: this.binarytreelist[i], isRead: false, index: i })
+		}
+		s.push(temp[0])
+		while (!s.isEmpty()) {
+			n = s.top()
+			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]) }
+			else if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]) }
+			else {
+				n = s.pop()
+				temp[n.index].isRead=true
+				res.push(n.index)
+			}
+		}
 		return res
 	}
 	BinaryTree.prototype.PostOrderList = function() { // 返回后续遍历的元素列表
@@ -122,6 +162,23 @@ function BinaryTree(list) {
 	}
 	BinaryTree.prototype.InOrderIndexList = function() { // 返回中序遍历的index列表
 		var res = []
+		var temp = []
+		var s = new Stack()
+		var n
+		for (var i = 0; i < this.binarytreelist.length; i++) {
+			temp.push({ node: this.binarytreelist[i], isRead: false, index: i })
+		}
+		s.push(temp[0])
+		while (!s.isEmpty()) {
+			n = s.top()
+			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]) }
+			else {
+				n = s.pop()
+				temp[n.index].isRead=true
+				res.push(n.index)
+				if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]) }
+			}
+		}
 		return res
 	}
 	BinaryTree.prototype.InOrderList = function() { // 返回中序遍历的元素列表

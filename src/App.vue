@@ -87,8 +87,18 @@ export default {
 		}
 	},
 	mounted() {
-		var s = new Stack()
-		s.push('1')
+		var list=[ "S", "0", "0", "0", "0", "0", "0", "nil", "0", "0", 
+					"0", "0", "0", "0", "0", "nil", "nil", "0", "nil",
+					"0", "0", "nil", "nil", "nil", "nil", "0", "nil",
+					"nil", "0", "0", "0", "nil", "nil", "nil", "nil",
+					"nil", "nil", "nil", "nil", "nil", "nil", "nil",
+					"0", "nil", "nil", "nil", "nil", "nil", "nil",
+					"nil", "nil", "nil", "nil", "nil", "nil", "nil",
+					"nil", "0" ]
+		var s = new BinaryTree(list)
+		console.log("先序遍历", s.PreOrderIndexList())
+		console.log("中序遍历", s.InOrderIndexList())
+		console.log("后序遍历", s.PostOrderIndexList())
 		s.show()
 	},
 	methods: {
