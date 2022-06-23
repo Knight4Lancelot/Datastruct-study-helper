@@ -87,19 +87,17 @@ export default {
 		}
 	},
 	mounted() {
-		var list=[ "S", "0", "0", "0", "0", "0", "0", "nil", "0", "0", 
-					"0", "0", "0", "0", "0", "nil", "nil", "0", "nil",
-					"0", "0", "nil", "nil", "nil", "nil", "0", "nil",
-					"nil", "0", "0", "0", "nil", "nil", "nil", "nil",
-					"nil", "nil", "nil", "nil", "nil", "nil", "nil",
-					"0", "nil", "nil", "nil", "nil", "nil", "nil",
-					"nil", "nil", "nil", "nil", "nil", "nil", "nil",
-					"nil", "0" ]
-		var s = new BinaryTree(list)
-		console.log("先序遍历", s.PreOrderIndexList())
-		console.log("中序遍历", s.InOrderIndexList())
-		console.log("后序遍历", s.PostOrderIndexList())
-		s.show()
+		// var list=[ "S", "0", "0", "0", "0", "0", "0", "nil", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "nil", "nil", "0", "nil",
+		// 			"0", "0", "nil", "nil", "nil", "nil", "0", "nil",
+		// 			"nil", "0", "0", "0", "nil", "nil", "nil", "nil",
+		// 			"nil", "nil", "nil", "nil", "nil", "nil", "nil",
+		// 			"0", "nil", "nil", "nil", "nil", "nil", "nil",
+		// 			"nil", "nil", "nil", "nil", "nil", "nil", "nil",
+		// 			"nil", "0" ]
+		// var s = new BinaryTree(list)
+		// console.log(s.descendantIndexs(0))
+		// s.getPositionX(50)
 	},
 	methods: {
 		changeOpacity(status) {
@@ -204,7 +202,7 @@ export default {
 }
 .hidden-components {
 	padding-top:10px;
-	position: inherit;
+	position: absolute;
 	margin-left: 20%;
 	div i {
 		font-size: 16px;
@@ -241,9 +239,9 @@ export default {
 .main-view-show-enter-active { 
   transition:all 1s;
 }
-.main-view-show-leave-active { 
-  transition:all 0.4s;
-}
+// .main-view-show-leave-active { 
+//   transition:all 0.1s;
+// }
 .main-view-show-enter {
   opacity:0;
   transform:translateY(1000px);
@@ -254,7 +252,7 @@ export default {
 }
 // 边栏的选项头描述文字的显示与隐藏的过渡动画
 .head-word-transform-enter-active { 
-  transition:all 0.4s;
+  transition:all 1s;
 }
 .head-word-transform-enter {
   opacity:0;
@@ -262,11 +260,11 @@ export default {
 }
 .head-word-transform-leave-to { 
   opacity:0;
-  transform:translateX(-30px);
+  transform:translateX(-100px);
 }
 // 边栏的选项头下的隐藏组件的显示与隐藏的过渡动画
 .hidden-list-transform-enter-active { 
-  transition:all 0.4s;
+  transition:all 0.6s;
 }
 .hidden-list-transform-leave-active { 
   transition:all 0.1s;

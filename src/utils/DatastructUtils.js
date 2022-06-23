@@ -29,8 +29,11 @@ function Stack(){
 		this.size+=1
 	}
 	Stack.prototype.clear = function() {
-		while (this.size>0) { this.pop() }
+		while (this.size>0) {
+			this.pop()
+		}
 	}
+	
 	Stack.prototype.show = function() {
 		console.log(this.elementList)
 	}
@@ -63,7 +66,9 @@ function Queue(){
 		this.size+=1
 	}
 	Queue.prototype.clear = function() {
-		while (this.size>0) { this.pop() }
+		while (this.size>0) {
+			this.pop()
+		}
 	}
 	Queue.prototype.show = function() {
 		console.log(this.elementList)
@@ -71,14 +76,20 @@ function Queue(){
 }
 
 // 二叉树模块
-function BinaryTreeNode(v, l, r) {
+function BinaryTreeNode(v, l, r, i, mi) {
 	this.val=v
 	this.left=l
 	this.right=r
+	this.index=i // 在去除空节点记录后在数组中的位置
+	this.mapIndex=mi
+	this.parent=-1
+	this.layer=1
 }
 
 function BinaryTree(list) {
 	this.binarytreelist=[] // 存的是上面BinaryTreeNode节点
+	this.height=1
+	this.count=0
 	// 默认执行函数
 	{
 		var index = 0
@@ -89,8 +100,8 @@ function BinaryTree(list) {
 				continue
 			}
 			mapping[i]={val:list[i], mapindex:index}
-			this.binarytreelist.push(new BinaryTreeNode(list[i], -1, -1))
-			if (i!==0) {
+			this.binarytreelist.push(new BinaryTreeNode(list[i], -1, -1, index, i))
+			if (i!==0) { // 根据原数组的index来确定子节点对一个关系
 				if (i%2===0) {
 					this.binarytreelist[mapping[(i-2)/2].mapindex].right=index
 				} else {
@@ -99,9 +110,106 @@ function BinaryTree(list) {
 			}
 			index+=1
 		}
+		this.count=index
+		for (i = 0; i < this.binarytreelist.length; i++) {
+			var l = this.binarytreelist[i].left
+			var r = this.binarytreelist[i].right
+			if (l!==-1) {
+				this.binarytreelist[l].layer=this.binarytreelist[i].layer+1
+				this.binarytreelist[l].parent=i
+				if (this.binarytreelist[l].layer>this.height) {
+					this.height=this.binarytreelist[l].layer
+				}
+			}
+			if (r!==-1) {
+				this.binarytreelist[r].layer=this.binarytreelist[i].layer+1
+				this.binarytreelist[r].parent=i
+				if (this.binarytreelist[r].layer>this.height) {
+					this.height=this.binarytreelist[r].layer
+				}
+			}
+		}
 	}
 	
-	BinaryTree.prototype.show=function() { // 在控制台打印结果
+	BinaryTree.prototype.getPositionX = function(width) { // width为左右节点之间的间隔
+		var X = Array(this.count).fill(0), layerWidth = Array(this.height+1).fill(0)
+		layerWidth[0]=-1
+		var node, x, h, descendant, deltaX, htemp
+		var i, j
+		var PostOrderIndex = this.PostOrderIndexList()
+		for (i = 0; i < PostOrderIndex.length; i++) {
+			node = this.binarytreelist[PostOrderIndex[i]]
+			h = node.layer
+			if (node.left===-1 && node.right===-1) {
+				x = layerWidth[h]+width
+				X[node.index] = x
+			} else if (node.left!==-1 && node.right===-1) {
+				if (layerWidth[h]+width > X[node.left]+width/2) {
+					x = layerWidth[h]+width
+					deltaX = x-width/2-X[node.left]
+					descendant = this.descendantIndexs(node.left)
+					for (j = 0; j < descendant.length; j++) {
+						X[descendant[j]] += deltaX
+						htemp = this.binarytreelist[descendant[j]].layer
+						if (X[descendant[j]]>layerWidth[htemp]) { layerWidth[htemp]=X[descendant[j]] }
+					}
+				} else {
+					x = X[node.left]+width/2
+				}
+				X[node.index] = x
+			} else if (node.left===-1 && node.right!==-1) {
+				if (layerWidth[h]+width >= X[node.right]-width/2) {
+					x = layerWidth[h]+width
+					deltaX = x+width/2-X[node.right]
+					descendant = this.descendantIndexs(node.right)
+					for (j = 0; j < descendant.length; j++) {
+						X[descendant[j]] += deltaX
+						htemp = this.binarytreelist[descendant[j]].layer
+						if (X[descendant[j]]>layerWidth[htemp]) { layerWidth[htemp]=X[descendant[j]] }
+					}
+				} else {
+					x = X[node.right]-width/2
+				}
+				X[node.index] = x
+			} else {
+				if (layerWidth[h]+width > (X[node.left] + X[node.right]) / 2) {
+					X[node.index] = layerWidth[h]+width
+					deltaX = layerWidth[h]+width - ((X[node.left] + X[node.right]) / 2)
+					descendant = this.descendantIndexs(node.left).concat(this.descendantIndexs(node.right))
+					for (j = 0; j < descendant.length; j++) {
+						X[descendant[j]] += deltaX
+						htemp = this.binarytreelist[descendant[j]].layer
+						if (X[descendant[j]]>layerWidth[htemp]) { layerWidth[htemp]=X[descendant[j]] }
+					}
+				} else {
+					X[node.index] = (X[node.left] + X[node.right]) / 2
+				}
+			}
+			layerWidth[h] = x
+		}
+		return X
+	}
+	BinaryTree.prototype.getPositionY = function(height) { // height为上下层的间隔
+		var Y = []
+		for (var i = 0; i < this.binarytreelist.length; i++) {
+			Y.push((this.binarytreelist[i].layer-1)*height+10)
+		}
+		return Y
+	}
+	BinaryTree.prototype.descendantIndexs = function(index) { // 获取某一节点的所有子孙代节点index
+		var res = []
+		var q = new Queue(), i, n
+		q.push(index)
+		while (!q.isEmpty()) {
+			i = q.pop()
+			res.push(i)
+			n = this.binarytreelist[i]
+			if (n.left!==-1) { q.push(n.left) }
+			if (n.right!==-1) { q.push(n.right) }
+		}
+		return res
+	}
+	BinaryTree.prototype.show = function() { // 在控制台打印结果
 		console.log(this.binarytreelist)
 	}
 	BinaryTree.prototype.treelist = function() { // 返回树的节点数组
@@ -191,5 +299,5 @@ function BinaryTree(list) {
 }
 
 export {
-	Stack, Queue, BinaryTreeNode, BinaryTree
+	Stack, Queue, BinaryTree, BinaryTreeNode
 }
