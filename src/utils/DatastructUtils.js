@@ -173,7 +173,7 @@ function BinaryTree(list) {
 				X[node.index] = x
 			} else {
 				if (layerWidth[h]+width > (X[node.left] + X[node.right]) / 2) {
-					X[node.index] = layerWidth[h]+width
+					x = X[node.index] = layerWidth[h]+width
 					deltaX = layerWidth[h]+width - ((X[node.left] + X[node.right]) / 2)
 					descendant = this.descendantIndexs(node.left).concat(this.descendantIndexs(node.right))
 					for (j = 0; j < descendant.length; j++) {
@@ -182,10 +182,11 @@ function BinaryTree(list) {
 						if (X[descendant[j]]>layerWidth[htemp]) { layerWidth[htemp]=X[descendant[j]] }
 					}
 				} else {
-					X[node.index] = (X[node.left] + X[node.right]) / 2
+					x = (X[node.left] + X[node.right]) / 2
+					X[node.index] = x
 				}
 			}
-			layerWidth[h] = x
+			if (x>layerWidth[h]) { layerWidth[h] = x }
 		}
 		return X
 	}
