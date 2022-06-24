@@ -77,6 +77,7 @@ export default {
 			return
 		}
 		this.nodeText = this.nodeTextBuffer
+		this.$parent.$parent.modifyNode(this.index, this.nodeTextBuffer)
 	}
   }
 }

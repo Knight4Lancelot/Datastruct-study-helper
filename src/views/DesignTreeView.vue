@@ -45,6 +45,10 @@ export default {
 		this.TreeList[focus]='0'
 		this.changeList()
 	},
+	modifyNode(index, val) {
+		this.TreeList[index] = val
+		this.changeList()
+	},
 	delNode(index) {
 		if (index===0) {
 			this.$message({
