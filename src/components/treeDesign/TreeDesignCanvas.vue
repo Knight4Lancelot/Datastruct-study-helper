@@ -1,6 +1,5 @@
 <template>
 	<div class='tree-canvas-component'>
-		<div v-text="nodeArray" style="width: 1000px;"></div>
 		<div class="canvas-tree-node">
 			<treenode
 				v-for="(stn, k) in showTreeNodes"
@@ -44,8 +43,6 @@ export default {
 		for (i = 0; i < this.elementList.length; i++) {
 			this.nodeArray.push(this.elementList[i])
 		}
-		this.maxheight = parseInt(Math.log2(this.nodeArray.length)) + 1
-		this.maxcount = Math.pow(2, this.maxheight)-1
 		while (this.nodeArray.length < this.maxcount) {
 			this.nodeArray.push('nil')
 		}
@@ -62,13 +59,18 @@ export default {
 		this.draw(bt.binarytreelist)
 	},
 	draw(tree) {
-		var canvas = document.getElementById("canvas-tree-edge")
+		var canvas = document.getElementById("canvas-tree-edge"), maxX=0
 		canvas.height = (this.maxheight+1)*50
-		canvas.width = (parseInt(this.maxcount/2)+2)*50
+		for (var i = 0; i < this.nodePosition.X.length; i++) {
+			if (maxX < this.nodePosition.X[i]) {
+				maxX = this.nodePosition.X[i]
+			}
+		}
+		canvas.width = maxX+100
 		var ctx = canvas.getContext("2d");
 		ctx.strokeStyle="#56585C";
 		ctx.lineWidth=3
-		for (var i = 0; i < tree.length; i++) {
+		for (i = 0; i < tree.length; i++) {
 			var tnode = tree[i]
 			var temp = null
 			if (tnode.left !== -1 && tnode.left < this.nodeArray.length) {
@@ -105,6 +107,7 @@ export default {
 	margin: 5%;
 	width: 90%;
 	height: 100%;
+	overflow: hidden;
 }
 .canvas-tree-node {
 	position: absolute;

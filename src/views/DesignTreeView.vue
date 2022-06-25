@@ -1,11 +1,15 @@
 <template>
+<happy-scroll color="rgba(0,0,0,0.5)" size="5">
   <div class="designtree">
-    <treecanvas class="tree-canvas-show" :elementList="TreeList" v-if="isshow"></treecanvas>
+		<div v-text="TreeList" style="width: 1000px;"></div>
+		<treecanvas class="tree-canvas-show" :elementList="TreeList" v-if="isshow"></treecanvas>
   </div>
+</happy-scroll>
 </template>
 
 <script>
 import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
+import { Queue } from '../utils/DatastructUtils.js'
 
 const durationTime=5
 
@@ -62,14 +66,18 @@ export default {
 		this.changeList()
 	},
 	recursiveDelNode(index) {
-		this.TreeList[index]='nil'
-		if (this.TreeList.length>=2*index+2) {
-			this.TreeList[2*index+1]='nil'
-			this.recursiveDelNode(2*index+1)
+		var res = []
+		var q = new Queue(), i, n
+		q.push(index)
+		while (!q.isEmpty()) {
+			i = q.pop()
+			res.push(i)
+			n = this.TreeList[i]
+			if (this.TreeList.length-1>=2*i+1 && this.TreeList[2*i+1]!=='nil') { q.push(2*i+1) }
+			if (this.TreeList.length-1>=2*i+2 && this.TreeList[2*i+2]!=='nil') { q.push(2*i+2) }
 		}
-		if (this.TreeList.length>=2*index+3) {
-			this.TreeList[2*index+2]='nil'
-			this.recursiveDelNode(2*index+2)
+		for (i = 0; i < res.length; i++) {
+			this.TreeList[res[i]]='nil'
 		}
 	},
 	changeList() {
@@ -85,12 +93,15 @@ export default {
 
 <style>
 .designtree {
+	width: 100%;
+	height: 100%;
 	position: inherit;
 }
 .tree-canvas-show {
 	position: inherit;
-	width: 90%;
-	height: 90%;
-	border: 1px solid black;
+	padding-top: 20px;
+	width: 1300px;
+	height: 900px;
+	border: 2px solid black;	
 }
 </style>

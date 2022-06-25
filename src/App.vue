@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-	<div class="main-head">head</div>
+	<homehead class="main-head"></homehead>
 	<div class="main-part">
 		<div class="aside-body-show"
 			@mouseover="changeOpacity(true)"
 			@mouseleave="changeOpacity(false)">
 			<div class="link-container">
 				<div class="selector-head"
-					style="width: 60%;">
+					style="width: 40%;">
 					<router-link to="/" exact>
 						<i class="el-icon-house"/>
 						<transition name="head-word-transform">
@@ -16,11 +16,11 @@
 					</router-link>
 				</div>
 			</div>
-			<div class="link-container"
+			<div class="link-container" id="design-struct"
 				@mouseover="openHiddenComs(1,true)"
 				@mouseleave="openHiddenComs(1,false)">
 				<div class="selector-head"
-					style="width: 60%;">
+					style="width: 40%;">
 					<i class="el-icon-edit"/>
 					<transition name="head-word-transform">
 						<span class="selector-head-word" v-if="showHeadWord">设计结构</span>
@@ -28,20 +28,23 @@
 				</div>
 				<transition name="hidden-list-transform">
 					<div class="hidden-components" v-if="showDesignHidden&&mainOpacity!==1">
+						<div><router-link to="/designlink" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>设计链表</span>
+						</router-link></div>
 						<div><router-link to="/designtree" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>设计树</span>
 						</router-link></div>
-						<div><router-link to="/designlink" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>设计链表</span>
+						<div><router-link to="/designgraph" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>设计图</span>
 						</router-link></div>
 					</div>
 				</transition>
 			</div>
-			<div class="link-container"
+			<div class="link-container" id="make-code"
 				@mouseover="openHiddenComs(2,true)"
 				@mouseleave="openHiddenComs(2,false)">
 				<div class="selector-head"
-					style="width: 60%;">
+					style="width: 50%;">
 					<i class="el-icon-document-remove"/>
 					<transition name="head-word-transform">
 						<span class="selector-head-word" v-if="showHeadWord">生成代码</span>
@@ -49,18 +52,44 @@
 				</div>
 				<transition name="hidden-list-transform">
 					<div class="hidden-components" v-if="showMakeHidden&&mainOpacity!==1">
+						<div><router-link to="/makelink" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>链表</span>
+						</router-link></div>
 						<div><router-link to="/maketree" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>二叉树</span>
 						</router-link></div>
-						<div><router-link to="/makelink" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>链表</span>
+						<div><router-link to="/makegraph" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>图</span>
+						</router-link></div>
+					</div>
+				</transition>
+			</div>
+			<div class="link-container" id="view-algorithm"
+				@mouseover="openHiddenComs(3,true)"
+				@mouseleave="openHiddenComs(3,false)">
+				<div class="selector-head"
+					style="width: 50%;">
+					<i class="el-icon-collection"/>
+					<transition name="head-word-transform">
+						<span class="selector-head-word" v-if="showHeadWord">算法可视化</span>
+					</transition>
+				</div>
+				<transition name="hidden-list-transform">
+					<div class="hidden-components" v-if="showViewAlgorithm&&mainOpacity!==1">
+						<div><router-link to="/" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>冒泡排序</span>
+						</router-link></div>
+						<div><router-link to="/" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>选择排序</span>
 						</router-link></div>
 					</div>
 				</transition>
 			</div>
 		</div>
 		<div class="main-body-show" :style="{'opacity':mainOpacity}">
-			<transition name="main-view-show"><router-view></router-view></transition>
+			<transition name="main-view-show">
+				<router-view></router-view>				
+			</transition>
 		</div>
 		<div class="cover-layer" v-if="isCover"></div>
 	</div>
@@ -69,9 +98,13 @@
 
 <script>
 import { Stack, Queue, BinaryTree } from "./utils/DatastructUtils.js"
+import homehead from './components/homeHead/HomeHead.vue'
 
 export default {
 	name: 'App',
+	components: {
+		homehead
+	},
 	data() {
 		return {
 			isCover: false,
@@ -80,6 +113,7 @@ export default {
 			headWordSize: 0.1,
 			showDesignHidden: false, // 控制设计数据结构的隐藏组件是否显示
 			showMakeHidden: false, // 控制生成代码的隐藏组件是否显示
+			showViewAlgorithm: false, // 控制可视化算法的隐藏组件是否显示
 			elLinkStyle: {
 				'color': 'white',
 				'text-decoration': 'none'
@@ -87,17 +121,6 @@ export default {
 		}
 	},
 	mounted() {
-		// var list=[ "S", "0", "0", "0", "0", "0", "0", "nil", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "nil", "nil", "0", "nil",
-		// 			"0", "0", "nil", "nil", "nil", "nil", "0", "nil",
-		// 			"nil", "0", "0", "0", "nil", "nil", "nil", "nil",
-		// 			"nil", "nil", "nil", "nil", "nil", "nil", "nil",
-		// 			"0", "nil", "nil", "nil", "nil", "nil", "nil",
-		// 			"nil", "nil", "nil", "nil", "nil", "nil", "nil",
-		// 			"nil", "0" ]
-		// var s = new BinaryTree(list)
-		// console.log(s.descendantIndexs(0))
-		// s.getPositionX(50)
 	},
 	methods: {
 		changeOpacity(status) {
@@ -108,11 +131,21 @@ export default {
 		},
 		openHiddenComs(index, status) {
 			switch (index) {
+				// 加上隐藏组件后link-container基础高度为40，每多一个子入口加30
 				case 1:
 					this.showDesignHidden=true&&status
+					document.getElementById('design-struct').style.height=
+						this.showDesignHidden ? (130+'px') : (30+'px')
 					break
 				case 2:
 					this.showMakeHidden=true&&status
+					document.getElementById('make-code').style.height=
+						this.showMakeHidden ? (130+'px') : (30+'px')
+					break
+				case 3:
+					this.showViewAlgorithm=true&&status
+					document.getElementById('view-algorithm').style.height=
+						this.showViewAlgorithm ? (120+'px') : (30+'px')
 					break
 			}
 		}
@@ -121,6 +154,9 @@ export default {
 </script>
 
 <style lang="scss">
+::-webkit-scrollbar {
+	width: 0 !important;height: 0;
+}
 #app {
 	padding: 0;
 	margin: 0;
@@ -133,9 +169,8 @@ export default {
 }
 .main-head {
 	position: absolute;
-	height: 10%;
+	height: 80px;
 	width: 101%;
-	background-color: #606266;
 }
 .main-part {
 	position: absolute;
@@ -146,14 +181,14 @@ export default {
 .aside-body-show {
 	transition: 0.3s;
 	position: inherit;
-	width: 5%;
+	width: 80px;
 	height: 100%;
 	z-index: 2;
 	background-color: #545c64;
 }
 .aside-body-show:hover {
 	transition: 0.3s;
-	width: 20%;
+	width: 300px;
 	.link-container {
 		transition: 0.2s;
 		left: 15%;
@@ -161,9 +196,9 @@ export default {
 }
 .main-body-show {
 	position: inherit;
-	top: 2%;
-	left: 10%;
-	width: 90%;
+	top: 10px;
+	left:110px;
+	width: 93%;
 	height: 90%;
 	z-index: 0;
 }
@@ -182,11 +217,12 @@ export default {
 	left: 30%;
 	margin-top: 25px;
 	width: 55%;
+	height: 30px;
 	padding-bottom: 20px;
 }
 .link-container i {
 	transition: 0.3s;
-	font-size: 28px;
+	font-size: 30px;
 	// color: #DCDFE6;
 	color: blanchedalmond;
 }
@@ -200,9 +236,13 @@ export default {
 	color: blanchedalmond;
 	padding-left: 20px;
 }
+.link-container:hover {
+	cursor: pointer;
+}
 .hidden-components {
+	width: 60%;
 	padding-top:10px;
-	position: absolute;
+	position: inherit;
 	margin-left: 20%;
 	div i {
 		font-size: 16px;
@@ -224,24 +264,11 @@ export default {
 		}
 	}
 }
-.selector-head:hover {
-	cursor: pointer;
-	i,span {
-		transition: 0.3s;
-		color: #5EADFF;
-	}
-	.description {
-		color: black;
-	}
-}
 // 下面为transition的移动动画
 // router-view的过渡动画
 .main-view-show-enter-active { 
   transition:all 1s;
 }
-// .main-view-show-leave-active { 
-//   transition:all 0.1s;
-// }
 .main-view-show-enter {
   opacity:0;
   transform:translateY(1000px);
@@ -252,7 +279,7 @@ export default {
 }
 // 边栏的选项头描述文字的显示与隐藏的过渡动画
 .head-word-transform-enter-active { 
-  transition:all 1s;
+  transition:all 0.8s;
 }
 .head-word-transform-enter {
   opacity:0;
@@ -260,14 +287,11 @@ export default {
 }
 .head-word-transform-leave-to { 
   opacity:0;
-  transform:translateX(-100px);
+  // transform:translateX(-100px);
 }
 // 边栏的选项头下的隐藏组件的显示与隐藏的过渡动画
-.hidden-list-transform-enter-active { 
-  transition:all 0.6s;
-}
-.hidden-list-transform-leave-active { 
-  transition:all 0.1s;
+.hidden-list-transform-enter-active, .hidden-list-transform-leave-active { 
+  transition:all 0.2s;
 }
 .hidden-list-transform-enter {
   opacity:0;

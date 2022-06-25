@@ -3,8 +3,10 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DesignTree from '../views/DesignTreeView.vue'
 import DesignLink from '../views/DesignLinkView.vue'
+import DesignGraph from '../views/DesignGraphView.vue'
 import MakeTree from '../views/MakeTreeView.vue'
 import MakeLink from '../views/MakeLinkView.vue'
+import MakeGraph from '../views/MakeGraphView.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,11 @@ const routes = [
     component: DesignLink
   },
   {
+    path: '/designgraph',
+    name: 'designGraph',
+    component: DesignGraph
+  },
+  {
     path: '/maketree',
     name: 'makeTree',
     component: MakeTree
@@ -33,6 +40,11 @@ const routes = [
     path: '/makelink',
     name: 'makeLink',
     component: MakeLink
+  },
+  {
+    path: '/makegraph',
+    name: 'makeGraph',
+    component: MakeGraph
   }
 ]
 
