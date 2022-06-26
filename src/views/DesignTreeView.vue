@@ -9,10 +9,12 @@
 			二叉树
 		</span>结构设计
 	</span>
-	<el-card v-text="TreeList" id="tree-result-card"
-		:style="{'width': String(canvasWidth-100)+'px',
+	<el-card id="tree-result-card"
+		:style="{'width': String(canvasWidth)+'px',
 				'top':String(canvasHeight+240)+'px',
-				'left':'120px'}"></el-card>
+				'left':'120px'}">
+		<div id="card-message" v-text="replacedTreeList" @click="sendDataCopy()"/>
+	</el-card>
 	<span id="tree-result-word"
 		:style="{'width': String(canvasWidth)+'px',
 			'top':String(canvasHeight+180)+'px',
@@ -49,20 +51,31 @@ export default {
   },
   data() {
 	return {
+		blankNode: 'null',
 		canvasleft: 0,
 		canvastop: 0,
 		appHeight: 0,
 		appWidth: 0,
 		canvasHeight: 0,
 		canvasWidth: 0,
-		// TreeList: ['S'],
-		TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0",  ],
+		TreeList: ['S'],
+		TreeListString: '',
+		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
+		// 			"2", "3", "4", "5", "6", "7", "8", "9", "10"],
 		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0"],
@@ -72,8 +85,36 @@ export default {
   mounted() {
 	this.formCanvasSize()
 	this.normalizeTreeList()
+	this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
+  },
+  computed: {
+	replacedTreeList() {
+		var res = this.TreeList.concat()
+		if (res.length > 51) {
+			while (res.length > 51) {
+				res.splice(40,1)
+			}
+			res[40]=' ... '
+		}
+		return "（对应数组共计节点数："+String(this.TreeList.length)+"）："+
+				String(res).replaceAll('nil', 'null').replaceAll(',', ', ')
+	}
   },
   methods: {
+	sendDataCopy() { // 将card内容复制到粘贴板
+		var that = this
+		document.oncopy = function (e) {
+			e.clipboardData.setData('text', String(that.TreeListString))
+			e.preventDefault()
+			document.oncopy = null
+		}
+		document.execCommand('Copy')
+		this.$message({
+			duration: durationTime*1000,
+			showClose: true,
+			message: '成功复制内容  [ 二叉树数组形式 ]  到粘贴板',
+			type: 'success'})
+	},
 	formCanvasSize() {
 		this.appHeight=document.documentElement.clientHeight
 		this.appWidth=document.documentElement.clientWidth
@@ -106,6 +147,7 @@ export default {
 	},
 	modifyNode(index, val) {
 		this.TreeList[index] = val
+		this.changeList()
 	},
 	delNode(index) {
 		if (index===0) {
@@ -135,6 +177,7 @@ export default {
 		}
 	},
 	changeList() {
+		this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
 		var treeCanvas = document.getElementById('tree-canvas-show')
 		this.canvasleft = treeCanvas.scrollLeft
 		this.canvastop = treeCanvas.scrollTop
@@ -175,9 +218,16 @@ export default {
 }
 #tree-result-card {
 	position: inherit;
-	padding: 50px;
 	background-color: #F2F6FC;
 	font-family: 'Microsoft YaHei';
+}
+#card-message { 
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+	padding: 20px;
+	width: 95%;
+	height: 100%;
 }
 #divider-res {
 	position: inherit;
