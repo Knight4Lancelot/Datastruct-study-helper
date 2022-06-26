@@ -55,6 +55,7 @@ export default {
 	},
 	changeStatus() {
 		if (!this.isShowInfo) {
+			this.$parent.hideAllNodeInfo()
 			this.nodeTextBuffer=this.nodeText
 		}
 		this.isShowInfo = !this.isShowInfo
@@ -78,6 +79,7 @@ export default {
 		}
 		this.nodeText = this.nodeTextBuffer
 		this.$parent.$parent.modifyNode(this.index, this.nodeTextBuffer)
+		this.isShowInfo=false
 	}
   }
 }
@@ -93,6 +95,7 @@ export default {
 	background-color: white;
 	font-size: 16px;
 	user-select: none;
+	font-family: "Microsoft YaHei";
 }
 .tree-node:hover {
 	color: #66B1FF;
@@ -108,6 +111,7 @@ export default {
 	border: 1px solid #C0C4CC;
 	background-color: white;
 	z-index: 4;
+	font-family: "Microsoft YaHei";
 }
 .fade-transform-leave-active, .fade-transform-enter-active { 
   transition:all 0.4s;

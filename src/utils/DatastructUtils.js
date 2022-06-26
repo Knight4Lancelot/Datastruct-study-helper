@@ -193,7 +193,7 @@ function BinaryTree(list) {
 	BinaryTree.prototype.getPositionY = function(height) { // height为上下层的间隔
 		var Y = []
 		for (var i = 0; i < this.binarytreelist.length; i++) {
-			Y.push((this.binarytreelist[i].layer-1)*height+10)
+			Y.push((this.binarytreelist[i].layer-1)*height+50)
 		}
 		return Y
 	}

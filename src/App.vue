@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-	<homehead class="main-head"></homehead>
-	<div class="main-part">
+	<homehead class="main-head"
+		:style="{'width':String(appWidth)+'px'}"></homehead>
+	<div class="main-part"
+		:style="{'height':String(appHeight-80)+'px',
+				'width': String(appWidth-10)+'px'}">
 		<div class="aside-body-show"
 			@mouseover="changeOpacity(true)"
 			@mouseleave="changeOpacity(false)">
@@ -86,12 +89,18 @@
 				</transition>
 			</div>
 		</div>
-		<div class="main-body-show" :style="{'opacity':mainOpacity}">
+		<div class="main-body-show"
+			:style="{'opacity':mainOpacity,'overflow-y':'scroll',
+					'width':String(appWidth-80)+'px',
+					'height': String(appHeight-80)+'px',
+					'max-height': String(appHeight-80)+'px'}">
 			<transition name="main-view-show">
-				<router-view></router-view>				
+				<router-view ref='target-view'></router-view>				
 			</transition>
 		</div>
-		<div class="cover-layer" v-if="isCover"></div>
+		<div class="cover-layer" v-if="isCover"
+			:style="{'height':String(appHeight-80)+'px',
+					'width': String(appWidth)+'px'}"></div>
 	</div>
   </div>
 </template>
@@ -107,6 +116,8 @@ export default {
 	},
 	data() {
 		return {
+			appHeight: 0,
+			appWidth: 0,
 			isCover: false,
 			mainOpacity: 1,
 			showHeadWord: false,
@@ -121,8 +132,35 @@ export default {
 		}
 	},
 	mounted() {
+		this.formSize()
+		window.onresize = () => {
+			if(!this.timer) {
+				this.timer = true
+				let that = this
+				setTimeout(function(){
+					that.formSize()
+					that.timer = false
+				},400)
+			}
+			if (document.location.href !== document.location.origin) {
+				var hash = document.location.href.slice(
+					document.location.origin.length,
+					document.location.href.length)
+				switch(hash) {
+					case '/designtree':
+						this.$refs['target-view'].formCanvasSize()
+						break
+				}
+			}
+		}	
 	},
 	methods: {
+		formSize() {
+			this.appHeight = document.documentElement.clientHeight
+			this.appWidth = document.documentElement.clientWidth
+			if (this.appHeight < 775) { this.appHeight = 775 }
+			if (this.appWidth < 1000) { this.appWidth = 1000 }
+		},
 		changeOpacity(status) {
 			this.isCover=status
 			this.mainOpacity = status ? 0.6 : 1
@@ -157,26 +195,37 @@ export default {
 // ::-webkit-scrollbar {
 // 	width: 0 !important;height: 0;
 // }
+::-webkit-scrollbar {
+	width: 10px;
+	height: 12px;
+}
+::-webkit-scrollbar-thumb {
+	border-radius: 8px; 
+	background: #ABADAF;
+}
+::-webkit-scrollbar-corner {
+	opacity: 0;
+}
 #app {
+	border-bottom: 2px solid black;
+	overflow-y: hidden;
 	padding: 0;
 	margin: 0;
+	border: 0;
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	width: 99%;
+	width: 100%;
 	height: 100%;
 	border: hidden;
 }
 .main-head {
 	position: absolute;
 	height: 80px;
-	width: 101%;
 }
 .main-part {
 	position: absolute;
 	top: 80px;
-	height: 90%;
-	width: 99%;
 }
 .aside-body-show {
 	transition: 0.3s;
@@ -185,6 +234,7 @@ export default {
 	height: 100%;
 	z-index: 2;
 	background-color: #545c64;
+	font-family: "Microsoft YaHei";
 }
 .aside-body-show:hover {
 	transition: 0.3s;
@@ -196,17 +246,15 @@ export default {
 }
 .main-body-show {
 	position: inherit;
-	top: 10px;
-	left:110px;
-	width: 93%;
-	height: 90%;
+	// top: 10px;
+	left:80px;
+	// width: 100%;
+	// height: 100%;
 	z-index: 0;
 }
 .cover-layer {
 	position: inherit;
-	left: 6%;
-	width: 96%;
-	height: 100%;
+	
 	background-color: #909399;
 	z-index: 1;
 	opacity: 0.35;

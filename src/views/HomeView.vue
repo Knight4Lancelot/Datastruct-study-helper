@@ -33,26 +33,26 @@ export default {
 }
 #home-logo {
 	position: inherit;
-	top: 60px;
-	left: 320px;
-	width: 240px;
+	top: 10%;
+	left: 25%;
+	width: 18%;
 	user-select: none;
 	/* border: 10px solid black; */
 }
 #home-webname {
 	position: inherit;
-	width: 308px;
-	height: 35px;
-	top: 260px;
-	left: 285px;
+	width: 26%;
+	height: 6%;
+	top: 40%;
+	left: 21%;
 	user-select: none;
 }
 #divider {
 	position: inherit;
-	left: 670px;
-	top: 60px;
+	left: 50%;
+	top: 8%;
 	width: 3px;
-	height: 250px;
+	height: 40%;
 	background-color: #C0C4CC;
 }
 </style>
