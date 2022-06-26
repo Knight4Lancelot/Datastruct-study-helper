@@ -1,10 +1,8 @@
 <template>
-<happy-scroll color="rgba(0,0,0,0.5)" size="5">
-  <div class="designtree">
-		<div v-text="TreeList" style="width: 1000px;"></div>
-		<treecanvas class="tree-canvas-show" :elementList="TreeList" v-if="isshow"></treecanvas>
-  </div>
-</happy-scroll>
+<div class="designtree">
+	<div v-text="TreeList" style="width: 1000px;"></div>
+	<treecanvas class="tree-canvas-show" :elementList="TreeList" v-if="isshowCanvas"></treecanvas>
+</div>
 </template>
 
 <script>
@@ -20,8 +18,14 @@ export default {
   },
   data() {
 	return {
-		TreeList: ["S"],
-		isshow: true
+		TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0",  ],
+		isshowCanvas: true
 	}
   },
   mounted() {
@@ -84,8 +88,8 @@ export default {
 		while (this.TreeList[this.TreeList.length-1]==='nil') {
 			this.TreeList.pop()
 		}
-		this.isshow=false
-		this.$nextTick(() => { this.isshow=true })
+		this.isshowCanvas=false
+		this.$nextTick(() => { this.isshowCanvas=true })
 	}
   }
 }
@@ -93,12 +97,14 @@ export default {
 
 <style>
 .designtree {
-	width: 100%;
+	background-color: lightgreen;
+	width: 99%;
 	height: 100%;
 	position: inherit;
 }
 .tree-canvas-show {
 	position: inherit;
+	z-index: 2;
 	padding-top: 20px;
 	width: 1300px;
 	height: 900px;

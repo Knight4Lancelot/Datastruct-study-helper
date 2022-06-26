@@ -154,9 +154,9 @@ export default {
 </script>
 
 <style lang="scss">
-::-webkit-scrollbar {
-	width: 0 !important;height: 0;
-}
+// ::-webkit-scrollbar {
+// 	width: 0 !important;height: 0;
+// }
 #app {
 	padding: 0;
 	margin: 0;
@@ -174,7 +174,7 @@ export default {
 }
 .main-part {
 	position: absolute;
-	top: 10%;
+	top: 80px;
 	height: 90%;
 	width: 99%;
 }
