@@ -3,26 +3,11 @@
 	<router-link to="/" exact><i id="back-to-home" class="el-icon-arrow-left"/></router-link>
 	<span id="design-tree-headword"
 		:style="{'width': String(canvasWidth-100)+'px',
-				'top':'45px',
+				'top':'55px',
 				'left':'120px'}">
 		<span style="color:#67C23A;font-size:35px;font-weight: 800;">
 			二叉树
 		</span>结构设计
-	</span>
-	<el-card id="tree-result-card"
-		:style="{'width': String(canvasWidth)+'px',
-				'top':String(canvasHeight+240)+'px',
-				'left':'120px'}">
-		<div id="card-message" v-text="replacedTreeList" @click="sendDataCopy()"/>
-	</el-card>
-	<span id="tree-result-word"
-		:style="{'width': String(canvasWidth)+'px',
-			'top':String(canvasHeight+180)+'px',
-			'left':'120px'}">
-			<span style="color:#67C23A;font-size:35px;font-weight: 800;">
-				二叉树&nbsp;
-			</span>的数组形式表示结果
-			<div id="divider-res"/>
 	</span>
 	<treecanvas class="tree-canvas-show"
 		id="tree-canvas-show"
@@ -34,23 +19,70 @@
 				'max-height': String(canvasHeight)+'px',
 				'width': String(canvasWidth)+'px',
 				'height': String(canvasHeight)+'px'}"/>
-	<div style="position: inherit;height: 700px;width: 900px;top: 1000px;"></div>
+	<span id="tree-result-word"
+		:style="{'width': String(canvasWidth)+'px',
+			'top':String(canvasHeight+240)+'px',
+			'left':'120px'}">
+			<span style="color:#67C23A;font-size:35px;font-weight: 800;">
+				二叉树&nbsp;
+			</span>的数组形式表示结果
+	</span>
+	<el-card id="tree-result-card"
+		:style="{'width': String(canvasWidth)+'px',
+				'padding':'0', 'margin':'0',
+				'top':String(canvasHeight+310)+'px',
+				'left':'120px'}">
+		<div id="card-message" v-text="replacedTreeList" @click="sendDataCopy()"/>
+	</el-card>
+	<span id="tree-result-code"
+		:style="{'width': String(canvasWidth)+'px',
+			'top':String(canvasHeight+480)+'px',
+			'left':'120px'}">
+			<span style="color:#67C23A;font-size:35px;font-weight: 800;">
+				二叉树&nbsp;
+			</span>代码展示
+	</span>
+	<div id="code-view"
+		:style="{'width': String(canvasWidth-30)+'px',
+			'top':String(canvasHeight+590)+'px'}">
+		<prism-editor
+			class="my-editor height-200"
+			v-model="code"
+			:highlight="highlighter"
+			line-numbers
+			readonly></prism-editor>
+	</div>
+	<div id="page-bottom"
+		:style="{'width': String(canvasWidth-30)+'px',
+			'top':String(canvasHeight+790)+'px'}">
+		已经到页面底部了
+	</div>
 </div>
 </template>
 
 <script>
 import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
 import { Queue } from '../utils/DatastructUtils.js'
+// import Prism Editor
+import { PrismEditor } from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css';
+// import highlighting library (you can use any library you want just return html string)
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism-tomorrow.css';
 
 const durationTime=5
 
 export default {
   name: 'HomeView',
   components: {
-	treecanvas
+	treecanvas,
+	PrismEditor
   },
   data() {
 	return {
+		code: 'int main() {\n\treturn 0 \n}',
 		blankNode: 'null',
 		canvasleft: 0,
 		canvastop: 0,
@@ -101,6 +133,9 @@ export default {
 	}
   },
   methods: {
+	highlighter(code) {
+		return highlight(this.code, languages.js, "js");
+	},
 	sendDataCopy() { // 将card内容复制到粘贴板
 		var that = this
 		document.oncopy = function (e) {
@@ -199,6 +234,9 @@ export default {
 </script>
 
 <style>
+.designtree {
+	width: 100%;
+}
 #back-to-home {
 	position: absolute;
 	font-size: 60px;
@@ -209,7 +247,10 @@ export default {
 	left: 20px;
 	top: 40px;
 }
-#design-tree-headword, #tree-result-word {
+#back-to-home:hover {
+	color: #6FB6FF;
+}
+#design-tree-headword, #tree-result-word, #tree-result-code {
 	position: inherit;
 	font-size: 25px;
 	color: #6A6A6A;
@@ -221,33 +262,51 @@ export default {
 	background-color: #F2F6FC;
 	font-family: 'Microsoft YaHei';
 }
-#card-message { 
+#card-message {
+	transition: 0.5s;
 	cursor: pointer;
-	user-select: none;
 	position: relative;
+	font-size: 18px;
 	padding: 20px;
 	width: 95%;
 	height: 100%;
 }
-#divider-res {
+#card-message:hover {
+	transition: 0.3s;
+	font-size: 19px;
+}
+#code-view {
 	position: inherit;
-	z-index:1;
-	top: 70%;
-	height: 4px;
-	background-color: #68C739;
-	width: 71%;
-	left: 360px;
+	left: 120px;
+}
+#page-bottom {
+	text-align: center;
+	position: inherit;
+	left: 8%;
+	height: 50px;
+	font-size: 20px;
+	font-family: 'Microsoft YaHei';
+	background-color: #FDD18F;
+}
+.my-editor {
+	background: #2d2d2d;
+	color: #ccc;
+	font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+	font-size: 18px;
+	line-height: 1.5;
+	padding: 15px;
+	border-radius: 5px;
 }
 .designtree {
-	/* background-color: lightgreen; */
 	width: 100%;
 	height: 100%;
 	position: inherit;
 }
 .tree-canvas-show {
-	position: inherit;
-	top: 45px;
-	left: 40px;
+	position: absolute;
+	top: 170px;
+	left: 120px;
+	margin: 0;
 	border: 2px solid #C0C4CC;
 	border-radius: 15px;
 }
