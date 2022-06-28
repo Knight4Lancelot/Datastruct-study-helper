@@ -32,7 +32,7 @@
 				'padding':'0', 'margin':'0',
 				'top':String(canvasHeight+310)+'px',
 				'left':'120px'}">
-		<div id="card-message" v-text="replacedTreeList" @click="sendDataCopy()"/>
+		<div id="card-message" v-text="holdResString" @click="sendDataCopy()"/>
 	</el-card>
 	<span id="tree-result-code"
 		:style="{'width': String(canvasWidth)+'px',
@@ -43,9 +43,12 @@
 			</span>代码展示
 	</span>
 	<div id="code-view"
-		:style="{'width': String(canvasWidth-30)+'px',
-			'top':String(canvasHeight+590)+'px'}">
+		:style="{'top':String(canvasHeight+590)+'px',
+			'width':String(canvasWidth-30)+'px',
+			'max-width':String(canvasWidth-30)+'px'
+			}">
 		<prism-editor
+			v-if="isShowCode"
 			class="my-editor height-200"
 			v-model="code"
 			:highlight="highlighter"
@@ -54,7 +57,7 @@
 	</div>
 	<div id="page-bottom"
 		:style="{'width': String(canvasWidth-30)+'px',
-			'top':String(canvasHeight+790)+'px'}">
+			'top':String(canvasHeight+1390)+'px'}">
 		已经到页面底部了
 	</div>
 </div>
@@ -63,6 +66,7 @@
 <script>
 import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
 import { Queue } from '../utils/DatastructUtils.js'
+import { init_tree_code } from '../utils/init_binarytree.js'
 // import Prism Editor
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -73,6 +77,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
 
 const durationTime=5
+var tc = new init_tree_code()
 
 export default {
   name: 'HomeView',
@@ -83,6 +88,8 @@ export default {
   data() {
 	return {
 		code: 'int main() {\n\treturn 0 \n}',
+		isShowCode: true,
+		holdResString: '',
 		blankNode: 'null',
 		canvasleft: 0,
 		canvastop: 0,
@@ -90,24 +97,24 @@ export default {
 		appWidth: 0,
 		canvasHeight: 0,
 		canvasWidth: 0,
-		TreeList: ['S'],
 		TreeListString: '',
-		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
-		// 			"2", "3", "4", "5", "6", "7", "8", "9", "10"],
+		//TreeList: ['S'],
+		TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
+					"2", "3", "4", "5", "6", "7", "8", "9", "10"],
 		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0"],
@@ -115,24 +122,29 @@ export default {
 	}
   },
   mounted() {
+	this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
+	this.code = tc.cpp_init_tree_part1+' "'+this.TreeListString.replaceAll(',', '","')+'" '+tc.cpp_init_tree_part2
 	this.formCanvasSize()
 	this.normalizeTreeList()
-	this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
+	this.formHoldRes()
   },
   computed: {
-	replacedTreeList() {
-		var res = this.TreeList.concat()
-		if (res.length > 51) {
-			while (res.length > 51) {
-				res.splice(40,1)
-			}
-			res[40]=' ... '
-		}
-		return "（对应数组共计节点数："+String(this.TreeList.length)+"）："+
-				String(res).replaceAll('nil', 'null').replaceAll(',', ', ')
-	}
   },
   methods: {
+	read_init_binarytree() {
+		// let xhr = new XMLHttpRequest()
+		// var okStatus = document.location.protocol === "file:" ? 0 : 200
+		// xhr.open("GET", "../codefiles/init_binarytree.txt", false)
+		// xhr.overrideMimeType("text/html;charset=utf-8")
+		// xhr.send(null);
+		// console.log(xhr.responseText)
+		var reader = new FileReader();
+		reader.readAsText('../codefiles/init_binarytree.txt', "UTF-8");
+		reader.onload = function (e) {
+			const val = e.target.result;
+			console.log(val)
+		}
+	},
 	highlighter(code) {
 		return highlight(this.code, languages.js, "js");
 	},
@@ -211,7 +223,21 @@ export default {
 			this.TreeList[res[i]]='nil'
 		}
 	},
+	formHoldRes() {
+		var res = this.TreeList.concat()
+		if (res.length > 51) {
+			while (res.length > 51) {
+				res.splice(40,1)
+			}
+			res[40]=' ... '
+		}
+		this.holdResString = '（对应数组共计节点数：'+String(this.TreeList.length)+'）："'+
+				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
+	},
 	changeList() {
+		while (this.TreeList[this.TreeList.length-1]==="nil")
+			this.TreeList.pop()
+		this.formHoldRes()
 		this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
 		var treeCanvas = document.getElementById('tree-canvas-show')
 		this.canvasleft = treeCanvas.scrollLeft
@@ -219,6 +245,13 @@ export default {
 		while (this.TreeList[this.TreeList.length-1]==='nil') {
 			this.TreeList.pop()
 		}
+		
+		this.code = tc.cpp_init_tree_part1+' "'+this.TreeListString.replaceAll(',', '","')+'" '+tc.cpp_init_tree_part2
+		this.isShowCode=false
+		this.$nextTick(() => {
+			this.isShowCode=true
+		})
+		
 		this.isshowCanvas=false
 		this.$nextTick(() => {
 			this.isshowCanvas=true
@@ -278,6 +311,10 @@ export default {
 #code-view {
 	position: inherit;
 	left: 120px;
+	height: 720px;
+	/* max-height: 700px;
+	overflow-x: scroll;
+	overflow-y: scroll; */
 }
 #page-bottom {
 	text-align: center;
