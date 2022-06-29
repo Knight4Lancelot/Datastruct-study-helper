@@ -43,10 +43,13 @@
 			</span>代码展示
 	</span>
 	<div id="code-view"
-		:style="{'top':String(canvasHeight+590)+'px',
+		:style="{'top':String(canvasHeight+550)+'px',
 			'width':String(canvasWidth-30)+'px',
 			'max-width':String(canvasWidth-30)+'px'
 			}">
+		<button :class="codeClass[0]" @click="changeLanguage(1)">C++</button>
+		<button :class="codeClass[1]" @click="changeLanguage(2)">Java</button>
+		<button :class="codeClass[2]" @click="changeLanguage(3)">Python</button>
 		<prism-editor
 			v-if="isShowCode"
 			class="my-editor height-200"
@@ -87,6 +90,7 @@ export default {
   },
   data() {
 	return {
+		codeClass: [ "code-language-active", "code-language", "code-language" ],
 		code: 'int main() {\n\treturn 0 \n}',
 		isShowCode: true,
 		holdResString: '',
@@ -98,23 +102,23 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		TreeListString: '',
-		//TreeList: ['S'],
-		TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-					"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
-					"2", "3", "4", "5", "6", "7", "8", "9", "10"],
+		TreeList: ['S'],
+		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
+		// 			"2", "3", "4", "5", "6", "7", "8", "9", "10"],
 		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
 		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0"],
@@ -122,8 +126,17 @@ export default {
 	}
   },
   mounted() {
-	this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
-	this.code = tc.cpp_init_tree_part1+' "'+this.TreeListString.replaceAll(',', '","')+'" '+tc.cpp_init_tree_part2
+	if (this.TreeList.length > 10)
+		this.TreeListString = '\n\t\t\t'
+	else
+		this.TreeListString = ''
+	for (var i = 0; i < this.TreeList.length; i++) {
+		this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'"')
+		if (i!==this.TreeList.length-1) this.TreeListString+=','
+		else this.TreeListString+=''
+		if ((i+1)%10===0) this.TreeListString+='\n\t\t\t'
+	}
+	this.loadCode(1)
 	this.formCanvasSize()
 	this.normalizeTreeList()
 	this.formHoldRes()
@@ -131,6 +144,35 @@ export default {
   computed: {
   },
   methods: {
+	loadCode(index) {
+		switch(index) {
+			default:
+			case 1:
+				this.code = tc.cpp_init_tree_part1+this.TreeListString+tc.cpp_init_tree_part2
+				break
+			case 2:
+				this.code = tc.java_init_tree_part_1+this.TreeListString+tc.java_init_tree_part_2
+				break
+			case 3:
+				this.code = tc.python_init_tree_part_1+this.TreeListString+tc.python_init_tree_part_2
+				break
+		}
+	},
+	changeLanguage(index) {
+		this.loadCode(index)
+		switch(index) {
+			default:
+			case 1:
+				this.codeClass = [ "code-language-active", "code-language", "code-language" ]
+				break
+			case 2:
+				this.codeClass = [ "code-language", "code-language-active", "code-language" ]
+				break
+			case 3:
+				this.codeClass = [ "code-language", "code-language", "code-language-active" ]
+				break
+		}
+	},
 	read_init_binarytree() {
 		// let xhr = new XMLHttpRequest()
 		// var okStatus = document.location.protocol === "file:" ? 0 : 200
@@ -238,7 +280,11 @@ export default {
 		while (this.TreeList[this.TreeList.length-1]==="nil")
 			this.TreeList.pop()
 		this.formHoldRes()
-		this.TreeListString = String(this.TreeList).replaceAll('nil', 'null')
+		this.TreeListString = ''
+		for (var i = 0; i < this.TreeList.length; i++) {
+			this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'",')
+			if ((i+1)%10===0) this.TreeListString+='\n\t\t\t'
+		}
 		var treeCanvas = document.getElementById('tree-canvas-show')
 		this.canvasleft = treeCanvas.scrollLeft
 		this.canvastop = treeCanvas.scrollTop
@@ -246,7 +292,7 @@ export default {
 			this.TreeList.pop()
 		}
 		
-		this.code = tc.cpp_init_tree_part1+' "'+this.TreeListString.replaceAll(',', '","')+'" '+tc.cpp_init_tree_part2
+		this.loadCode(1)
 		this.isShowCode=false
 		this.$nextTick(() => {
 			this.isShowCode=true
@@ -325,6 +371,38 @@ export default {
 	font-family: 'Microsoft YaHei';
 	background-color: #FDD18F;
 }
+.code-language {
+	transition: 0.3s;
+	cursor: pointer;
+	border: 0;
+	/* background: #2d2d2d; */
+	color: black;
+	font-size: 16px;
+	border-radius: 10px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	padding-top: 8px;
+	padding-bottom: 4px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-right: 3px;
+}
+.code-language-active {
+	transition: 0.3s;
+	cursor: pointer;
+	border: 0;
+	background: #2d2d2d;
+	color: white;
+	font-size: 16px;
+	border-radius: 10px;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	padding-top: 8px;
+	padding-bottom: 4px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-right: 3px;
+}
 .my-editor {
 	background: #2d2d2d;
 	color: #ccc;
@@ -332,7 +410,8 @@ export default {
 	font-size: 18px;
 	line-height: 1.5;
 	padding: 15px;
-	border-radius: 5px;
+	border-radius: 10px;
+	border-top-left-radius: 0;
 }
 .designtree {
 	width: 100%;
