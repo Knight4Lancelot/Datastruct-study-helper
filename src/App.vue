@@ -143,14 +143,7 @@ export default {
 				},400)
 			}
 			if (document.location.href !== document.location.origin) {
-				var hash = document.location.href.slice(
-					document.location.origin.length,
-					document.location.href.length)
-				switch(hash) {
-					case '/designtree':
-						this.$refs['target-view'].formCanvasSize()
-						break
-				}
+				this.$refs['target-view'].formCanvasSize()
 			}
 		}	
 	},

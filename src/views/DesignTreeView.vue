@@ -6,7 +6,7 @@
 				'top':'55px',
 				'left':'120px'}">
 		<span style="color:#67C23A;font-size:35px;font-weight: 800;">
-			二叉树
+			二叉树&nbsp;
 		</span>结构设计
 	</span>
 	<treecanvas class="tree-canvas-show"
@@ -51,7 +51,6 @@
 		<button :class="codeClass[1]" @click="changeLanguage(2)">Java</button>
 		<button :class="codeClass[2]" @click="changeLanguage(3)">Python</button>
 		<prism-editor
-			v-if="isShowCode"
 			class="my-editor height-200"
 			v-model="code"
 			:highlight="highlighter"
@@ -70,10 +69,9 @@
 import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
 import { Queue } from '../utils/DatastructUtils.js'
 import { init_tree_code } from '../utils/init_binarytree.js'
-// import Prism Editor
+
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
-// import highlighting library (you can use any library you want just return html string)
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
@@ -83,7 +81,7 @@ const durationTime=5
 var tc = new init_tree_code()
 
 export default {
-  name: 'HomeView',
+  name: 'TreeDesignHomeView',
   components: {
 	treecanvas,
 	PrismEditor
@@ -92,7 +90,6 @@ export default {
 	return {
 		codeClass: [ "code-language-active", "code-language", "code-language" ],
 		code: 'int main() {\n\treturn 0 \n}',
-		isShowCode: true,
 		holdResString: '',
 		blankNode: 'null',
 		canvasleft: 0,
@@ -330,14 +327,14 @@ export default {
 	color: #6FB6FF;
 }
 #design-tree-headword, #tree-result-word, #tree-result-code {
-	position: inherit;
+	position: absolute;
 	font-size: 25px;
 	color: #6A6A6A;
 	font-family: 'Microsoft YaHei';
 	user-select: none;
 }
 #tree-result-card {
-	position: inherit;
+	position: absolute;
 	background-color: #F2F6FC;
 	font-family: 'Microsoft YaHei';
 }
@@ -355,7 +352,7 @@ export default {
 	font-size: 19px;
 }
 #code-view {
-	position: inherit;
+	position: absolute;
 	left: 120px;
 	height: 720px;
 	/* max-height: 700px;
@@ -364,7 +361,7 @@ export default {
 }
 #page-bottom {
 	text-align: center;
-	position: inherit;
+	position: absolute;
 	left: 8%;
 	height: 50px;
 	font-size: 20px;
@@ -416,11 +413,11 @@ export default {
 .designtree {
 	width: 100%;
 	height: 100%;
-	position: inherit;
+	position: absolute;
 }
 .tree-canvas-show {
 	position: absolute;
-	top: 170px;
+	top: 150px;
 	left: 120px;
 	margin: 0;
 	border: 2px solid #C0C4CC;
