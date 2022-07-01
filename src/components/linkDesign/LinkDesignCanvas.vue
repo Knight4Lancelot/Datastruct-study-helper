@@ -22,12 +22,17 @@ export default {
   components: {
 	linknode
   },
+  mounted() {
+  },
   data() {
 	return {
 		nodecount: 0,
 		nodeArray: [  ]
 	}
-  },
+  },  
+  props: {
+	elementList: Array
+  }
 }
 </script>
 

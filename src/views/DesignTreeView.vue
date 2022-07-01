@@ -208,7 +208,7 @@ export default {
 		this.canvasWidth = this.appWidth-300
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
-		this.$refs['canvasElement'].draw()
+		this.$refs['canvasElement'].drawEdge()
 	},
 	normalizeTreeList() {
 		while (this.TreeList[this.TreeList.length-1]==='nil') {

@@ -13,6 +13,7 @@
 			</treenode>
 		</div>
 		<canvas id="canvas-tree-edge"/>
+		<canvas id="canvas-x-y-axios"/>
 	</div>
 </template>
 
@@ -27,6 +28,11 @@ export default {
   },
   data() {
 	return {
+		bt: null,
+		canvasEdge: null,
+		canvasAxios: null,
+		canvasHeight: 0,
+		canvasWidth: 0,
 		maxcount: 0,
 		maxheight: 0,
 		nodeArray: [], // 规范化后的节点数组
@@ -38,104 +44,114 @@ export default {
 		}
 	}
   },
+  mounted() {
+	this.normalize_data();
+	this.bt = new BinaryTree(this.nodeArray);
+	var maxX = 0;
+	this.init_tree();
+	for (var i = 0; i < this.nodePosition.X.length; i++) {
+		if (maxX < this.nodePosition.X[i]) {
+			maxX = this.nodePosition.X[i];
+		}
+	}
+	this.canvasHeight = (this.maxheight+3)*50;
+	this.canvasWidth = maxX+400;
+	var viewHeight = document.documentElement.clientHeight-180;
+	var viewWidth = document.documentElement.clientWidth-320;
+	if (viewHeight < 500) { viewHeight = 500; }
+	if (viewWidth < 1300) { viewWidth = 1300; }
+	if (this.canvasHeight < viewHeight) this.canvasHeight=viewHeight;
+	if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
+	this.drawAxios();
+	this.drawEdge();
+  },
   methods: {
 	hideAllNodeInfo() {
 		var l = this.$refs['treenodeElement']
 		for (var i =0; i < l.length; i++) {
-			l[i].isShowInfo=false
+			l[i].isShowInfo=false;
 		}
 	},
 	normalize_data() {
-		var i = 0
+		var i = 0;
 		for (i = 0; i < this.elementList.length; i++) {
-			this.nodeArray.push(this.elementList[i])
+			this.nodeArray.push(this.elementList[i]);
 		}
 		while (this.nodeArray.length < this.maxcount) {
-			this.nodeArray.push('nil')
+			this.nodeArray.push('nil');
 		}
 	},
 	init_tree() {
-		var bt = new BinaryTree(this.nodeArray)
-		for (var i = 0; i < bt.count; i++) {
-			this.showTreeNodes.push(bt.binarytreelist[i])
+		for (var i = 0; i < this.bt.count; i++) {
+			this.showTreeNodes.push(this.bt.binarytreelist[i]);
 		}
-		this.maxheight = bt.height
-		this.maxcount = bt.count
-		this.nodePosition.X = bt.getPositionX(50)
-		this.nodePosition.Y = bt.getPositionY(50)
-		this.draw(bt.binarytreelist)
+		this.maxheight = this.bt.height;
+		this.maxcount = this.bt.count;
+		this.nodePosition.X = this.bt.getPositionX(50);
+		this.nodePosition.Y = this.bt.getPositionY(50);
 	},
-	draw() {
-		var bt = new BinaryTree(this.nodeArray)
-		var canvas = document.getElementById("canvas-tree-edge"), maxX=0
-		canvas.height = (this.maxheight+3)*50
-		for (var i = 0; i < this.nodePosition.X.length; i++) {
-			if (maxX < this.nodePosition.X[i]) {
-				maxX = this.nodePosition.X[i]
-			}
-		}
-		canvas.width = maxX+400
-		var canvasHeight = document.documentElement.clientHeight-180
-		var canvasWidth = document.documentElement.clientWidth-320
-		if (canvasHeight < 500) { canvasHeight = 500 }
-		if (canvasWidth < 1300) { canvasWidth = 1300 }
-		if (canvas.height < canvasHeight) canvas.height=canvasHeight
-		if (canvas.width < canvasWidth) canvas.width=canvasWidth
-		var ctx = canvas.getContext("2d");
+	drawAxios() {
+		this.canvasAxios = document.getElementById("canvas-tree-edge");
+		var ctx = this.canvasAxios.getContext("2d");
 		
-		ctx.lineWidth=1
-		ctx.setLineDash([4]) // 设置虚线
-		ctx.strokeStyle = "#ccc"
-		var girdSize = 50 // 网格宽度
-		var xLineTotals = Math.ceil(canvas.height / girdSize);
-		for (i = 0; i < xLineTotals; i++) {
+		this.canvasAxios.height = this.canvasHeight;
+		this.canvasAxios.width = this.canvasWidth;
+		
+		ctx.lineWidth=1;
+		ctx.setLineDash([4]); // 设置虚线
+		ctx.strokeStyle = "#ccc";
+		var girdSize = 50; // 网格宽度
+		var xLineTotals = Math.ceil(this.canvasAxios.height / girdSize);
+		for (var i = 0; i < xLineTotals; i++) {
 			// ctx.beginPath();
 			ctx.moveTo(0, girdSize * i - 0.5);
-			ctx.lineTo(canvas.width, girdSize * i - 0.5);
+			ctx.lineTo(this.canvasAxios.width, girdSize * i - 0.5);
 			ctx.stroke();
 		}
-		var yLineTotals = Math.ceil(canvas.width / girdSize);
+		var yLineTotals = Math.ceil(this.canvasAxios.width / girdSize);
 		for (var j = 0; j < yLineTotals; j++) {
 			// ctx.beginPath();
 			ctx.moveTo(girdSize * j, 0);
-			ctx.lineTo(girdSize * j, canvas.height);
+			ctx.lineTo(girdSize * j, this.canvasAxios.height);
 			ctx.stroke();
 		}
+	},
+	drawEdge() {
+		this.drawAxios()
+		this.canvasEdge = document.getElementById("canvas-x-y-axios");
+		var ctx = this.canvasEdge.getContext("2d");
 		
-		ctx.setLineDash([])
+		this.canvasEdge.height = this.canvasHeight;
+		this.canvasEdge.width = this.canvasWidth;
+		
+		ctx.setLineDash([]);
 		ctx.beginPath();
 		ctx.strokeStyle="#56585C";
-		ctx.lineWidth=3
-		for (i = 0; i < bt.binarytreelist.length; i++) {
-			var tnode = bt.binarytreelist[i]
-			var temp = null
+		ctx.lineWidth=3;
+		for (var i = 0; i < this.bt.binarytreelist.length; i++) {
+			var tnode = this.bt.binarytreelist[i];
+			var temp = null;
 			if (tnode.left !== -1 && tnode.left < this.nodeArray.length) {
-				temp = bt.binarytreelist[bt.binarytreelist[i].left]
+				temp = this.bt.binarytreelist[this.bt.binarytreelist[i].left];
 				if (temp.val!=='nil') {
-					ctx.moveTo(this.nodePosition.X[i]+20, this.nodePosition.Y[i]+20)
-					ctx.lineTo(this.nodePosition.X[tnode.left]+20, this.nodePosition.Y[tnode.left]+20)
+					ctx.moveTo(this.nodePosition.X[i]+20, this.nodePosition.Y[i]+20);
+					ctx.lineTo(this.nodePosition.X[tnode.left]+20, this.nodePosition.Y[tnode.left]+20);
 					ctx.stroke();
 				}
 			}
 			if (tnode.right !== -1 && tnode.right < this.nodeArray.length) {
-				temp = bt.binarytreelist[bt.binarytreelist[i].right]
+				temp = this.bt.binarytreelist[this.bt.binarytreelist[i].right];
 				if (temp.val!=='nil') {
-					ctx.moveTo(this.nodePosition.X[i]+20, this.nodePosition.Y[i]+20)
-					ctx.lineTo(this.nodePosition.X[tnode.right]+20, this.nodePosition.Y[tnode.right]+20)
+					ctx.moveTo(this.nodePosition.X[i]+20, this.nodePosition.Y[i]+20);
+					ctx.lineTo(this.nodePosition.X[tnode.right]+20, this.nodePosition.Y[tnode.right]+20);
 					ctx.stroke();
 				}
 			}
 		}
 	}
   },
-  mounted() {
-	this.normalize_data(),
-	this.init_tree()
-  },
   props: {
-	elementList: Array,
-	maxHeight: Number,
-	maxWidth: Number
+	elementList: Array
   }
 }
 </script>
@@ -153,7 +169,7 @@ export default {
 	height: 100%;
 	z-index: 3;
 }
-#canvas-tree-edge {
+#canvas-tree-edge, #canvas-x-y-axios {
 	position: absolute;
 	left: 10px;
 	top: 10px;

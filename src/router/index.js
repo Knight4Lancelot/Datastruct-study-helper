@@ -7,10 +7,16 @@ import DesignGraph from '../views/DesignGraphView.vue'
 import MakeTree from '../views/MakeTreeView.vue'
 import MakeLink from '../views/MakeLinkView.vue'
 import MakeGraph from '../views/MakeGraphView.vue'
+import TestPage from '../views/testPage.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+{
+    path: '/test',
+    name: 'test',
+    component: TestPage
+  },
   {
     path: '/',
     name: 'home',
