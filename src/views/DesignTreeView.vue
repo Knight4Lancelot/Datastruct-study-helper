@@ -5,9 +5,10 @@
 			@mouseover="()=>{ this.isToTop = true; }"
 			@mouseleave="()=>{ this.isToTop = false; }">
 			<i class="el-icon-caret-top"></i>
-			<transition></transition>
+			<transition name="hover-menu-fade">
 			<span class="hover-menu-description"
 				v-if="isToTop">前往页面顶部</span>
+			</transition>
 		</button>
 		<button class="design-hover-menu-button">
 			<i class="el-icon-s-promotion"></i>
@@ -382,5 +383,16 @@ export default {
 	margin: 0;
 	border: 2px solid #C0C4CC;
 	border-radius: 15px;
+}
+.hover-menu-fade-enter-active {
+	transition: all 0.5s;
+}
+.head-word-transform-enter {
+	opacity:0;
+	transform:translateX(0px);
+}
+.head-word-transform-leave-to { 
+	opacity:0;
+	/* transform:translateX(-100px); */
 }
 </style>
