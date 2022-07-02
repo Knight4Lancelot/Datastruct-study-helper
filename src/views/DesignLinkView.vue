@@ -133,4 +133,22 @@ export default {
 	border: 2px solid #C0C4CC;
 	border-radius: 15px;
 }
+#link-result-card {
+	position: absolute;
+	background-color: #F2F6FC;
+	font-family: 'Microsoft YaHei';
+}
+#card-message {
+	transition: 0.5s;
+	cursor: pointer;
+	position: relative;
+	font-size: 18px;
+	padding: 20px;
+	width: 95%;
+	height: 100%;
+}
+#card-message:hover {
+	transition: 0.3s;
+	font-size: 19px;
+}
 </style>
