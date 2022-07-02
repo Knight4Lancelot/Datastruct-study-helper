@@ -19,7 +19,9 @@
 
 <script>
 import treenode from './TreeDesignNode.vue'
-import { BinaryTree } from '../../utils/DatastructUtils.js'
+import { Queue, BinaryTree } from '../../utils/DatastructUtils.js'
+
+const durationTime = 5
 
 export default {
   name: 'TreeCanvas',
@@ -36,8 +38,7 @@ export default {
 		maxcount: 0,
 		maxheight: 0,
 		nodeArray: [], // 规范化后的节点数组
-		showTreeNodes: [], // 去除了nil节点的节点数组 
-		// {val:数值, mappingIndex:映射的index}
+		showTreeNodes: [], // 去除了nil节点的节点数组
 		nodePosition: {
 			X: [], // 存Number类型坐标值
 			Y: [] // 存Number类型坐标值
@@ -148,7 +149,54 @@ export default {
 				}
 			}
 		}
-	}
+	},
+	addNode(index,direction) {
+		var focus=2*index+direction+1
+		if (focus<=this.nodeArray.length-1 && this.nodeArray[focus]!=='nil') {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '目标节点已存在，请勿重复插入',
+				type: 'warning'})
+			return
+		}
+		while (focus>this.nodeArray.length-1) {
+			this.nodeArray.push('nil')
+		}
+		this.nodeArray[focus]='0'
+		this.drawEdge()
+	},
+	modifyNode(index, val) {
+		this.nodeArray[index] = val
+		this.drawEdge()
+	},
+	delNode(index) {
+		if (index===0) {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '这可是根节点，快请别继续删除了',
+				type: 'error'})
+			return
+		}
+		this.recursiveDelNode(index)
+		this.drawEdge()
+	},
+	recursiveDelNode(index) {
+		var res = []
+		var q = new Queue(), i, n
+		q.push(index)
+		while (!q.isEmpty()) {
+			i = q.pop()
+			res.push(i)
+			n = this.nodeArray[i]
+			if (this.nodeArray.length-1>=2*i+1 && this.nodeArray[2*i+1]!=='nil') { q.push(2*i+1) }
+			if (this.nodeArray.length-1>=2*i+2 && this.nodeArray[2*i+2]!=='nil') { q.push(2*i+2) }
+		}
+		for (i = 0; i < res.length; i++) {
+			this.nodeArray[res[i]]='nil'
+		}
+	},
   },
   props: {
 	elementList: Array

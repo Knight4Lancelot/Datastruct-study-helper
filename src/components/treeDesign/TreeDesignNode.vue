@@ -44,10 +44,10 @@ export default {
   },
   methods: {
 	grandparentAdd(status) {
-		this.$parent.$parent.addNode(this.index, status)
+		this.$parent.addNode(this.index, status)
 	},
 	grandparentDel() {
-		this.$parent.$parent.delNode(this.index)
+		this.$parent.delNode(this.index)
 	},
 	init_data() {
 		this.nodeText = this.valElement
@@ -78,7 +78,7 @@ export default {
 			return
 		}
 		this.nodeText = this.nodeTextBuffer
-		this.$parent.$parent.modifyNode(this.index, this.nodeTextBuffer)
+		this.$parent.modifyNode(this.index, this.nodeTextBuffer)
 		this.isShowInfo=false
 	}
   }
