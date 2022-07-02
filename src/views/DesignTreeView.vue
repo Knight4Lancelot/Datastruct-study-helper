@@ -5,6 +5,7 @@
 			@mouseover="()=>{ this.isToTop = true; }"
 			@mouseleave="()=>{ this.isToTop = false; }">
 			<i class="el-icon-caret-top"></i>
+			<transition></transition>
 			<span class="hover-menu-description"
 				v-if="isToTop">前往页面顶部</span>
 		</button>
