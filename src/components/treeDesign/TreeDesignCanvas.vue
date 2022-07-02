@@ -180,7 +180,6 @@ export default {
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
-		this.$parent.changeList();
 		this.init_tree();
 		this.drawEdge();
 	},
@@ -206,7 +205,6 @@ export default {
 		for (i = 0; i < res.length; i++) {
 			this.nodeArray[res[i]]='nil';
 		}
-		this.$parent.changeList();
 		this.init_tree();
 		this.drawEdge();
 	}

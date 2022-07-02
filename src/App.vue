@@ -43,7 +43,7 @@
 					</div>
 				</transition>
 			</div>
-			<div class="link-container" id="make-code"
+			<!-- <div class="link-container" id="make-code"
 				@mouseover="openHiddenComs(2,true)"
 				@mouseleave="openHiddenComs(2,false)">
 				<div class="selector-head"
@@ -66,7 +66,7 @@
 						</router-link></div>
 					</div>
 				</transition>
-			</div>
+			</div> -->
 			<div class="link-container" id="view-algorithm"
 				@mouseover="openHiddenComs(3,true)"
 				@mouseleave="openHiddenComs(3,false)">
