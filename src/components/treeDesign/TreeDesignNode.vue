@@ -45,9 +45,11 @@ export default {
   methods: {
 	grandparentAdd(status) {
 		this.$parent.addNode(this.index, status)
+		this.isShowInfo=false
 	},
 	grandparentDel() {
 		this.$parent.delNode(this.index)
+		this.isShowInfo=false
 	},
 	init_data() {
 		this.nodeText = this.valElement

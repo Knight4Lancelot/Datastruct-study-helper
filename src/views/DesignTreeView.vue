@@ -11,7 +11,6 @@
 	</span>
 	<treecanvas class="tree-canvas-show"
 		id="tree-canvas-show"
-		:elementList="TreeList"
 		v-if="isshowCanvas"
 		ref="canvasElement"
 		:style="{'overflow-y':'scroll', 'overflow-x':'scroll',
@@ -89,8 +88,7 @@ export default {
   data() {
 	return {
 		codeClass: [ "code-language-active", "code-language", "code-language" ],
-		code: 'int main() {\n\treturn 0 \n}',
-		holdResString: '',
+		code: '',
 		blankNode: 'null',
 		canvasleft: 0,
 		canvastop: 0,
@@ -98,27 +96,9 @@ export default {
 		appWidth: 0,
 		canvasHeight: 0,
 		canvasWidth: 0,
-		TreeListString: '',
-		TreeList: ['S'],
-		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
-		// 			"2", "3", "4", "5", "6", "7", "8", "9", "10"],
-		// TreeList: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
-		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0","0", "0"],
+		holdResString: '（对应数组共计节点数：1个）："S"', // 被展现在结果卡片上的字符串
+		TreeListString: '', // 实际处理得到的结果字符串
+		TreeList: [], // 结果数组
 		isshowCanvas: true
 	}
   },
@@ -135,8 +115,6 @@ export default {
 	}
 	this.loadCode(1)
 	this.formCanvasSize()
-	this.normalizeTreeList()
-	this.formHoldRes()
   },
   computed: {
   },
@@ -204,12 +182,8 @@ export default {
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
 		this.$refs['canvasElement'].drawEdge()
 	},
-	normalizeTreeList() {
-		while (this.TreeList[this.TreeList.length-1]==='nil') {
-			this.TreeList.pop()
-		}
-	},
-	formHoldRes() {
+	changeList() {
+		// 修改卡片显示字符串
 		var res = this.TreeList.concat()
 		if (res.length > 51) {
 			while (res.length > 51) {
@@ -217,41 +191,24 @@ export default {
 			}
 			res[40]=' ... '
 		}
-		this.holdResString = '（对应数组共计节点数：'+String(this.TreeList.length)+'）："'+
+		this.holdResString = '（对应数组共计节点数：'+String(this.TreeList.length)+'个）："'+
 				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
-	},
-	changeList() {
-		while (this.TreeList[this.TreeList.length-1]==="nil")
-			this.TreeList.pop()
-		this.formHoldRes()
+		// 修改结果数组
 		this.TreeListString = ''
 		for (var i = 0; i < this.TreeList.length; i++) {
-			this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'",')
-			if ((i+1)%10===0) this.TreeListString+='\n\t\t\t'
+			this.TreeListString += (
+				'"'+((String(this.TreeList[i])==='nil') ? 
+				'null' : String(this.TreeList[i]))+'"'
+			);
+			if (i!==this.TreeList.length-1) this.TreeListString+=','
+			if ((i+1)%10===0) this.TreeListString+='\n\t\t\t';
 		}
-		// var treeCanvas = document.getElementById('tree-canvas-show')
-		// this.canvasleft = treeCanvas.scrollLeft
-		// this.canvastop = treeCanvas.scrollTop
-		while (this.TreeList[this.TreeList.length-1]==='nil') {
-			this.TreeList.pop()
-		}
-		
-		this.loadCode(1)
-		this.isShowCode=false
+		// 修改代码区
+		this.loadCode(1);
+		this.isShowCode=false;
 		this.$nextTick(() => {
-			this.isShowCode=true
+			this.isShowCode=true;
 		})
-		
-		document.getElementById('tree-canvas-show').drawEdge()
-		// this.isshowCanvas=false
-		// this.$nextTick(() => {
-		// 	this.isshowCanvas=true
-		// })
-		// setTimeout(()=>{
-		// 	treeCanvas = document.getElementById('tree-canvas-show')
-		// 	treeCanvas.scrollLeft = this.canvasleft
-		// 	treeCanvas.scrollTop = this.canvastop
-		// },0)
 	}
   }
 }

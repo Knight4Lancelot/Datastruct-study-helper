@@ -37,7 +37,23 @@ export default {
 		canvasWidth: 0,
 		maxcount: 0,
 		maxheight: 0,
-		nodeArray: [], // 规范化后的节点数组
+		nodeArray: ["S"],
+		// nodeArray: [ "S", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "11", "12", "13", "14", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0",
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", 
+		// 			"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", 
+		// 			"2", "3", "4", "5", "6", "7", "8", "9", "10"],
 		showTreeNodes: [], // 去除了nil节点的节点数组
 		nodePosition: {
 			X: [], // 存Number类型坐标值
@@ -46,23 +62,8 @@ export default {
 	}
   },
   mounted() {
-	this.normalize_data();
-	this.bt = new BinaryTree(this.nodeArray);
-	var maxX = 0;
+	this.$parent.TreeList=this.nodeArray
 	this.init_tree();
-	for (var i = 0; i < this.nodePosition.X.length; i++) {
-		if (maxX < this.nodePosition.X[i]) {
-			maxX = this.nodePosition.X[i];
-		}
-	}
-	this.canvasHeight = (this.maxheight+3)*50;
-	this.canvasWidth = maxX+400;
-	var viewHeight = document.documentElement.clientHeight-180;
-	var viewWidth = document.documentElement.clientWidth-320;
-	if (viewHeight < 500) { viewHeight = 500; }
-	if (viewWidth < 1300) { viewWidth = 1300; }
-	if (this.canvasHeight < viewHeight) this.canvasHeight=viewHeight;
-	if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
 	this.drawAxios();
 	this.drawEdge();
   },
@@ -73,16 +74,11 @@ export default {
 			l[i].isShowInfo=false;
 		}
 	},
-	normalize_data() {
-		var i = 0;
-		for (i = 0; i < this.elementList.length; i++) {
-			this.nodeArray.push(this.elementList[i]);
-		}
-		while (this.nodeArray.length < this.maxcount) {
-			this.nodeArray.push('nil');
-		}
-	},
 	init_tree() {
+		while (this.nodeArray[this.nodeArray.length-1]==='nil') this.nodeArray.pop();
+		this.bt = new BinaryTree(this.nodeArray);
+		var maxX = 0;
+		while (this.showTreeNodes.length!==0) this.showTreeNodes.pop();
 		for (var i = 0; i < this.bt.count; i++) {
 			this.showTreeNodes.push(this.bt.binarytreelist[i]);
 		}
@@ -90,6 +86,20 @@ export default {
 		this.maxcount = this.bt.count;
 		this.nodePosition.X = this.bt.getPositionX(50);
 		this.nodePosition.Y = this.bt.getPositionY(50);
+		
+		for (i = 0; i < this.nodePosition.X.length; i++) {
+			if (maxX < this.nodePosition.X[i]) {
+				maxX = this.nodePosition.X[i];
+			}
+		}
+		this.canvasHeight = (this.maxheight+3)*50;
+		this.canvasWidth = maxX+400;
+		var viewHeight = document.documentElement.clientHeight-180;
+		var viewWidth = document.documentElement.clientWidth-320;
+		if (viewHeight < 500) { viewHeight = 500; }
+		if (viewWidth < 1300) { viewWidth = 1300; }
+		if (this.canvasHeight < viewHeight) this.canvasHeight=viewHeight;
+		if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
 	},
 	drawAxios() {
 		this.canvasAxios = document.getElementById("canvas-tree-edge");
@@ -157,18 +167,22 @@ export default {
 				duration: durationTime*1000,
 				showClose: true,
 				message: '目标节点已存在，请勿重复插入',
-				type: 'warning'})
-			return
+				type: 'warning'});
+			return;
 		}
 		while (focus>this.nodeArray.length-1) {
-			this.nodeArray.push('nil')
+			this.nodeArray.push('nil');
 		}
-		this.nodeArray[focus]='0'
-		this.drawEdge()
+		this.nodeArray[focus]='0';
+		this.$parent.changeList();
+		this.init_tree();
+		this.drawEdge();
 	},
 	modifyNode(index, val) {
-		this.nodeArray[index] = val
-		this.drawEdge()
+		this.nodeArray[index] = val;
+		this.$parent.changeList();
+		this.init_tree();
+		this.drawEdge();
 	},
 	delNode(index) {
 		if (index===0) {
@@ -179,13 +193,9 @@ export default {
 				type: 'error'})
 			return
 		}
-		this.recursiveDelNode(index)
-		this.drawEdge()
-	},
-	recursiveDelNode(index) {
 		var res = []
-		var q = new Queue(), i, n
-		q.push(index)
+		var q = new Queue(), i, n;
+		q.push(index);
 		while (!q.isEmpty()) {
 			i = q.pop()
 			res.push(i)
@@ -194,12 +204,12 @@ export default {
 			if (this.nodeArray.length-1>=2*i+2 && this.nodeArray[2*i+2]!=='nil') { q.push(2*i+2) }
 		}
 		for (i = 0; i < res.length; i++) {
-			this.nodeArray[res[i]]='nil'
+			this.nodeArray[res[i]]='nil';
 		}
-	},
-  },
-  props: {
-	elementList: Array
+		this.$parent.changeList();
+		this.init_tree();
+		this.drawEdge();
+	}
   }
 }
 </script>
