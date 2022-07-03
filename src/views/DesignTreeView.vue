@@ -122,7 +122,19 @@ export default {
 		var page = document.getElementsByClassName('main-body-show')[0];
 		switch (focus) {
 			case 1:
-				setTimeout(() => { page.scrollTop=0; }, 1);
+				page.scrollTop=0;
+				break;
+			case 2:
+				page.scrollTop=55;
+				break;
+			case 3:
+				page.scrollTop=this.canvasHeight+240;
+				break;
+			case 4:
+				page.scrollTop=this.canvasHeight+480;
+				break;
+			case 5:
+				page.scrollTop=this.canvasHeight+1000;
 				break;
 		}
 		// :pageId="'designtree'"
