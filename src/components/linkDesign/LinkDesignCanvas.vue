@@ -24,6 +24,7 @@ export default {
 	linknode
   },
   mounted() {
+	this.formCanvasSize()
   },
   data() {
 	return {
@@ -32,10 +33,14 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
-		nodeArray: [  ]
+		nodeArray: [ '1' ]
 	}
   },  
   methods: {
+	formCanvasSize() {
+		if (this.canvasWidth<1000) this.canvasWidth=1000;
+		if (this.canvasHeight<500) this.canvasHeight=500;
+	},
 	drawAxios() {
 		this.canvasAxios = document.getElementById("canvas-x-y-axios");
 		var ctx = this.canvasAxios.getContext("2d");
@@ -62,9 +67,6 @@ export default {
 			ctx.stroke();
 		}
 	},
-  },
-  props: {
-	elementList: Array
   }
 }
 </script>
@@ -75,5 +77,17 @@ export default {
 	width: 90%;
 	height: 100%;
 	overflow: hidden;
+}
+.canvas-link-node {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+}
+#canvas-link-edge, #canvas-x-y-axios {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	z-index: 2;
 }
 </style>

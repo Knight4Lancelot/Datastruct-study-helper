@@ -23,7 +23,23 @@
 </template>
 
 <script>
+const durationTime=5
 
+export default {
+	name: 'TreeEdge',
+	components: {},
+	props: {
+		valElement: String,
+		index: Number
+	},
+	data() {
+	return {
+		nodeText: '0',
+		nodeTextBuffer: '0',
+		isShowInfo: false
+	}
+	},
+}
 </script>
 
 <style>
