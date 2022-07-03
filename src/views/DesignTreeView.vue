@@ -118,31 +118,14 @@ export default {
   },
   methods: {
 	jumpTo(focus) {
-		console.log(focus)
 		var page = document.getElementsByClassName('main-body-show')[0];
 		switch (focus) {
-			case 1:
-				page.scrollTop=0;
-				break;
-			case 2:
-				page.scrollTop=55;
-				break;
-			case 3:
-				page.scrollTop=this.canvasHeight+240;
-				break;
-			case 4:
-				page.scrollTop=this.canvasHeight+480;
-				break;
-			case 5:
-				page.scrollTop=this.canvasHeight+1000;
-				break;
+			case 1: page.scrollTop=0; break;
+			case 2: page.scrollTop=55; break;
+			case 3: page.scrollTop=this.canvasHeight+240; break;
+			case 4: page.scrollTop=this.canvasHeight+480; break;
+			case 5: page.scrollTop=this.canvasHeight+1000; break;
 		}
-		// :pageId="'designtree'"
-		// :topLoaction="0"
-		// :designLocation="55"
-		// :resultLoaction="canvasHeight+240"
-		// :codeLoaction="canvasHeight+480"
-		// :bottomLocation="canvasHeight+1000"
 	},
 	loadCode(index) {
 		switch(index) {

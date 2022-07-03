@@ -1,9 +1,9 @@
 <template>
 	<div class="designlink">
-		<router-link to="/" exact><i id="back-to-home" class="el-icon-arrow-left"/></router-link>
+		<hovermenu id="tree-hover-menu"></hovermenu>
 		<span id="design-link-headword"
-			:style="{'top':'55px',
-					'left':'120px'}">
+			:style="{'width': String(canvasWidth-100)+'px',
+				'top':'55px'}">
 			<span style="color:#67C23A;font-size:35px;font-weight: 800;">
 				链表&nbsp;
 			</span>结构设计
@@ -20,8 +20,7 @@
 			'height': String(canvasHeight)+'px'}"/>
 		<span id="tree-result-word"
 			:style="{'width': String(canvasWidth)+'px',
-				'top':String(canvasHeight+240)+'px',
-				'left':'120px'}">
+				'top':String(canvasHeight+240)+'px'}">
 				<span style="color:#67C23A;font-size:35px;font-weight: 800;">
 					链表&nbsp;
 				</span>的数组形式表示结果
@@ -30,13 +29,12 @@
 			:style="{'width': String(canvasWidth)+'px',
 					'padding':'0', 'margin':'0',
 					'top':String(canvasHeight+310)+'px',
-					'left':'120px'}">
+					'left':'200px'}">
 			<div id="card-message" v-text="holdResString" @click="sendDataCopy()"/>
 		</el-card>
 		<span id="link-result-code"
 			:style="{'width': String(canvasWidth)+'px',
-				'top':String(canvasHeight+480)+'px',
-				'left':'120px'}">
+				'top':String(canvasHeight+480)+'px'}">
 				<span style="color:#67C23A;font-size:35px;font-weight: 800;">
 					链表&nbsp;
 				</span>代码展示
@@ -66,6 +64,7 @@
 
 <script>
 import linkcanvas from '../components/linkDesign/LinkDesignCanvas.vue'
+import hovermenu from '../components/HoverMenu.vue'
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -79,6 +78,7 @@ export default {
   name: 'LinkDesignHomeView',
   components: {
 	linkcanvas,
+	hovermenu,
 	PrismEditor
   },
   data() {
@@ -98,6 +98,16 @@ export default {
 	this.formCanvasSize()
   },
   methods: {
+	jumpTo(focus) {
+		var page = document.getElementsByClassName('main-body-show')[0];
+		switch (focus) {
+			case 1: page.scrollTop=0; break;
+			case 2: page.scrollTop=55; break;
+			case 3: page.scrollTop=this.canvasHeight+240; break;
+			case 4: page.scrollTop=this.canvasHeight+480; break;
+			case 5: page.scrollTop=this.canvasHeight+1000; break;
+		}
+	},
 	highlighter(code) {
 		return highlight(this.code, languages.js, "js");
 	},
@@ -105,7 +115,7 @@ export default {
 		this.appHeight=document.documentElement.clientHeight
 		this.appWidth=document.documentElement.clientWidth
 		this.canvasHeight = this.appHeight-160
-		this.canvasWidth = this.appWidth-300
+		this.canvasWidth = this.appWidth-450
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
 		// this.$refs['canvasElement'].draw()
@@ -118,9 +128,16 @@ export default {
 .designlink {
 	width: 100%;
 }
+#tree-hover-menu {
+	position: fixed;
+	margin-top: 80px;
+	margin-left: 50px;
+	z-index: 10;
+}
 #design-link-headword, #link-result-word, #link-result-code {
 	position: absolute;
 	font-size: 25px;
+	left: 200px;
 	color: #6A6A6A;
 	font-family: 'Microsoft YaHei';
 	user-select: none;
@@ -128,7 +145,7 @@ export default {
 .link-canvas-show {
 	position: absolute;
 	top: 150px;
-	left: 120px;
+	left: 200px;
 	margin: 0;
 	border: 2px solid #C0C4CC;
 	border-radius: 15px;

@@ -61,7 +61,7 @@ export default {
 	border-top-left-radius:50px;
 	border-bottom-right-radius:50px;
     border-top-right-radius:50px;
-	width: 250px;
+	width: 220px;
 }
 .design-hover-menu-button i {
 	position: absolute;
@@ -81,9 +81,12 @@ export default {
 .design-hover-menu-button:hover span {
 	transition: 0.3s;
 	font-size: 18px;
+	color: #62AFFF;
 }
 .hover-menu-description {
 	position: inherit;
+	margin-left: 20px;
+	color: #62AFFF;
 	width: 120px;
 	font-family: 'Microsoft YaHei';
 	font-size: 0px;

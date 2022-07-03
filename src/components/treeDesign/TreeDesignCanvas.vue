@@ -102,7 +102,7 @@ export default {
 		if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
 	},
 	drawAxios() {
-		this.canvasAxios = document.getElementById("canvas-tree-edge");
+		this.canvasAxios = document.getElementById("canvas-x-y-axios");
 		var ctx = this.canvasAxios.getContext("2d");
 		
 		this.canvasAxios.height = this.canvasHeight;
@@ -129,7 +129,7 @@ export default {
 	},
 	drawEdge() {
 		this.drawAxios()
-		this.canvasEdge = document.getElementById("canvas-x-y-axios");
+		this.canvasEdge = document.getElementById("canvas-tree-edge");
 		var ctx = this.canvasEdge.getContext("2d");
 		
 		this.canvasEdge.height = this.canvasHeight;
