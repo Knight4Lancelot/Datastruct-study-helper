@@ -33,7 +33,7 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
-		nodeArray: [ '1' ]
+		nodeArray: [ '1' ] 
 	}
   },  
   methods: {
