@@ -1,36 +1,6 @@
 <template>
-<div class="designtree">
-	<div class="design-hover-menu-control">
-		<button class="design-hover-menu-button"
-			@mouseover="()=>{ this.isToTop = true; }"
-			@mouseleave="()=>{ this.isToTop = false; }">
-			<i class="el-icon-caret-top"></i>
-			<transition name="hover-menu-fade">
-			<span class="hover-menu-description"
-				v-if="isToTop">前往页面顶部</span>
-			</transition>
-		</button>
-		<button class="design-hover-menu-button">
-			<i class="el-icon-s-promotion"></i>
-			<span class="hover-menu-description"
-				v-if="isToDesign">前往结构设计</span>
-		</button>
-		<button class="design-hover-menu-button">
-			<i class="el-icon-s-claim"></i>
-			<span class="hover-menu-description"
-				v-if="isToResult">前往数组结果显示</span>
-		</button>
-		<button class="design-hover-menu-button">
-			<i class="el-icon-s-management"></i>
-			<span class="hover-menu-description"
-				v-if="isToCode">前往结构代码</span>
-		</button>
-		<button class="design-hover-menu-button">
-			<i class="el-icon-caret-bottom"></i>
-			<span class="hover-menu-description"
-				v-if="isToBottom">前往页面底部</span>
-		</button>
-	</div>
+<div id="designtree">
+	<hovermenu id="tree-hover-menu"></hovermenu>
 	<span id="design-tree-headword"
 		:style="{'width': String(canvasWidth-100)+'px',
 				'top':'55px'}">
@@ -91,6 +61,8 @@
 
 <script>
 import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
+import hovermenu from '../components/HoverMenu.vue'
+
 import { Queue } from '../utils/DatastructUtils.js'
 import { init_tree_code } from '../utils/init_binarytree.js'
 
@@ -108,6 +80,7 @@ export default {
   name: 'TreeDesignHomeView',
   components: {
 	treecanvas,
+	hovermenu,
 	PrismEditor
   },
   data() {
@@ -124,24 +97,19 @@ export default {
 		holdResString: '（对应数组共计节点数：1个）："S"', // 被展现在结果卡片上的字符串
 		TreeListString: '', // 实际处理得到的结果字符串
 		TreeList: [], // 结果数组
-		isshowCanvas: true,
-		isToTop: false,
-		isToDesign: false,
-		isToResult: false,
-		isToCode: false,
-		isToBottom: false
+		isshowCanvas: true
 	}
   },
   mounted() {
 	if (this.TreeList.length > 10)
-		this.TreeListString = '\n\t\t\t'
+		this.TreeListString = '\n\t\t\t';
 	else
-		this.TreeListString = ''
+		this.TreeListString = '';
 	for (var i = 0; i < this.TreeList.length; i++) {
-		this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'"')
-		if (i!==this.TreeList.length-1) this.TreeListString+=','
-		else this.TreeListString+=''
-		if ((i+1)%10===0) this.TreeListString+='\n\t\t\t'
+		this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'"');
+		if (i!==this.TreeList.length-1) this.TreeListString+=',';
+		else this.TreeListString+='';
+		if ((i+1)%10===0) this.TreeListString+='\n\t\t\t';
 	}
 	this.loadCode(1)
 	this.formCanvasSize()
@@ -149,33 +117,48 @@ export default {
   computed: {
   },
   methods: {
+	jumpTo(focus) {
+		console.log(focus)
+		var page = document.getElementsByClassName('main-body-show')[0];
+		switch (focus) {
+			case 1:
+				setTimeout(() => { page.scrollTop=0; }, 1);
+				break;
+		}
+		// :pageId="'designtree'"
+		// :topLoaction="0"
+		// :designLocation="55"
+		// :resultLoaction="canvasHeight+240"
+		// :codeLoaction="canvasHeight+480"
+		// :bottomLocation="canvasHeight+1000"
+	},
 	loadCode(index) {
 		switch(index) {
 			default:
 			case 1:
-				this.code = tc.cpp_init_tree_part1+this.TreeListString+tc.cpp_init_tree_part2
-				break
+				this.code = tc.cpp_init_tree_part1+this.TreeListString+tc.cpp_init_tree_part2;
+				break;
 			case 2:
-				this.code = tc.java_init_tree_part_1+this.TreeListString+tc.java_init_tree_part_2
-				break
+				this.code = tc.java_init_tree_part_1+this.TreeListString+tc.java_init_tree_part_2;
+				break;
 			case 3:
-				this.code = tc.python_init_tree_part_1+this.TreeListString+tc.python_init_tree_part_2
-				break
+				this.code = tc.python_init_tree_part_1+this.TreeListString+tc.python_init_tree_part_2;
+				break;
 		}
 	},
 	changeLanguage(index) {
-		this.loadCode(index)
+		this.loadCode(index);
 		switch(index) {
 			default:
 			case 1:
-				this.codeClass = [ "code-language-active", "code-language", "code-language" ]
-				break
+				this.codeClass = [ "code-language-active", "code-language", "code-language" ];
+				break;
 			case 2:
-				this.codeClass = [ "code-language", "code-language-active", "code-language" ]
-				break
+				this.codeClass = [ "code-language", "code-language-active", "code-language" ];
+				break;
 			case 3:
-				this.codeClass = [ "code-language", "code-language", "code-language-active" ]
-				break
+				this.codeClass = [ "code-language", "code-language", "code-language-active" ];
+				break;
 		}
 	},
 	read_init_binarytree() {
@@ -183,7 +166,6 @@ export default {
 		reader.readAsText('../codefiles/init_binarytree.txt', "UTF-8");
 		reader.onload = function (e) {
 			const val = e.target.result;
-			console.log(val)
 		}
 	},
 	highlighter(code) {
@@ -245,48 +227,16 @@ export default {
 </script>
 
 <style>
-.designtree {
+#designtree {
+	position: inherit;
+	z-index: 1;
 	width: 100%;
 }
-.design-hover-menu-control {
+#tree-hover-menu {
 	position: fixed;
-	top: 150px;
-	left: 120px;
-	width: 30px;
-	user-select: none;
-}
-.design-hover-menu-button {
-	transition: 0.3s;
-	position: relative;
-	cursor: pointer;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	border: 2px solid #C0C4CC;
-	/* border: 2px solid #ffffff; */
-	background-color: #ffffff;
-	margin: 5px;
-}
-.design-hover-menu-button:hover {
-	transition: 0.3s;
-	width: 80px;
-	height: 80px;
-	/* border: 2px solid #C0C4CC; */
-	border-bottom-left-radius:50px;
-	border-top-left-radius:50px;
-	border-bottom-right-radius:50px;
-    border-top-right-radius:50px;
-	width: 300px;
-}
-.design-hover-menu-button i {
-	transition: 0.4s;
-	font-size: 20px;
-	color: #6A6A6A;
-}
-.design-hover-menu-button:hover i {
-	transition: 0.4s;
-	font-size: 30px;
-	color: #62AFFF;
+	margin-top: 80px;
+	margin-left: 50px;
+	z-index: 10;
 }
 #design-tree-headword, #tree-result-word, #tree-result-code {
 	position: absolute;
@@ -384,15 +334,5 @@ export default {
 	border: 2px solid #C0C4CC;
 	border-radius: 15px;
 }
-.hover-menu-fade-enter-active {
-	transition: all 0.5s;
-}
-.head-word-transform-enter {
-	opacity:0;
-	transform:translateX(0px);
-}
-.head-word-transform-leave-to { 
-	opacity:0;
-	/* transform:translateX(-100px); */
-}
+
 </style>
