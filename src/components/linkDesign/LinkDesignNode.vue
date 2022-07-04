@@ -7,9 +7,9 @@
 		</button>
 		<transition name="fade-transform">
 			<div class="node-operate-show" v-if="isShowInfo">
-				<el-button size="mini" type="success" @click="grandparentAdd(0)" plain round>向左插入节点</el-button>
-				<el-button size="mini" type="success" @click="grandparentAdd(1)" plain round>向右插入节点</el-button>
-				<el-button size="mini" type="danger" @click="grandparentDel()" plain round>删除节点</el-button>
+				<el-button size="mini" type="success" @click="addLinkNode(0)" plain round>向左插入节点</el-button>
+				<el-button size="mini" type="success" @click="addLinkNode(1)" plain round>向右插入节点</el-button>
+				<el-button size="mini" type="danger" @click="delLinkNode()" plain round>删除节点</el-button>
 				<el-input
 					v-model="nodeTextBuffer"
 					size="mini"
@@ -39,7 +39,14 @@ export default {
 			isShowInfo: false
 		}
 	},
+	mounted() {
+		this.init_data()
+	},
 	methods: {
+		init_data() {
+			this.nodeText = this.valElement
+			this.nodeTextBuffer = this.valElement
+		},
 		changeStatus() {
 			if (!this.isShowInfo) {
 				this.$parent.hideAllNodeInfo()
@@ -65,9 +72,26 @@ export default {
 				return
 			}
 			this.nodeText = this.nodeTextBuffer
-			// this.$parent.modifyNode(this.index, this.nodeTextBuffer)
+			this.$parent.modifyNode(this.index, this.nodeTextBuffer)
 			this.isShowInfo=false
-		}
+		},
+		addLinkNode(status) {
+			this.$parent.addNode(this.index, status)
+			this.isShowInfo=false
+		},
+		delLinkNode() {
+			if (this.index===0) {
+				this.$message({
+					duration: durationTime*1000,
+					showClose: true,
+					message: '这可是头节点，是不能被删除的',
+					type: 'error'});
+				this.isShowInfo=false;
+				return;
+			}
+			this.$parent.delNode(this.index)
+			this.isShowInfo=false
+		},
 	}
 }
 </script>
@@ -75,12 +99,11 @@ export default {
 <style>
 .link-node {
 	float: left;
-	border-radius: 20px;
+	border-radius: 50%;
 	height: 60px;
 	width: 60px;
-	border: 3px solid #909399;
+	border: 3px solid #5C5E63;
 	background-color: white;
-	color: #72757D;
 	font-size: 18px;
 	user-select: none;
 	font-family: "Microsoft YaHei";

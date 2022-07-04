@@ -118,7 +118,6 @@ export default {
 		this.canvasWidth = this.appWidth-450
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
-		// this.$refs['canvasElement'].draw()
 	}
   }
 }

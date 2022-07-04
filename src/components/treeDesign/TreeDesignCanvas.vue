@@ -181,19 +181,9 @@ export default {
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
-		this.init_tree();
-		this.drawAxios();
-		this.drawEdge();
+		this.$parent.changeList();
 	},
 	delNode(index) {
-		if (index===0) {
-			this.$message({
-				duration: durationTime*1000,
-				showClose: true,
-				message: '这可是根节点，快请别继续删除了',
-				type: 'error'})
-			return
-		}
 		var res = []
 		var q = new Queue(), i, n;
 		q.push(index);
@@ -208,6 +198,7 @@ export default {
 			this.nodeArray[res[i]]='nil';
 		}
 		this.init_tree();
+		this.$parent.changeList();
 		this.drawAxios();
 		this.drawEdge();
 	}

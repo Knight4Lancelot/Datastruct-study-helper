@@ -67,12 +67,12 @@ export default {
 	position: absolute;
 	left: 8px;
 	top: 8px;
-	transition: 0.4s;
+	transition: 0.3s;
 	font-size: 20px;
 	color: #6A6A6A;
 }
 .design-hover-menu-button:hover i {
-	transition: 0.4s;
+	transition: 0.3s;
 	left: 20px;
 	top: 25px;
 	font-size: 30px;

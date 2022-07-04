@@ -8,8 +8,8 @@
 				:index="k"
 				class="link-node-list"
 				:valElement="stn"
-				:style="{'left':String(nodePosition.X[k]+10)+'px',
-						'top':String(nodePosition.Y[k]+10)+'px'}">
+				:style="{'left':String(nodePosition.X[k])+'px',
+						'top':String(nodePosition.Y[k])+'px'}">
 			</linknode>
 		</div>
 		<canvas id="canvas-link-edge"/>
@@ -29,7 +29,7 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
-		nodeArray: [ '1' ],
+		nodeArray: [ 'S' ],
 		nodePosition: {
 			X: [100],
 			Y: [100]
@@ -45,8 +45,8 @@ export default {
   },
   methods: {
 	formCanvasSize() {
-		if (this.canvasWidth<1050) this.canvasWidth=1050;
-		if (this.canvasHeight<600) this.canvasHeight=600;
+		if (this.canvasWidth<1400) this.canvasWidth=1400;
+		if (this.canvasHeight<700) this.canvasHeight=700;
 	},
 	hideAllNodeInfo() {
 		var l = this.$refs['linknodeElement']
@@ -79,6 +79,16 @@ export default {
 			ctx.lineTo(girdSize * j, this.canvasAxios.height);
 			ctx.stroke();
 		}
+	},
+	addNode(index) {
+		
+	},
+	delNode() {
+		
+	},
+	modifyNode(index, val) {
+		this.nodeArray[index] = val;
+		// this.$parent.changeList();
 	},
   }
 }

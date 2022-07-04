@@ -109,6 +109,9 @@
 import { Stack, Queue, BinaryTree } from "./utils/DatastructUtils.js"
 import homehead from './components/homeHead/HomeHead.vue'
 
+const initHeight=document.documentElement.clientHeight
+const initWidth=document.documentElement.clientWidth
+
 export default {
 	name: 'App',
 	components: {
@@ -153,7 +156,7 @@ export default {
 			this.appHeight = document.documentElement.clientHeight
 			this.appWidth = document.documentElement.clientWidth
 			// if (this.appHeight < 1000) { this.appHeight = 1000 }
-			if (this.appWidth < 1400) { this.appWidth = 1400; }
+			if (this.appWidth < initWidth) { this.appWidth = initWidth; }
 		},
 		changeOpacity(status) {
 			this.isCover=status

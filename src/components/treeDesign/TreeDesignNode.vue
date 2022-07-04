@@ -7,9 +7,9 @@
 		</button>
 		<transition name="fade-transform">
 			<div class="node-operate-show" v-if="isShowInfo">
-				<el-button size="mini" type="success" @click="grandparentAdd(0)" plain round>插入左子节点</el-button>
-				<el-button size="mini" type="success" @click="grandparentAdd(1)" plain round>插入右子节点</el-button>
-				<el-button size="mini" type="danger" @click="grandparentDel()" plain round>删除节点</el-button>
+				<el-button size="mini" type="success" @click="addTreeNode(0)" plain round>插入左子节点</el-button>
+				<el-button size="mini" type="success" @click="addTreeNode(1)" plain round>插入右子节点</el-button>
+				<el-button size="mini" type="danger" @click="delTreeNode()" plain round>删除节点</el-button>
 				<el-input
 					v-model="nodeTextBuffer"
 					size="mini"
@@ -43,11 +43,20 @@ export default {
 	this.init_data()
   },
   methods: {
-	grandparentAdd(status) {
+	addTreeNode(status) {
 		this.$parent.addNode(this.index, status)
 		this.isShowInfo=false
 	},
-	grandparentDel() {
+	delTreeNode() {
+		if (this.index===0) {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '这可是根节点，快请别继续删除了',
+				type: 'error'});
+			this.isShowInfo=false;
+			return;
+		}
 		this.$parent.delNode(this.index)
 		this.isShowInfo=false
 	},
