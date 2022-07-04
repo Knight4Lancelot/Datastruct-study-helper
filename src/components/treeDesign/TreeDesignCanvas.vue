@@ -8,8 +8,8 @@
 				:index="stn.mapIndex"
 				class="tree-node-list"
 				:valElement="stn.val"
-				:style="{'left':String(nodePosition.X[k]+10)+'px',
-						'top':String(nodePosition.Y[k]+10)+'px'}">
+				:style="{'left':String(nodePosition.X[k])+'px',
+						'top':String(nodePosition.Y[k])+'px'}">
 			</treenode>
 		</div>
 		<canvas id="canvas-tree-edge"/>
@@ -84,8 +84,8 @@ export default {
 		}
 		this.maxheight = this.bt.height;
 		this.maxcount = this.bt.count;
-		this.nodePosition.X = this.bt.getPositionX(50);
-		this.nodePosition.Y = this.bt.getPositionY(50);
+		this.nodePosition.X = this.bt.getPositionX(80);
+		this.nodePosition.Y = this.bt.getPositionY(80);
 		
 		for (i = 0; i < this.nodePosition.X.length; i++) {
 			if (maxX < this.nodePosition.X[i]) {

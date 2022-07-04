@@ -7,7 +7,9 @@
 				:key="k"
 				:index="k"
 				class="link-node-list"
-				:valElement="stn">
+				:valElement="stn"
+				:style="{'left':String(nodePosition.X[k]+10)+'px',
+						'top':String(nodePosition.Y[k]+10)+'px'}">
 			</linknode>
 		</div>
 		<canvas id="canvas-link-edge"/>
@@ -20,13 +22,6 @@ import linknode from './LinkDesignNode.vue'
 
 export default {
   name: 'LinkCanvas',
-  components: {
-	linknode
-  },
-  mounted() {
-	this.formCanvasSize();
-	setTimeout(()=>{ this.drawAxios(); }, 100);
-  },
   data() {
 	return {
 		canvasEdge: null,
@@ -34,13 +29,30 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
-		nodeArray: [ '1' ] 
+		nodeArray: [ '1' ],
+		nodePosition: {
+			X: [100],
+			Y: [100]
+		}
 	}
   },  
+  components: {
+	linknode
+  },
+  mounted() {
+	this.formCanvasSize();
+	setTimeout(()=>{ this.drawAxios(); }, 100);
+  },
   methods: {
 	formCanvasSize() {
 		if (this.canvasWidth<1050) this.canvasWidth=1050;
 		if (this.canvasHeight<600) this.canvasHeight=600;
+	},
+	hideAllNodeInfo() {
+		var l = this.$refs['linknodeElement']
+		for (var i =0; i < l.length; i++) {
+			l[i].isShowInfo=false;
+		}
 	},
 	drawAxios() {
 		this.canvasAxios = document.getElementById("canvas-x-y-axios");

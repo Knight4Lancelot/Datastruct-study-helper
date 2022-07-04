@@ -142,7 +142,8 @@ export default {
 					that.timer = false
 				},400)
 			}
-			if (document.location.href !== document.location.origin) {
+			if (this.appWidth < 1000) { this.appWidth = 1000 }
+			if (document.location.href !== document.location.origin+'/') {
 				this.$refs['target-view'].formCanvasSize()
 			}
 		}	

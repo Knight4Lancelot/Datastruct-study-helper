@@ -13,7 +13,7 @@
 				<el-input
 					v-model="nodeTextBuffer"
 					size="mini"
-					maxlength="3"
+					maxlength="4"
 					style="width: 218px; margin: 10px; margin-left: 0; margin-bottom: 0;"
 					show-word-limit/>
 				<el-button size="mini" type="primary" @click="changeText()" plain round>确定修改</el-button>
@@ -91,11 +91,11 @@ export default {
 .tree-node {
 	float: left;
 	border-radius: 50%;
-	height: 40px;
-	width: 40px;
+	height: 60px;
+	width: 60px;
 	border: 3px solid #5C5E63;
 	background-color: white;
-	font-size: 16px;
+	font-size: 18px;
 	user-select: none;
 	font-family: "Microsoft YaHei";
 }
