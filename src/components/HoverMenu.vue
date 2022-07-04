@@ -54,14 +54,13 @@ export default {
 }
 .design-hover-menu-button:hover {
 	transition: 0.3s;
-	width: 80px;
-	height: 80px;
+	width: 220px;
+	height: 70px;
 	/* border: 2px solid #C0C4CC; */
 	border-bottom-left-radius:50px;
 	border-top-left-radius:50px;
 	border-bottom-right-radius:50px;
     border-top-right-radius:50px;
-	width: 220px;
 }
 .design-hover-menu-button i {
 	position: absolute;
@@ -74,13 +73,13 @@ export default {
 .design-hover-menu-button:hover i {
 	transition: 0.3s;
 	left: 20px;
-	top: 25px;
+	top: 17px;
 	font-size: 30px;
 	color: #62AFFF;
 }
 .design-hover-menu-button:hover span {
 	transition: 0.3s;
-	font-size: 18px;
+	font-size: 19px;
 	color: #62AFFF;
 }
 .hover-menu-description {
