@@ -83,8 +83,9 @@ export default {
 	addNode(index) {
 		this.nodeArray.splice(index, 0, '0')
 	},
-	delNode() {
-		
+	delNode(index) {
+		console.log(index)
+		this.nodeArray.splice(index, 1)
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;

@@ -185,7 +185,7 @@ export default {
 	},
 	delNode(index) {
 		var res = []
-		var q = new Queue(), i, n;
+		var q = new Queue(), i, n; 
 		q.push(index);
 		while (!q.isEmpty()) {
 			i = q.pop()
