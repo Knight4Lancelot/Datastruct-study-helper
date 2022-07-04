@@ -64,8 +64,8 @@ export default {
   mounted() {
 	this.$parent.TreeList=this.nodeArray
 	this.init_tree();
-	this.drawAxios();
-	this.drawEdge();
+	setTimeout(()=>{ this.drawAxios(); }, 100)
+	setTimeout(()=>{ this.drawEdge(); }, 100)
   },
   methods: {
 	hideAllNodeInfo() {
@@ -97,7 +97,7 @@ export default {
 		var viewHeight = document.documentElement.clientHeight-180;
 		var viewWidth = document.documentElement.clientWidth-320;
 		if (viewHeight < 500) { viewHeight = 500; }
-		if (viewWidth < 1300) { viewWidth = 1300; }
+		if (viewWidth < 1000) { viewWidth = 1000; }
 		if (this.canvasHeight < viewHeight) this.canvasHeight=viewHeight;
 		if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
 	},
@@ -112,14 +112,14 @@ export default {
 		ctx.setLineDash([4]); // 设置虚线
 		ctx.strokeStyle = "#ccc";
 		var girdSize = 50; // 网格宽度
-		var xLineTotals = Math.ceil(this.canvasAxios.height / girdSize);
+		var xLineTotals = Math.ceil(this.canvasAxios.height / girdSize) + 1;
 		for (var i = 0; i < xLineTotals; i++) {
 			// ctx.beginPath();
 			ctx.moveTo(0, girdSize * i - 0.5);
 			ctx.lineTo(this.canvasAxios.width, girdSize * i - 0.5);
 			ctx.stroke();
 		}
-		var yLineTotals = Math.ceil(this.canvasAxios.width / girdSize);
+		var yLineTotals = Math.ceil(this.canvasAxios.width / girdSize) + 1;
 		for (var j = 0; j < yLineTotals; j++) {
 			// ctx.beginPath();
 			ctx.moveTo(girdSize * j, 0);

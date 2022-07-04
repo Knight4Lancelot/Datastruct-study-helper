@@ -317,7 +317,7 @@ export default {
 }
 .main-view-show-leave-to { 
   opacity:0;
-  transform:translateY(-20px);
+  transform:translateY(-100px);
 }
 // 边栏的选项头描述文字的显示与隐藏的过渡动画
 .head-word-transform-enter-active { 

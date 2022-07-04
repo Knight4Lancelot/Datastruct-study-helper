@@ -33,11 +33,11 @@ export default {
 		index: Number
 	},
 	data() {
-	return {
-		nodeText: '0',
-		nodeTextBuffer: '0',
-		isShowInfo: false
-	}
+		return {
+			nodeText: '0',
+			nodeTextBuffer: '0',
+			isShowInfo: false
+		}
 	},
 }
 </script>
