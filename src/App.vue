@@ -153,7 +153,7 @@ export default {
 			this.appHeight = document.documentElement.clientHeight
 			this.appWidth = document.documentElement.clientWidth
 			// if (this.appHeight < 1000) { this.appHeight = 1000 }
-			if (this.appWidth < 1000) { this.appWidth = 1000 }
+			if (this.appWidth < 1400) { this.appWidth = 1400; }
 		},
 		changeOpacity(status) {
 			this.isCover=status

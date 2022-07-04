@@ -106,7 +106,7 @@ export default {
 }
 .node-operate-show {
 	position: inherit;
-	margin-left: 50px;
+	margin-left: 70px;
 	padding: 15px;
 	border-radius: 12px;
 	width: 310px;

@@ -64,8 +64,8 @@ export default {
   mounted() {
 	this.$parent.TreeList=this.nodeArray
 	this.init_tree();
-	setTimeout(()=>{ this.drawAxios(); }, 100)
-	setTimeout(()=>{ this.drawEdge(); }, 100)
+	setTimeout(()=>{ this.drawAxios(); }, 100);
+	setTimeout(()=>{ this.drawEdge(); }, 100);
   },
   methods: {
 	hideAllNodeInfo() {
@@ -92,14 +92,14 @@ export default {
 				maxX = this.nodePosition.X[i];
 			}
 		}
-		this.canvasHeight = (this.maxheight+3)*50;
+		this.canvasHeight = (this.maxheight+3)*80;
 		this.canvasWidth = maxX+400;
 		var viewHeight = document.documentElement.clientHeight-180;
 		var viewWidth = document.documentElement.clientWidth-320;
 		if (viewHeight < 500) { viewHeight = 500; }
 		if (viewWidth < 1000) { viewWidth = 1000; }
-		if (this.canvasHeight < viewHeight) this.canvasHeight=viewHeight;
-		if (this.canvasWidth < viewWidth) this.canvasWidth=viewWidth;
+		if (this.canvasHeight < viewHeight) { this.canvasHeight=viewHeight; }
+		if (this.canvasWidth < viewWidth) { this.canvasWidth=viewWidth; }
 	},
 	drawAxios() {
 		this.canvasAxios = document.getElementById("canvas-x-y-axios");
@@ -176,11 +176,13 @@ export default {
 		this.nodeArray[focus]='0';
 		this.$parent.changeList();
 		this.init_tree();
+		this.drawAxios();
 		this.drawEdge();
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
 		this.init_tree();
+		this.drawAxios();
 		this.drawEdge();
 	},
 	delNode(index) {
@@ -206,6 +208,7 @@ export default {
 			this.nodeArray[res[i]]='nil';
 		}
 		this.init_tree();
+		this.drawAxios();
 		this.drawEdge();
 	}
   }
@@ -229,6 +232,11 @@ export default {
 	position: absolute;
 	left: 10px;
 	top: 10px;
+}
+#canvas-tree-edge {
 	z-index: 2;
+}
+#canvas-x-y-axios {
+	z-index: 1;
 }
 </style>

@@ -75,11 +75,12 @@ export default {
 <style>
 .link-node {
 	float: left;
-	border-radius: 5px;
+	border-radius: 20px;
 	height: 60px;
 	width: 60px;
-	border: 3px solid #5C5E63;
+	border: 3px solid #909399;
 	background-color: white;
+	color: #72757D;
 	font-size: 18px;
 	user-select: none;
 	font-family: "Microsoft YaHei";
@@ -88,6 +89,17 @@ export default {
 	color: #66B1FF;
 	border: 3px solid #66B1FF;
 	cursor: pointer;
+}
+.node-operate-show {
+	position: inherit;
+	margin-left: 70px;
+	padding: 15px;
+	border-radius: 12px;
+	width: 310px;
+	border: 1px solid #C0C4CC;
+	background-color: white;
+	z-index: 4;
+	font-family: "Microsoft YaHei";
 }
 .fade-transform-leave-active, .fade-transform-enter-active {
   transition:all 0.4s;
