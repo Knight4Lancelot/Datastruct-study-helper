@@ -76,7 +76,16 @@ export default {
 			this.isShowInfo=false
 		},
 		addLinkNode(status) {
-			this.$parent.addNode(this.index, status)
+			if (this.index===0&&status===0) {
+				this.$message({
+					duration: durationTime*1000,
+					showClose: true,
+					message: '注意，头结点为起始节点，无法向左插入节点',
+					type: 'error'});
+				this.isShowInfo=false;
+				return;
+			}
+			this.$parent.addNode(this.index+status+1)
 			this.isShowInfo=false
 		},
 		delLinkNode() {

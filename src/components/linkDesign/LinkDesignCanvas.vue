@@ -3,11 +3,11 @@
 		<div class="canvas-link-node">
 			<linknode
 				ref="linknodeElement"
-				v-for="(stn, k) in nodeArray"
+				v-for="(n, k) in nodeArray"
 				:key="k"
 				:index="k"
 				class="link-node-list"
-				:valElement="stn"
+				:valElement="n"
 				:style="{'left':String(nodePosition.X[k])+'px',
 						'top':String(nodePosition.Y[k])+'px'}">
 			</linknode>
@@ -31,8 +31,8 @@ export default {
 		nodecount: 0,
 		nodeArray: [ 'S' ],
 		nodePosition: {
-			X: [100],
-			Y: [100]
+			X: [100, 200, 300, 400],
+			Y: [100, 100, 100, 100]
 		}
 	}
   },  
@@ -81,7 +81,7 @@ export default {
 		}
 	},
 	addNode(index) {
-		
+		this.nodeArray.splice(index, 0, '0')
 	},
 	delNode() {
 		
