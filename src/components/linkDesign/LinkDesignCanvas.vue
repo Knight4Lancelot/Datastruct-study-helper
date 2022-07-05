@@ -29,7 +29,7 @@ export default {
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
-		nodeArray: [ 'S' ],
+		nodeArray: [ 'head' ],
 		nodePosition: {
 			X: [100, 200, 300, 400],
 			Y: [100, 100, 100, 100]
@@ -81,9 +81,10 @@ export default {
 		}
 	},
 	addNode(index, direction) {
-		console.log(index, direction)
-		if (direction===0) { this.nodeArray.splice(index, 0, '0'); }
-		else this.nodeArray.splice(index+1, 0, '0');
+		var temp = this.nodeArray.concat();
+		temp.splice(index+direction, 0, '0');
+		while(this.nodeArray.length>0) { this.nodeArray.pop(); }
+		this.nodeArray = temp.concat();
 	},
 	delNode(index) {
 		this.nodeArray.splice(index, 1)
@@ -91,7 +92,7 @@ export default {
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
 		// this.$parent.changeList();
-	},
+	}
   }
 }
 </script>

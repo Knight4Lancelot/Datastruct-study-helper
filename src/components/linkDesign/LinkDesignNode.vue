@@ -40,12 +40,14 @@ export default {
 		}
 	},
 	mounted() {
-		setTimeout(()=>{ this.init_data(); }, 1);
+		this.init_data();
 	},
 	methods: {
 		init_data() {
-			this.nodeText = this.valElement
-			this.nodeTextBuffer = this.valElement
+			console.log('yes - before')
+			this.nodeText = this.valElement;
+			this.nodeTextBuffer = this.valElement;
+			console.log('yes - after', this.valElement,'---', this.nodeText, this.nodeTextBuffer)
 		},
 		changeStatus() {
 			if (!this.isShowInfo) {
