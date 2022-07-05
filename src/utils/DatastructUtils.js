@@ -1,7 +1,7 @@
-// 栈模块
+// 栈部分
 function Stack(){
 	this.elementList=[]
-	this.maxsize=2000
+	// this.maxsize=20000
 	this.size=0
 	
 	Stack.prototype.top = function() {
@@ -21,10 +21,10 @@ function Stack(){
 		return res
 	}
 	Stack.prototype.push = function(e) {
-		if (this.maxsize>this.maxsize) {
-			console.log("this size up overflow")
-			return
-		}
+		// if (this.maxsize>this.maxsize) {
+		// 	console.log("this size up overflow")
+		// 	return
+		// }
 		this.elementList.push(e)
 		this.size+=1
 	}
@@ -39,10 +39,10 @@ function Stack(){
 	}
 }
 
-// 队列模块
+// 队列部分
 function Queue(){
 	this.elementList=[]
-	this.maxsize=2000
+	// this.maxsize=20000
 	this.size=0
 	
 	Queue.prototype.isEmpty = function() {
@@ -58,10 +58,10 @@ function Queue(){
 		return res
 	}
 	Queue.prototype.push = function(e) {
-		if (this.size>this.maxsize) {
-			console.log("the length of queue is max size")
-			return
-		}
+		// if (this.size>this.maxsize) {
+		// 	console.log("the length of queue is max size")
+		// 	return
+		// }
 		this.elementList.push(e)
 		this.size+=1
 	}
@@ -75,7 +75,7 @@ function Queue(){
 	}
 }
 
-// 二叉树模块
+// 二叉树部分
 function BinaryTreeNode(v, l, r, i, mi) {
 	this.val=v
 	this.left=l
@@ -296,6 +296,22 @@ function BinaryTree(list) {
 			res.push(this.binarytreelist[index[i]].val)
 		}
 		return res
+	}
+}
+
+// 链表部分
+function LinkNode() {
+	this.elementList = [];
+	this.size = 0
+	
+	LinkNode.prototype.insert=function() {
+		
+	}
+	LinkNode.prototype.delete=function() {
+		
+	}
+	LinkNode.prototype.modify=function() {
+		
 	}
 }
 

@@ -26,7 +26,7 @@
 const durationTime=5
 
 export default {
-	name: 'TreeEdge',
+	name: 'LinkNode',
 	components: {},
 	props: {
 		valElement: String,
@@ -40,7 +40,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.init_data()
+		setTimeout(()=>{ this.init_data(); }, 1);
 	},
 	methods: {
 		init_data() {
@@ -85,7 +85,7 @@ export default {
 				this.isShowInfo=false;
 				return;
 			}
-			this.$parent.addNode(this.index+status+1)
+			this.$parent.addNode(this.index, status)
 			this.isShowInfo=false
 		},
 		delLinkNode() {

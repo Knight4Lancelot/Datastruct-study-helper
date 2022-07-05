@@ -80,11 +80,12 @@ export default {
 			ctx.stroke();
 		}
 	},
-	addNode(index) {
-		this.nodeArray.splice(index, 0, '0')
+	addNode(index, direction) {
+		console.log(index, direction)
+		if (direction===0) { this.nodeArray.splice(index, 0, '0'); }
+		else this.nodeArray.splice(index+1, 0, '0');
 	},
 	delNode(index) {
-		console.log(index)
 		this.nodeArray.splice(index, 1)
 	},
 	modifyNode(index, val) {
