@@ -1,6 +1,6 @@
 // 栈部分
 function Stack(){
-	this.elementList=[]
+	this.elementList=[]  
 	// this.maxsize=20000
 	this.size=0
 	
@@ -296,22 +296,6 @@ function BinaryTree(list) {
 			res.push(this.binarytreelist[index[i]].val)
 		}
 		return res
-	}
-}
-
-// 链表部分
-function LinkNode(list) {
-	this.elementList = list.concat();
-	this.size = 0;
-	
-	LinkNode.prototype.insert=function(index, val) {
-		
-	}
-	LinkNode.prototype.delete=function(index) {
-		this.elementList
-	}
-	LinkNode.prototype.modify=function(index, focusVal) {
-		this.elementList[index]=focusVal;
 	}
 }
 
