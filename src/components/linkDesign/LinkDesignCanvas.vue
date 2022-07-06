@@ -31,8 +31,8 @@ export default {
 		nodecount: 0,
 		nodeArray: [ 'head' ],
 		nodePosition: {
-			X: [100, 200, 300, 400],
-			Y: [100, 100, 100, 100]
+			X: [ 100 ],
+			Y: [ 350 ]
 		}
 	}
   },  
@@ -44,6 +44,24 @@ export default {
 	setTimeout(()=>{ this.drawAxios(); }, 100);
   },
   methods: {
+	drawEdge() {
+		this.drawAxios()
+		this.canvasEdge = document.getElementById("canvas-link-edge");
+		var ctx = this.canvasEdge.getContext("2d");
+		
+		this.canvasEdge.height = this.canvasHeight;
+		this.canvasEdge.width = this.canvasWidth;
+		
+		ctx.setLineDash([]);
+		ctx.beginPath();
+		ctx.strokeStyle="#56585C";
+		ctx.lineWidth=3;
+		for (var i = 0; i < this.nodeArray.length-1; i++) {
+			ctx.moveTo(this.nodePosition.X[i]+20, this.nodePosition.Y[i]+20);
+			ctx.lineTo(this.nodePosition.X[i+1]+20, this.nodePosition.Y[i+1]+20);
+			ctx.stroke();
+		}
+	},
 	formCanvasSize() {
 		if (this.canvasWidth<1400) this.canvasWidth=1400;
 		if (this.canvasHeight<700) this.canvasHeight=700;
@@ -80,19 +98,29 @@ export default {
 			ctx.stroke();
 		}
 	},
+	fresh() {
+		while (this.nodeArray.length>0) this.nodeArray.pop();
+	},
 	addNode(index, direction) {
-		var temp = this.nodeArray.concat();
-		temp.splice(index+direction, 0, '0');
-		while(this.nodeArray.length>0) { this.nodeArray.pop(); }
-		this.nodeArray = temp.concat();
+		if (this.nodePosition.X.length-this.nodeArray.length<=1) {
+			this.pushPosition(); 
+		}
+		this.nodeArray.splice(index+direction, 0, '0');
+		this.drawEdge();
 	},
 	delNode(index) {
-		this.nodeArray.splice(index, 1)
+		this.nodeArray.splice(index, 1);
+		this.drawEdge();
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
 		// this.$parent.changeList();
-	}
+	},
+	pushPosition() {
+		var i = this.nodePosition.X.length;
+		this.nodePosition.X.push(100+i*50);
+		this.nodePosition.Y.push(350-(i%2)*100);
+	},
   }
 }
 </script>

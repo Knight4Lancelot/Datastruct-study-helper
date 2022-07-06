@@ -65,7 +65,7 @@ export default {
 	this.$parent.TreeList=this.nodeArray
 	this.init_tree();
 	setTimeout(()=>{ this.drawAxios(); }, 100);
-	setTimeout(()=>{ this.drawEdge(); }, 100);
+	// setTimeout(()=>{ this.drawEdge(); }, 100);
   },
   methods: {
 	hideAllNodeInfo() {

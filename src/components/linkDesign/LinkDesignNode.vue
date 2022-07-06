@@ -44,10 +44,8 @@ export default {
 	},
 	methods: {
 		init_data() {
-			console.log('yes - before')
 			this.nodeText = this.valElement;
 			this.nodeTextBuffer = this.valElement;
-			console.log('yes - after', this.valElement,'---', this.nodeText, this.nodeTextBuffer)
 		},
 		changeStatus() {
 			if (!this.isShowInfo) {

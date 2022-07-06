@@ -299,6 +299,25 @@ function BinaryTree(list) {
 	}
 }
 
+// 链表部分
+function LinkNode(list) {
+	this.elementList = list.concat();
+	this.size = 0;
+	
+	LinkNode.prototype.insert=function(index, val) {
+		this.elementList.splice(index, 0, val);
+		console.log(this.elementList);
+	}
+	LinkNode.prototype.delete=function(index) {
+		this.elementList.splice(index, 1);
+		console.log(this.elementList);
+	}
+	LinkNode.prototype.modify=function(index, focusVal) {
+		this.elementList[index]=focusVal;
+		console.log(this.elementList);
+	}
+}
+
 export {
-	Stack, Queue, BinaryTree, BinaryTreeNode
+	LinkNode, Stack, Queue, BinaryTree, BinaryTreeNode
 }
