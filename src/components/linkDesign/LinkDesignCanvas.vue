@@ -68,7 +68,7 @@ export default {
 	},
 	hideAllNodeInfo() {
 		var l = this.$refs['linknodeElement']
-		for (var i =0; i < l.length; i++) {
+		for (var i = 0; i < l.length; i++) {
 			l[i].isShowInfo=false;
 		}
 	},
@@ -107,14 +107,24 @@ export default {
 		}
 		this.nodeArray.splice(index+direction, 0, '0');
 		this.drawEdge();
+		this.rectifyData();
 	},
 	delNode(index) {
 		this.nodeArray.splice(index, 1);
 		this.drawEdge();
+		this.rectifyData();
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
 		// this.$parent.changeList();
+	},
+	rectifyData() {
+		var l = this.$refs['linknodeElement']
+		for (var i = 0; i < l.length; i++) {
+			if (this.nodeArray[i]!==l[i].nodeText) {
+				l[i].nodeText=this.nodeArray[i];
+			}
+		}
 	},
 	pushPosition() {
 		var i = this.nodePosition.X.length;
