@@ -1,6 +1,6 @@
 <template>
 	<div class="designlink">
-		<hovermenu id="tree-hover-menu"></hovermenu>
+		<hovermenu id="link-hover-menu"></hovermenu>
 		<span id="design-link-headword"
 			:style="{'width': String(canvasWidth-100)+'px',
 				'top':'55px'}">
@@ -18,7 +18,7 @@
 			'max-height': String(canvasHeight)+'px',
 			'width': String(canvasWidth)+'px',
 			'height': String(canvasHeight)+'px'}"/>
-		<span id="tree-result-word"
+		<span id="link-result-word"
 			:style="{'width': String(canvasWidth)+'px',
 				'top':String(canvasHeight+240)+'px'}">
 				<span style="color:#67C23A;font-size:35px;font-weight: 800;">
@@ -66,13 +66,17 @@
 import linkcanvas from '../components/linkDesign/LinkDesignCanvas.vue'
 import hovermenu from '../components/HoverMenu.vue'
 
+import { init_linknode_code } from '../utils/init_linknode.js'
+
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
+
 const durationTime=5
+var lc = new init_linknode_code()
 
 export default {
   name: 'LinkDesignHomeView',
@@ -83,21 +87,48 @@ export default {
   },
   data() {
 	return {
+		language: 1,
 		code: '',
-		holdResString: '',
+		holdResString: '（对应数组共计节点数：1个）："head"',
+		LinkListString: '',
 		canvasHeight: 0,
 		canvasWidth: 0,
 		appHeight: 0,
 		appWidth: 0,
 		isshowCanvas: true,
-		LinkList: [ '1', '2', '3' ],
-		codeClass: [ "code-language-active", "code-language", "code-language" ]
+		LinkList: [ 'head' ],
+		codeClass: [ "code-language-active", "code-language", "code-language" ],
 	}
   },
   mounted() {
 	this.formCanvasSize()
+	if (this.LinkList.length > 10)
+		this.LinkListString = '\n\t\t\t';
+	else
+		this.LinkListString = '';
+	for (var i = 0; i < this.LinkList.length; i++) {
+		this.LinkListString += ('"'+((String(this.LinkList[i])==='nil')?'null':String(this.LinkList[i]))+'"');
+		if (i!==this.LinkList.length-1) this.LinkListString+=',';
+		else this.LinkListString+='';
+		if ((i+1)%10===0) this.LinkListString+='\n\t\t\t';
+	}
+	this.loadCode(1);
   },
   methods: {
+	sendDataCopy() { // 将card内容复制到粘贴板
+		var that = this
+		document.oncopy = function (e) {
+			e.clipboardData.setData('text', String(that.LinkListString))
+			e.preventDefault()
+			document.oncopy = null
+		}
+		document.execCommand('Copy')
+		this.$message({
+			duration: durationTime*1000,
+			showClose: true,
+			message: '成功复制内容  [ 二叉树数组形式 ]  到粘贴板',
+			type: 'success'})
+	},
 	jumpTo(focus) {
 		var page = document.getElementsByClassName('main-body-show')[0];
 		switch (focus) {
@@ -118,7 +149,66 @@ export default {
 		this.canvasWidth = this.appWidth-450
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
-	}
+	},
+	changeList() {
+		// 修改卡片显示字符串
+		var res = this.LinkList.concat()
+		if (res.length > 51) {
+			while (res.length > 51) {
+				res.splice(40,1)
+			}
+			res[40]=' ... '
+		}
+		this.holdResString = '（对应数组共计节点数：'+String(this.LinkList.length)+'个）："'+
+				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
+		// 修改结果数组
+		if (this.LinkList.length > 10)
+			this.LinkListString = '\n\t\t\t';
+		else
+			this.LinkListString = '';
+		for (var i = 0; i < this.LinkList.length; i++) {
+			this.LinkListString += (
+				'"'+((String(this.LinkList[i])==='nil') ? 
+				'null' : String(this.LinkList[i]))+'"'
+			);
+			if (i!==this.LinkList.length-1) this.LinkListString+=','
+			if ((i+1)%10===0&&i!==this.LinkList.length-1) this.LinkListString+='\n\t\t\t';
+		}
+		if (this.LinkList.length > 10)
+			this.LinkListString += '\n\t';
+		// 修改代码区
+		this.loadCode(this.language);
+	},
+	changeLanguage(index) {
+		this.language = index;
+		this.loadCode(index);
+		switch(index) {
+			default:
+			case 1:
+				this.codeClass = [ "code-language-active", "code-language", "code-language" ];
+				break;
+			case 2:
+				this.codeClass = [ "code-language", "code-language-active", "code-language" ];
+				break;
+			case 3:
+				this.codeClass = [ "code-language", "code-language", "code-language-active" ];
+				break;
+		}
+	},
+	loadCode(index) {
+		switch(index) {
+			default:
+			case 1:
+				this.code = lc.cpp_init_linknode_part_1+this.LinkListString+lc.cpp_init_linknode_part_2;
+				break;
+			case 2:
+				this.code = lc.java_init_linknode_part_1+this.LinkListString+lc.java_init_linknode_part_2;
+				break;
+			case 3:
+				this.code = lc.python_init_linknode_part_1+this.LinkListString+lc.python_init_linknode_part_2;
+				break;
+		}
+	},
   }
 }
 </script>
@@ -127,7 +217,7 @@ export default {
 .designlink {
 	width: 100%;
 }
-#tree-hover-menu {
+#link-hover-menu {
 	position: fixed;
 	margin-top: 80px;
 	margin-left: 50px;

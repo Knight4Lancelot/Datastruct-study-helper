@@ -1,5 +1,5 @@
-function init_tree_code() {	
-	this.cpp_init_tree_part1 =
+function init_binarytree_code() {	
+	this.cpp_init_binarytree_part_1 =
 		'/*\n\tKnight4Lancelot C++二叉树程序\n\t此程序仅供参考，并非最佳设计\n*/\n'+
 		'#include<iostream>\n'+
 		'#include<vector>\n'+
@@ -53,7 +53,7 @@ function init_tree_code() {
 		'int main() {\n'+
 		'\tstring TreeNodeList[] = { '
 		// '"0","2","-4","null","22","1","10","null","null","null","null","null","9","6"'+
-	this.cpp_init_tree_part2 = 
+	this.cpp_init_binarytree_part_2 = 
 		' }; // 根据结构设计得到的数组\n'+
 		'\tvector<string> v(TreeNodeList, TreeNodeList+sizeof(TreeNodeList)/sizeof(TreeNodeList[0]));\n'+
 		'\tBinaryTree bt = BinaryTree(v);\n'+
@@ -61,7 +61,7 @@ function init_tree_code() {
 		'\treturn 0;\n'+
 		'}'
 	
-	this.java_init_tree_part_1 =
+	this.java_init_binarytree_part_1 =
 		'/*\n* Knight4Lancelot Java二叉树程序\n* 此程序仅供参考，并非最佳设计\n* */\n'+
 		'import java.util.ArrayList;\n'+
 		'import java.util.Arrays;\n'+
@@ -101,15 +101,15 @@ function init_tree_code() {
 		'\tpublic static void main(String[] args) {\n'+
 		'\t\tString[] BinaryTreeNodes = { '
 		// '"0","2","-4","null","22","1","10","null","null","null","null","null","9","6"'
-	this.java_init_tree_part_2 =
+	this.java_init_binarytree_part_2 =
 		' }; // 根据结构设计得到的数组\n\t\tArrayList<String> list = new ArrayList<>(Arrays.asList(BinaryTreeNodes));\n'+
 		'\t\tBinaryTree bt = new BinaryTree(list);\n'+
 		'\t}\n}'
-	this.python_init_tree_part_1 = '# Knight4Lancelot Python二叉树程序\n'+
+	this.python_init_binarytree_part_1 = '# Knight4Lancelot Python二叉树程序\n'+
 		'# 此程序仅供参考，并非最佳设计\n\n'
-	this.python_init_tree_part_2 = ''
+	this.python_init_binarytree_part_2 = ''
 }
 	
 export {
-	init_tree_code
+	init_binarytree_code
 }

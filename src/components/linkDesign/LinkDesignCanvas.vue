@@ -40,6 +40,7 @@ export default {
 	linknode
   },
   mounted() {
+	this.$parent.LinkList=this.nodeArray;
 	this.formCanvasSize();
 	setTimeout(()=>{ this.drawAxios(); }, 100);
   },
@@ -108,15 +109,17 @@ export default {
 		this.nodeArray.splice(index+direction, 0, '0');
 		this.drawEdge();
 		this.rectifyData();
+		this.$parent.changeList();
 	},
 	delNode(index) {
 		this.nodeArray.splice(index, 1);
 		this.drawEdge();
 		this.rectifyData();
+		this.$parent.changeList();
 	},
 	modifyNode(index, val) {
 		this.nodeArray[index] = val;
-		// this.$parent.changeList();
+		this.$parent.changeList();
 	},
 	rectifyData() {
 		var l = this.$refs['linknodeElement']

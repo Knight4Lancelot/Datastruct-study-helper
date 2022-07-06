@@ -64,7 +64,7 @@ import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
 import hovermenu from '../components/HoverMenu.vue'
 
 import { Queue } from '../utils/DatastructUtils.js'
-import { init_tree_code } from '../utils/init_binarytree.js'
+import { init_binarytree_code } from '../utils/init_binarytree.js'
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -74,7 +74,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
 
 const durationTime=5
-var tc = new init_tree_code()
+var tc = new init_binarytree_code()
 
 export default {
   name: 'TreeDesignHomeView',
@@ -85,6 +85,7 @@ export default {
   },
   data() {
 	return {
+		language: 1,
 		codeClass: [ "code-language-active", "code-language", "code-language" ],
 		code: '',
 		blankNode: 'null',
@@ -111,8 +112,8 @@ export default {
 		else this.TreeListString+='';
 		if ((i+1)%10===0) this.TreeListString+='\n\t\t\t';
 	}
-	this.loadCode(1)
-	this.formCanvasSize()
+	this.loadCode(1);
+	this.formCanvasSize();
   },
   computed: {
   },
@@ -131,17 +132,18 @@ export default {
 		switch(index) {
 			default:
 			case 1:
-				this.code = tc.cpp_init_tree_part1+this.TreeListString+tc.cpp_init_tree_part2;
+				this.code = tc.cpp_init_binarytree_part_1+this.TreeListString+tc.cpp_init_binarytree_part_2;
 				break;
 			case 2:
-				this.code = tc.java_init_tree_part_1+this.TreeListString+tc.java_init_tree_part_2;
+				this.code = tc.java_init_binarytree_part_1+this.TreeListString+tc.java_init_binarytree_part_2;
 				break;
 			case 3:
-				this.code = tc.python_init_tree_part_1+this.TreeListString+tc.python_init_tree_part_2;
+				this.code = tc.python_init_binarytree_part_1+this.TreeListString+tc.python_init_binarytree_part_2;
 				break;
 		}
 	},
 	changeLanguage(index) {
+		this.language = index;
 		this.loadCode(index);
 		switch(index) {
 			default:
@@ -201,21 +203,22 @@ export default {
 		this.holdResString = '（对应数组共计节点数：'+String(this.TreeList.length)+'个）："'+
 				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
 		// 修改结果数组
-		this.TreeListString = ''
+		if (this.TreeList.length > 10)
+			this.TreeListString = '\n\t\t\t';
+		else
+			this.TreeListString = '';
 		for (var i = 0; i < this.TreeList.length; i++) {
 			this.TreeListString += (
 				'"'+((String(this.TreeList[i])==='nil') ? 
 				'null' : String(this.TreeList[i]))+'"'
 			);
 			if (i!==this.TreeList.length-1) this.TreeListString+=','
-			if ((i+1)%10===0) this.TreeListString+='\n\t\t\t';
+			if ((i+1)%10===0&&i!==this.TreeList.length-1) this.TreeListString+='\n\t\t\t';
 		}
+		if (this.TreeList.length > 10)
+			this.TreeListString += '\n\t';
 		// 修改代码区
-		this.loadCode(1);
-		this.isShowCode=false;
-		this.$nextTick(() => {
-			this.isShowCode=true;
-		})
+		this.loadCode(this.language);
 	}
   }
 }
