@@ -18,6 +18,14 @@
 			'max-height': String(canvasHeight)+'px',
 			'width': String(canvasWidth)+'px',
 			'height': String(canvasHeight)+'px'}"/>
+		<button class="additional-function"
+			@click="adjustAim_canvas()"
+			:style="{
+				'top': String(canvasHeight+50)+'px',
+				'left': String(canvasWidth+100)+'px'
+			}">
+			<i class="el-icon-aim"></i>
+		</button>
 		<span id="link-result-word"
 			:style="{'width': String(canvasWidth)+'px',
 				'top':String(canvasHeight+240)+'px'}">
@@ -49,11 +57,20 @@
 			<button :class="codeClass[2]" @click="changeLanguage(3)">Python</button>
 			<prism-editor
 				class="my-editor height-200"
+				id="code-editor"
 				v-model="code"
 				:highlight="highlighter"
 				line-numbers
 				readonly></prism-editor>
 		</div>
+		<button class="additional-function"
+			@click="adjustAim_codeEditor()"
+			:style="{
+				'top': String(canvasHeight+1230)+'px',
+				'left': String(canvasWidth+100)+'px'
+			}">
+			<i class="el-icon-aim"></i>
+		</button>
 		<div id="page-bottom"
 			:style="{'width': String(canvasWidth-30)+'px',
 				'top':String(canvasHeight+1390)+'px'}">
@@ -115,6 +132,32 @@ export default {
 	this.loadCode(1);
   },
   methods: {
+	adjustAim_canvas() {
+		var focus = document.getElementById('link-canvas-show');
+		if (focus.scrollTop===0&&focus.scrollLeft===0) {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '已达到链表头节点位置',
+				type: 'warning'});
+			return;
+		}
+		focus.scrollTop = 0;
+		focus.scrollLeft = 0;
+	},
+	adjustAim_codeEditor() {
+		var focus = document.getElementById('code-editor');
+		if (focus.scrollTop===0&&focus.scrollLeft===0) {
+			this.$message({
+				duration: durationTime*1000,
+				showClose: true,
+				message: '已到达代码版块的最头部位置',
+				type: 'warning'});
+			return;
+		}
+		focus.scrollTop = 0;
+		focus.scrollLeft = 0;
+	},
 	sendDataCopy() { // 将card内容复制到粘贴板
 		var that = this
 		document.oncopy = function (e) {
