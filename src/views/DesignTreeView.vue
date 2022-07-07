@@ -61,6 +61,14 @@
 			readonly></prism-editor>
 	</div>
 	<button class="additional-function"
+		@click="copy_codeEditor()"
+		:style="{
+			'top': String(canvasHeight+1150)+'px',
+			'left': String(canvasWidth+100)+'px'
+		}">
+		<i class="el-icon-copy-document"></i>
+	</button>
+	<button class="additional-function"
 		@click="adjustAim_codeEditor()"
 		:style="{
 			'top': String(canvasHeight+1230)+'px',
@@ -225,6 +233,20 @@ export default {
 			message: '成功复制内容  [ 二叉树数组形式 ]  到粘贴板',
 			type: 'success'})
 	},
+	copy_codeEditor() {
+		var that = this
+		document.oncopy = function (e) {
+			e.clipboardData.setData('text', that.code);
+			e.preventDefault();
+			document.oncopy = null;
+		}
+		document.execCommand('Copy')
+		this.$message({
+			duration: durationTime*1000,
+			showClose: true,
+			message: '成功复制内容  [ 二叉树实现代码 ]  到粘贴板',
+			type: 'success'})
+	},
 	formCanvasSize() {
 		this.appHeight=document.documentElement.clientHeight
 		this.appWidth=document.documentElement.clientWidth
@@ -331,7 +353,7 @@ export default {
 	font-size: 35px;
 	color: #6A6A6A;
 	background-color: #F4F4F4;
-	border-radius: 10px;
+	border-radius: 50%;
 	border: 2px solid #C0C4CC;
 }
 .additional-function:hover {

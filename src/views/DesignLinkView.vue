@@ -64,6 +64,14 @@
 				readonly></prism-editor>
 		</div>
 		<button class="additional-function"
+			@click="copy_codeEditor()"
+			:style="{
+				'top': String(canvasHeight+1150)+'px',
+				'left': String(canvasWidth+100)+'px'
+			}">
+			<i class="el-icon-copy-document"></i>
+		</button>
+		<button class="additional-function"
 			@click="adjustAim_codeEditor()"
 			:style="{
 				'top': String(canvasHeight+1230)+'px',
@@ -161,7 +169,7 @@ export default {
 	sendDataCopy() { // 将card内容复制到粘贴板
 		var that = this
 		document.oncopy = function (e) {
-			e.clipboardData.setData('text', String(that.LinkListString))
+			e.clipboardData.setData('text', that.LinkListString);
 			e.preventDefault()
 			document.oncopy = null
 		}
@@ -169,7 +177,21 @@ export default {
 		this.$message({
 			duration: durationTime*1000,
 			showClose: true,
-			message: '成功复制内容  [ 二叉树数组形式 ]  到粘贴板',
+			message: '成功复制内容  [ 链表数组形式 ]  到粘贴板',
+			type: 'success'})
+	},
+	copy_codeEditor() {
+		var that = this
+		document.oncopy = function (e) {
+			e.clipboardData.setData('text', that.code);
+			e.preventDefault();
+			document.oncopy = null;
+		}
+		document.execCommand('Copy')
+		this.$message({
+			duration: durationTime*1000,
+			showClose: true,
+			message: '成功复制内容  [ 链表实现代码 ]  到粘贴板',
 			type: 'success'})
 	},
 	jumpTo(focus) {
