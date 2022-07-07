@@ -227,65 +227,65 @@ function BinaryTree(list) {
 	BinaryTree.prototype.PreOrderList = function() { // 返回先序遍历的元素列表
 		var res = [], index = this.PreOrderIndexList();
 		for (var i = 0; i < index.length; i++) {
-			res.push(this.binarytreelist[index[i]].val)
+			res.push(this.binarytreelist[index[i]].val);
 		}
-		return res
+		return res;
 	}
 	BinaryTree.prototype.PostOrderIndexList = function() { // 返回后续遍历的index列表
-		var res = []
-		var temp = []
-		var s = new Stack()
-		var n
+		var res = [];
+		var temp = [];
+		var s = new Stack();
+		var n;
 		for (var i = 0; i < this.binarytreelist.length; i++) {
-			temp.push({ node: this.binarytreelist[i], isRead: false, index: i })
+			temp.push({ node: this.binarytreelist[i], isRead: false, index: i });
 		}
-		s.push(temp[0])
+		s.push(temp[0]);
 		while (!s.isEmpty()) {
-			n = s.top()
-			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]) }
-			else if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]) }
+			n = s.top();
+			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]); }
+			else if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]); }
 			else {
-				n = s.pop()
-				temp[n.index].isRead=true
-				res.push(n.index)
+				n = s.pop();
+				temp[n.index].isRead=true;
+				res.push(n.index);
 			}
 		}
-		return res
+		return res;
 	}
 	BinaryTree.prototype.PostOrderList = function() { // 返回后续遍历的元素列表
-		var res = [], index = this.PostOrderIndexList()
+		var res = [], index = this.PostOrderIndexList();
 		for (var i = 0; i < index.length; i++) {
-			res.push(this.binarytreelist[index[i]].val)
+			res.push(this.binarytreelist[index[i]].val);
 		}
-		return res
+		return res;
 	}
 	BinaryTree.prototype.InOrderIndexList = function() { // 返回中序遍历的index列表
-		var res = []
-		var temp = []
-		var s = new Stack()
-		var n
+		var res = [];
+		var temp = [];
+		var s = new Stack();
+		var n;
 		for (var i = 0; i < this.binarytreelist.length; i++) {
-			temp.push({ node: this.binarytreelist[i], isRead: false, index: i })
+			temp.push({ node: this.binarytreelist[i], isRead: false, index: i });
 		}
-		s.push(temp[0])
+		s.push(temp[0]);
 		while (!s.isEmpty()) {
-			n = s.top()
-			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]) }
+			n = s.top();
+			if (n.node.left!==-1 && !temp[n.node.left].isRead) { s.push(temp[n.node.left]); }
 			else {
-				n = s.pop()
-				temp[n.index].isRead=true
-				res.push(n.index)
-				if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]) }
+				n = s.pop();
+				temp[n.index].isRead=true;
+				res.push(n.index);
+				if (n.node.right!==-1 && !temp[n.node.right].isRead) { s.push(temp[n.node.right]); }
 			}
 		}
-		return res
+		return res;
 	}
 	BinaryTree.prototype.InOrderList = function() { // 返回中序遍历的元素列表
-		var res = [], index = this.InOrderIndexList()
+		var res = [], index = this.InOrderIndexList();
 		for (var i = 0; i < index.length; i++) {
-			res.push(this.binarytreelist[index[i]].val)
+			res.push(this.binarytreelist[index[i]].val);
 		}
-		return res
+		return res;
 	}
 }
 
