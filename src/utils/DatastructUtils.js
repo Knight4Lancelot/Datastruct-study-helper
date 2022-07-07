@@ -21,10 +21,6 @@ function Stack(){
 		return res
 	}
 	Stack.prototype.push = function(e) {
-		// if (this.maxsize>this.maxsize) {
-		// 	console.log("this size up overflow")
-		// 	return
-		// }
 		this.elementList.push(e)
 		this.size+=1
 	}
