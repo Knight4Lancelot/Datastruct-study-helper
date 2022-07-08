@@ -51,7 +51,7 @@ function init_binarytree_code() {
 		'};\n'+
 		'\n'+
 		'int main() {\n'+
-		'\tstring TreeNodeList[] = { '
+		'\tstring TreeNodeList[] = { ';
 		// '"0","2","-4","null","22","1","10","null","null","null","null","null","9","6"'+
 	this.cpp_init_binarytree_part_2 = 
 		' }; // 根据结构设计得到的数组\n'+
@@ -59,7 +59,7 @@ function init_binarytree_code() {
 		'\tBinaryTree bt = BinaryTree(v);\n'+
 		'\tsystem("pause"); // 暂停以观察输出\n'+
 		'\treturn 0;\n'+
-		'}'
+		'}';
 	
 	this.java_init_binarytree_part_1 =
 		'/*\n* Knight4Lancelot Java二叉树程序\n* 此程序仅供参考，并非最佳设计\n* */\n'+
@@ -99,15 +99,15 @@ function init_binarytree_code() {
 		'\t\t\t\t\t"\\t右子节点index："+ this.nodes.get(i).rightChild);\n\t\t}\n\t}\n}\n\n'+
 		'public class BinaryTreeDemo {\n'+
 		'\tpublic static void main(String[] args) {\n'+
-		'\t\tString[] BinaryTreeNodes = { '
+		'\t\tString[] BinaryTreeNodes = { ';
 		// '"0","2","-4","null","22","1","10","null","null","null","null","null","9","6"'
 	this.java_init_binarytree_part_2 =
 		' }; // 根据结构设计得到的数组\n\t\tArrayList<String> list = new ArrayList<>(Arrays.asList(BinaryTreeNodes));\n'+
 		'\t\tBinaryTree bt = new BinaryTree(list);\n'+
-		'\t}\n}'
+		'\t}\n}';
 	this.python_init_binarytree_part_1 = '# Knight4Lancelot Python二叉树程序\n'+
-		'# 此程序仅供参考，并非最佳设计\n\n'
-	this.python_init_binarytree_part_2 = ''
+		'# 此程序仅供参考，并非最佳设计\n\n';
+	this.python_init_binarytree_part_2 = '';
 }
 	
 export {
