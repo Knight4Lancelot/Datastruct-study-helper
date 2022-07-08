@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import treecanvas from '../../components/treeDesign/TreeDesignCanvas.vue'
+import treecanvas from '../../components/designViewComps/TreeDesignCanvas.vue'
 import hovermenu from '../../components/HoverMenu.vue'
 
 import { Queue } from '../../utils/DatastructUtils.js'

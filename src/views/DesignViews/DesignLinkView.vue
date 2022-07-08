@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import linkcanvas from '../../components/linkDesign/LinkDesignCanvas.vue'
+import linkcanvas from '../../components/designViewComps/LinkDesignCanvas.vue'
 import hovermenu from '../../components/HoverMenu.vue'
 
 import { init_linknode_code } from '../../utils/init_linknode.js'
