@@ -43,30 +43,6 @@
 					</div>
 				</transition>
 			</div>
-			<!-- <div class="link-container" id="make-code"
-				@mouseover="openHiddenComs(2,true)"
-				@mouseleave="openHiddenComs(2,false)">
-				<div class="selector-head"
-					style="width: 50%;">
-					<i class="el-icon-document-remove"/>
-					<transition name="head-word-transform">
-						<span class="selector-head-word" v-if="showHeadWord">生成代码</span>
-					</transition>
-				</div>
-				<transition name="hidden-list-transform">
-					<div class="hidden-components" v-if="showMakeHidden&&mainOpacity!==1">
-						<div><router-link to="/makelink" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>链表</span>
-						</router-link></div>
-						<div><router-link to="/maketree" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>二叉树</span>
-						</router-link></div>
-						<div><router-link to="/makegraph" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>图</span>
-						</router-link></div>
-					</div>
-				</transition>
-			</div> -->
 			<div class="link-container" id="view-algorithm"
 				@mouseover="openHiddenComs(3,true)"
 				@mouseleave="openHiddenComs(3,false)">
