@@ -29,12 +29,15 @@ export default {
 </script>
 
 <style>
+.linear-sort-node {
+	/* border: 1px solid; */
+}
 .table-node-pillar {
 	transition: 0.6s;
 	position: inherit;
 	width: 20px;
 	left: 18px;
-	bottom: 50px;
+	bottom: 60px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	background-color: #4CB817;
@@ -49,5 +52,7 @@ export default {
 	text-align: center;
 	padding-top: 5px;
 	border-radius: 10px;
+	color: #535558;
+	font-family: 'Microsoft YaHei';
 }
 </style>
