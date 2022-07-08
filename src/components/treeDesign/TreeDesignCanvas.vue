@@ -35,6 +35,8 @@ export default {
 		canvasAxios: null,
 		canvasHeight: 0,
 		canvasWidth: 0,
+		axiosHeight: 0,
+		axiosWidth: 0,
 		maxcount: 0,
 		maxheight: 0,
 		nodeArray: ["S"],
@@ -62,12 +64,19 @@ export default {
 	}
   },
   mounted() {
-	this.$parent.TreeList=this.nodeArray
+	this.setAxiosSize(1235, 700);
+	this.$parent.TreeList=this.nodeArray;
 	this.init_tree();
 	setTimeout(()=>{ this.drawAxios(); }, 100);
 	// setTimeout(()=>{ this.drawEdge(); }, 100);
   },
   methods: {
+	setAxiosSize(width, height) {
+		if (height<this.canvasHeight) { this.axiosHeight=this.canvasHeight; }
+		else { this.axiosHeight=height; }
+		if (width<this.canvasWidth) { this.axiosWidth=this.canvasWidth; }
+		else { this.axiosWidth=width; }
+	},
 	hideAllNodeInfo() {
 		var l = this.$refs['treenodeElement']
 		for (var i =0; i < l.length; i++) {
@@ -105,8 +114,8 @@ export default {
 		this.canvasAxios = document.getElementById("canvas-x-y-axios");
 		var ctx = this.canvasAxios.getContext("2d");
 		
-		this.canvasAxios.height = this.canvasHeight;
-		this.canvasAxios.width = this.canvasWidth;
+		this.canvasAxios.height = this.axiosHeight;
+		this.canvasAxios.width = this.axiosWidth;
 		
 		ctx.lineWidth=1;
 		ctx.setLineDash([4]); // 设置虚线

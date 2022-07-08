@@ -85,11 +85,11 @@
 </template>
 
 <script>
-import treecanvas from '../components/treeDesign/TreeDesignCanvas.vue'
-import hovermenu from '../components/HoverMenu.vue'
+import treecanvas from '../../components/treeDesign/TreeDesignCanvas.vue'
+import hovermenu from '../../components/HoverMenu.vue'
 
-import { Queue } from '../utils/DatastructUtils.js'
-import { init_binarytree_code } from '../utils/init_binarytree.js'
+import { Queue } from '../../utils/DatastructUtils.js'
+import { init_binarytree_code } from '../../utils/init_binarytree.js'
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -222,16 +222,16 @@ export default {
 	sendDataCopy() { // 将card内容复制到粘贴板
 		var that = this
 		document.oncopy = function (e) {
-			e.clipboardData.setData('text', String(that.TreeListString))
-			e.preventDefault()
-			document.oncopy = null
+			e.clipboardData.setData('text', String(that.TreeListString));
+			e.preventDefault();
+			document.oncopy = null;
 		}
 		document.execCommand('Copy')
 		this.$message({
 			duration: durationTime*1000,
 			showClose: true,
 			message: '成功复制内容  [ 二叉树数组形式 ]  到粘贴板',
-			type: 'success'})
+			type: 'success'});
 	},
 	copy_codeEditor() {
 		var that = this
@@ -254,7 +254,9 @@ export default {
 		this.canvasWidth = this.appWidth-450
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
+		this.$refs['canvasElement'].setAxiosSize(this.canvasWidth, this.canvasHeight)
 		this.$refs['canvasElement'].drawEdge()
+		this.$refs['canvasElement'].drawAxios()
 	},
 	changeList() {
 		// 修改卡片显示字符串

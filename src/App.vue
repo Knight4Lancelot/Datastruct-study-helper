@@ -31,13 +31,13 @@
 				</div>
 				<transition name="hidden-list-transform">
 					<div class="hidden-components" v-if="showDesignHidden&&mainOpacity!==1">
-						<div><router-link to="/designlink" exact style="text-decoration: none;">
+						<div><router-link to="/design/link" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>设计链表</span>
 						</router-link></div>
-						<div><router-link to="/designtree" exact style="text-decoration: none;">
+						<div><router-link to="/design/tree" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>设计树</span>
 						</router-link></div>
-						<div><router-link to="/designgraph" exact style="text-decoration: none;">
+						<div><router-link to="/design/graph" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>设计图</span>
 						</router-link></div>
 					</div>
@@ -55,10 +55,10 @@
 				</div>
 				<transition name="hidden-list-transform">
 					<div class="hidden-components" v-if="showViewAlgorithm&&mainOpacity!==1">
-						<div><router-link to="/" exact style="text-decoration: none;">
+						<div><router-link to="/algorithm/popsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>冒泡排序</span>
 						</router-link></div>
-						<div><router-link to="/" exact style="text-decoration: none;">
+						<div><router-link to="/algorithm/selectionsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>选择排序</span>
 						</router-link></div>
 					</div>

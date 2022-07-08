@@ -26,6 +26,8 @@ export default {
 	return {
 		canvasEdge: null,
 		canvasAxios: null,
+		axiosHeight: 0,
+		axiosWidth: 0,
 		canvasHeight: 0,
 		canvasWidth: 0,
 		nodecount: 0,
@@ -42,6 +44,7 @@ export default {
   mounted() {
 	this.$parent.LinkList=this.nodeArray;
 	this.formCanvasSize();
+	this.setAxiosSize(1235, 700);
 	setTimeout(()=>{ this.drawAxios(); }, 100);
   },
   methods: {
@@ -64,8 +67,14 @@ export default {
 		}
 	},
 	formCanvasSize() {
-		if (this.canvasWidth<1400) this.canvasWidth=1400;
+		if (this.canvasWidth<1235) this.canvasWidth=1235;
 		if (this.canvasHeight<700) this.canvasHeight=700;
+	},
+	setAxiosSize(width, height) {
+		if (height<this.canvasHeight) { this.axiosHeight=this.canvasHeight; }
+		else { this.axiosHeight=height; }
+		if (width<this.canvasWidth) { this.axiosWidth=this.canvasWidth; }
+		else { this.axiosWidth=width; }
 	},
 	hideAllNodeInfo() {
 		var l = this.$refs['linknodeElement']
@@ -77,8 +86,8 @@ export default {
 		this.canvasAxios = document.getElementById("canvas-x-y-axios");
 		var ctx = this.canvasAxios.getContext("2d");
 		
-		this.canvasAxios.height = this.canvasHeight;
-		this.canvasAxios.width = this.canvasWidth;
+		this.canvasAxios.height = this.axiosHeight;
+		this.canvasAxios.width = this.axiosWidth;
 		
 		ctx.lineWidth=1;
 		ctx.setLineDash([4]); // 设置虚线

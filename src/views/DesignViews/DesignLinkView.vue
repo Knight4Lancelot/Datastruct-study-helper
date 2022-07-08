@@ -88,10 +88,10 @@
 </template>
 
 <script>
-import linkcanvas from '../components/linkDesign/LinkDesignCanvas.vue'
-import hovermenu from '../components/HoverMenu.vue'
+import linkcanvas from '../../components/linkDesign/LinkDesignCanvas.vue'
+import hovermenu from '../../components/HoverMenu.vue'
 
-import { init_linknode_code } from '../utils/init_linknode.js'
+import { init_linknode_code } from '../../utils/init_linknode.js'
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -214,6 +214,9 @@ export default {
 		this.canvasWidth = this.appWidth-450
 		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
 		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
+		this.$refs['canvasElement'].formCanvasSize();
+		this.$refs['canvasElement'].setAxiosSize(this.canvasWidth, this.canvasHeight);
+		this.$refs['canvasElement'].drawAxios();
 	},
 	changeList() {
 		// 修改卡片显示字符串
