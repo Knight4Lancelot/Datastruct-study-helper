@@ -48,7 +48,7 @@ export default {
 		di_min = String(min).length;
 		di_max = String(max).length;
 		switch(true) {
-			case di_max-di_min<2: 
+			case di_max-di_min<2:
 				for (i = 0; i < this.pillarHeights.length; i++) {
 					this.pillarHeights[i] = 400*this.pillarHeights[i]/max;
 				}
