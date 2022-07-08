@@ -28,3 +28,14 @@
 	4、主目录：
 		App.vue							未完成
 		main.js							未完成
+		
+任务二：编写设计结构的相应C++、Java、Python代码
+	1、二叉树：
+		C++			<已完成>
+		Java		<已完成>
+		Python		未完成
+	2、链表
+		C++			未完成
+		Java		未完成
+		Python		未完成
+	
