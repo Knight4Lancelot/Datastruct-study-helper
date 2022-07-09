@@ -30,9 +30,11 @@ export default {
 	font-family: 'Microsoft YaHei';	
 }
 .tips-node span {
+	user-select: none;
 	padding: 3px;
 }
 .sample-node {
+	user-select: none;
 	position: inherit;
 	height: 25px;
 	width: 50px;

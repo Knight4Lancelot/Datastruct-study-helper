@@ -1,7 +1,7 @@
 <template>
 	<div >
 		<node class="nodes-comps"
-			v-for="(n, k) in NodeList"
+			v-for="(n, k) in rankNodeList"
 			ref="nodeComps"
 			:key="k"
 			:pillarHeight="pillarHeights[k]"
@@ -9,7 +9,7 @@
 			:valElement="String(n)"
 			:style="{'left':String(pillarLeftX[k])+'px'}"
 		/>
-		<button @click="change()">1</button>
+		<button @click="popSort()">开始冒泡排序</button>
 	</div>
 </template>
 
@@ -23,7 +23,8 @@ export default {
 	},
 	data() {
 		return {
-			NodeList: [],
+			rawNodeList: [],
+			rankNodeList: [],
 			pillarHeights: [],
 			pillarLeftX: []
 		}
@@ -35,7 +36,8 @@ export default {
 		var min = this.nodelist[0], max = this.nodelist[0];
 		var di_min = 0, di_max = 0;
 		for (var i = 0; i < this.nodelist.length; i++) {
-			this.NodeList.push(this.nodelist[i]);
+			this.rawNodeList.push(this.nodelist[i]);
+			this.rankNodeList.push(this.nodelist[i]);
 			this.pillarHeights.push(this.nodelist[i]);
 			this.pillarLeftX.push(100+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
@@ -70,16 +72,29 @@ export default {
 		}
 	},
 	methods: {
-		change() {
+		exchange(index_1, index_2) {
+			console.log(index_1, index_2);
 			var nodes = this.$refs['nodeComps']
-			var temp = this.pillarLeftX[0]
-			this.pillarLeftX[0] = this.pillarLeftX[1]
-			this.pillarLeftX[1] = temp
-			// setTimeout(()=>{
-			nodes[0].$el.style.left = String(this.pillarLeftX[0])+'px'
-			nodes[1].$el.style.left = String(this.pillarLeftX[1])+'px'
-			// }, 200)
-			console.log(nodes[0].$el.style.left)
+			var temp = this.pillarLeftX[index_1]
+			this.pillarLeftX[index_1] = this.pillarLeftX[index_2]
+			this.pillarLeftX[index_2] = temp
+			temp = this.rankNodeList[index_1]
+			this.rankNodeList[index_1] = this.rankNodeList[index_2]
+			this.rankNodeList[index_2] = temp
+			nodes[index_1].$el.style.left = String(this.pillarLeftX[index_1])+'px'
+			nodes[index_2].$el.style.left = String(this.pillarLeftX[index_2])+'px'
+		},
+		popSort() {
+			for (var i = 0; i < this.rankNodeList.length; i++) {
+				for (var j = i+1; j < this.rankNodeList.length; j++) {
+					if (this.rankNodeList[i]>this.rankNodeList[j]) {
+						// alert('1--', i, j)
+						this.exchange(i, j)
+					}
+				}
+				console.log(this.rankNodeList)
+				setTimeout(()=>{}, 10000);
+			}
 		}
 	}
 }
@@ -87,7 +102,7 @@ export default {
 
 <style>
 .nodes-comps {
-	transition: 0.5s;
+	transition: 0.2s;
 	position: absolute;
 	left: 700px;
 	top: 40px;

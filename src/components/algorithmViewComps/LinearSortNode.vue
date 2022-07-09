@@ -30,6 +30,7 @@ export default {
 
 <style>
 .linear-sort-node {
+	user-select: none;
 	/* border: 1px solid; */
 }
 .table-node-pillar {
