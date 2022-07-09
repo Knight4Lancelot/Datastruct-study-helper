@@ -1,9 +1,10 @@
 <template>
 	<div class="linear-sort-node">
 		<div class="table-node-pillar"
-			:style="{'height':String(pillarH)+'px'}"
-		></div>
-		<div class="linear-table-node" v-text="valElement"></div>
+			:style="{'height':String(pillarH)+'px'}"/>
+		<div class="linear-table-node"
+			v-text="valElement"
+			:style="currentNodeStyle"/>
 	</div>
 </template>
 
@@ -12,12 +13,22 @@ export default {
 	name: 'LinearSortNode',
 	props: {
 		pillarHeight: Number,
-		index: Number,
 		valElement: String
 	},
 	data() {
 		return {
-			pillarH: 0
+			pillarH: 0,
+			currentStatus: 0,
+			statusStyle: [
+				{ 'border' : '3px solid #909399', 'background-color': '#EBEEF5'}, // 未完成
+				{ 'border' : '3px solid #EEB155', 'background-color': '#FEECD2'}, // 当前正在
+				{ 'border' : '3px solid #218EFF', 'background-color': '#E3F0FF'}, // 已完成
+			]
+		}
+	},
+	computed: {
+		currentNodeStyle() {
+			return this.statusStyle[this.currentStatus];
 		}
 	},
 	mounted() {
@@ -34,7 +45,7 @@ export default {
 	/* border: 1px solid; */
 }
 .table-node-pillar {
-	transition: 0.6s;
+	transition: 0.5s;
 	position: inherit;
 	width: 20px;
 	left: 18px;
@@ -44,11 +55,11 @@ export default {
 	background-color: #4CB817;
 }
 .linear-table-node {
+	transition: 0.1s;
 	position: inherit;
 	width: 50px;
 	height: 30px;
 	bottom: 0;
-	border: 3px solid #909399;
 	font-size: 18px;
 	text-align: center;
 	padding-top: 5px;

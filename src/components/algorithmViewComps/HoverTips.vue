@@ -1,15 +1,18 @@
 <template>
 	<div>
 		<div class="tips-node" style="left: 10px;">
-			<div class="sample-node" style="border:3px solid #218EFF;">node</div>
+			<div class="sample-node"
+				style="border:3px solid #218EFF;background-color:#E3F0FF;">node</div>
 			<span style="position:absolute;left:60px;width:200px">已经完成排序的节点</span>
 		</div>
 		<div class="tips-node" style="left: 280px;">
-			<div class="sample-node" style="border:3px solid #EEB155;">node</div>
+			<div class="sample-node"
+				style="border:3px solid #EEB155;background-color:#FEECD2;">node</div>
 			<span style="position:absolute;left:60px;width:200px">当前指针正指向的节点</span>
 		</div>
 		<div class="tips-node" style="left: 560px;">
-			<div class="sample-node" style="border:3px solid #909399;">node</div>
+			<div class="sample-node"
+				style="border:3px solid #909399;background-color:#EBEEF5;">node</div>
 			<span style="position:absolute;left:60px;width:200px">尚未完成排序的节点</span>
 		</div>
 	</div>
