@@ -52,7 +52,7 @@ export default {
 	position: inherit;
 	width: 20px;
 	left: 18px;
-	bottom: 60px;
+	bottom: 55px;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 	background-color: #4CB817;
