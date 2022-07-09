@@ -2,12 +2,14 @@
 	<div >
 		<node class="nodes-comps"
 			v-for="(n, k) in NodeList"
+			ref="nodeComps"
 			:key="k"
 			:pillarHeight="pillarHeights[k]"
 			:index="0"
 			:valElement="String(n)"
-			:style="{'left':String(100+k*60)+'px'}"
+			:style="{'left':String(pillarLeftX[k])+'px'}"
 		/>
+		<button @click="change()">1</button>
 	</div>
 </template>
 
@@ -22,7 +24,8 @@ export default {
 	data() {
 		return {
 			NodeList: [],
-			pillarHeights: []
+			pillarHeights: [],
+			pillarLeftX: []
 		}
 	},
 	props: {
@@ -34,6 +37,7 @@ export default {
 		for (var i = 0; i < this.nodelist.length; i++) {
 			this.NodeList.push(this.nodelist[i]);
 			this.pillarHeights.push(this.nodelist[i]);
+			this.pillarLeftX.push(100+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
@@ -64,12 +68,26 @@ export default {
 				}
 				break;
 		}
+	},
+	methods: {
+		change() {
+			var nodes = this.$refs['nodeComps']
+			var temp = this.pillarLeftX[0]
+			this.pillarLeftX[0] = this.pillarLeftX[1]
+			this.pillarLeftX[1] = temp
+			// setTimeout(()=>{
+			nodes[0].$el.style.left = String(this.pillarLeftX[0])+'px'
+			nodes[1].$el.style.left = String(this.pillarLeftX[1])+'px'
+			// }, 200)
+			console.log(nodes[0].$el.style.left)
+		}
 	}
 }
 </script>
 
 <style>
 .nodes-comps {
+	transition: 0.5s;
 	position: absolute;
 	left: 700px;
 	top: 40px;

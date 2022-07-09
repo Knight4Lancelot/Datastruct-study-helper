@@ -18,7 +18,7 @@ export default {
 	},
 	data() {
 		return {
-			list: [11,-2,1233,5,14,23]
+			list: [11,2,33,5,14,23]
 		}
 	},
 	methods: {
