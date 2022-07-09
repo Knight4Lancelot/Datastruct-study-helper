@@ -6,9 +6,17 @@
 			:key="k"
 			:pillarHeight="pillarHeights[k]"
 			:nodeStatus="0"
+			:initStatus="0"
 			:valElement="String(n)"
-			:style="{'left':String(pillarLeftX[k])+'px'}"
-		/>
+			:style="{'left':String(pillarLeftX[k])+'px'}"/>
+		<node class="nodes-comps"
+			:initStatus="3"
+			:valElement="'指针i'"
+			:style="{'left':String(10)+'px'}"/>
+		<node class="nodes-comps"
+			:initStatus="3"
+			:valElement="'指针j'"
+			:style="{'left':String(70)+'px'}"/>
 		<pointer class="nodes-pointer"
 			ref="pointer-i"
 			:pointerText="'i'" />
@@ -51,7 +59,7 @@ export default {
 			this.initNodeList.push(this.nodelist[i]);
 			this.rankNodeList.push(this.nodelist[i]);
 			this.pillarHeights.push(this.nodelist[i]);
-			this.pillarLeftX.push(120+i*60);
+			this.pillarLeftX.push(140+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
@@ -82,8 +90,8 @@ export default {
 				}
 				break;
 		}
-		this.movePointer('i', 0);
-		this.movePointer('j', 50);
+		this.movePointer('i', 10);
+		this.movePointer('j', 70);
 	},
 	methods: {
 		exchange(index_1, index_2) {
@@ -124,8 +132,8 @@ export default {
 				}
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
-			functions.push({ functionName: 'movePointer', attrs: [ 'i', 0 ], duration: 500 });
-			functions.push({ functionName: 'movePointer', attrs: [ 'j', 50 ], duration: 0 });
+			functions.push({ functionName: 'movePointer', attrs: [ 'i', 10 ], duration: 500 });
+			functions.push({ functionName: 'movePointer', attrs: [ 'j', 70 ], duration: 0 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {

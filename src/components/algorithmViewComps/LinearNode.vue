@@ -13,16 +13,18 @@ export default {
 	name: 'LinearSortNode',
 	props: {
 		pillarHeight: Number,
-		valElement: String
+		valElement: String,
+		initStatus: Number
 	},
 	data() {
 		return {
 			pillarH: 0,
 			currentStatus: 0,
 			statusStyle: [
-				{ 'border' : '3px solid #909399', 'background-color': '#EBEEF5'}, // 未完成
+				{ 'border' : '2px solid #909399', 'background-color': '#F2F6FC'}, // 未完成
 				{ 'border' : '3px solid #EEB155', 'background-color': '#FEECD2'}, // 当前正在
 				{ 'border' : '3px solid #218EFF', 'background-color': '#E3F0FF'}, // 已完成
+				{ 'border' : '2px solid #909399', 'background-color': 'white'} // 无用节点
 			]
 		}
 	},
@@ -33,6 +35,7 @@ export default {
 	},
 	mounted() {
 		this.pillarH = this.pillarHeight;
+		this.currentStatus = this.initStatus;
 	},
 	methods: {
 	}
