@@ -102,7 +102,7 @@ export default {
 			}
 		},
 		changeNodeStatus(index, status) {
-			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status
+			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status;
 		},
 		popSortAll() {
 			var functions = [], i = 0, j = 0;
@@ -124,15 +124,15 @@ export default {
 				}
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
-			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'i', 0 ], duration: 500 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'j', 50 ], duration: 0 });
+			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
 				setTimeout(()=>{
 					this.callUnit(functions[flag++]);
 				}, workTime);
-				workTime+=functions[i].duration
+				workTime+=functions[i].duration;
 			}
 		},
 		callUnit(action) {

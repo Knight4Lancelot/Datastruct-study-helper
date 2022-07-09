@@ -20,8 +20,7 @@
 
 <script>
 export default {
-	name: 'HoverTips',
-	
+	name: 'HoverTips'
 }
 </script>
 
