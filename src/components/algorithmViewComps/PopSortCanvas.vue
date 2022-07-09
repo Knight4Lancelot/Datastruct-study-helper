@@ -9,21 +9,32 @@
 			:valElement="String(n)"
 			:style="{'left':String(pillarLeftX[k])+'px'}"
 		/>
-		<button @click="popSort()">开始冒泡排序</button>
+		<pointer class="nodes-pointer"
+			ref="pointer-i"
+			:pointerText="'i'" />
+		<pointer class="nodes-pointer"
+			ref="pointer-j"
+			:pointerText="'j'" />
+		<button @click="popSortAll()">开始冒泡排序</button>
 	</div>
 </template>
 
 <script>
-import node from './LinearSortNode.vue';
+import node from './LinearNode.vue';
+import pointer from './LinearPointer.vue';
+
+const exchangeDuration = 1;
 
 export default {
 	name: 'PopSortCanvas',
 	components: {
-		node
+		node,
+		pointer
 	},
 	data() {
 		return {
-			rawNodeList: [],
+			initNodeList: [],
+			initPillarLeftX: [],
 			rankNodeList: [],
 			pillarHeights: [],
 			pillarLeftX: []
@@ -36,13 +47,14 @@ export default {
 		var min = this.nodelist[0], max = this.nodelist[0];
 		var di_min = 0, di_max = 0;
 		for (var i = 0; i < this.nodelist.length; i++) {
-			this.rawNodeList.push(this.nodelist[i]);
+			this.initNodeList.push(this.nodelist[i]);
 			this.rankNodeList.push(this.nodelist[i]);
 			this.pillarHeights.push(this.nodelist[i]);
-			this.pillarLeftX.push(100+i*60);
+			this.pillarLeftX.push(120+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
+		this.initPillarLeftX = this.pillarLeftX.concat();
 		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			min = -min;
@@ -70,30 +82,59 @@ export default {
 				}
 				break;
 		}
+		this.movePointer('i', 0);
+		this.movePointer('j', 50);
 	},
 	methods: {
 		exchange(index_1, index_2) {
 			console.log(index_1, index_2);
-			var nodes = this.$refs['nodeComps']
-			var temp = this.pillarLeftX[index_1]
-			this.pillarLeftX[index_1] = this.pillarLeftX[index_2]
-			this.pillarLeftX[index_2] = temp
-			temp = this.rankNodeList[index_1]
-			this.rankNodeList[index_1] = this.rankNodeList[index_2]
-			this.rankNodeList[index_2] = temp
-			nodes[index_1].$el.style.left = String(this.pillarLeftX[index_1])+'px'
-			nodes[index_2].$el.style.left = String(this.pillarLeftX[index_2])+'px'
+			var nodes = this.$refs['nodeComps'];
+			console.log('Before exchange: ', this.pillarLeftX);
+			var temp = this.pillarLeftX[index_1];
+			this.pillarLeftX[index_1] = this.pillarLeftX[index_2];
+			this.pillarLeftX[index_2] = temp;
+			console.log('After exchange: ', this.pillarLeftX, '\n');
+			nodes[index_1].$el.style.left = String(this.pillarLeftX[index_1])+'px';
+			nodes[index_2].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
-		popSort() {
-			for (var i = 0; i < this.rankNodeList.length; i++) {
-				for (var j = i+1; j < this.rankNodeList.length; j++) {
+		movePointer(name, aimLocation) {
+			if (name==='i') {
+				this.$refs['pointer-i'].$el.style.left = String(aimLocation+5)+'px';
+			} else {
+				this.$refs['pointer-j'].$el.style.left = String(aimLocation+5)+'px';
+			}
+		},
+		popSortAll() {
+			var functions = [], i = 0, j = 0;
+			for (i = 0; i < this.rankNodeList.length-1; i++) {
+				functions.push({ functionName: 'movePointer', attrs: [ 'i', this.pillarLeftX[i] ] });
+				for (j = i+1; j < this.rankNodeList.length; j++) {
+					functions.push({ functionName: 'movePointer', attrs: [ 'j', this.pillarLeftX[j] ] });
 					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						// alert('1--', i, j)
-						this.exchange(i, j)
+						var temp = this.rankNodeList[i];
+						this.rankNodeList[i] = this.rankNodeList[j];
+						this.rankNodeList[j] = temp;
+						functions.push({ functionName: 'exchange', attrs: [ i, j ] });
 					}
 				}
-				console.log(this.rankNodeList)
-				setTimeout(()=>{}, 10000);
+			}
+			functions.push({ functionName: 'movePointer', attrs: [ 'i', 0 ] });
+			functions.push({ functionName: 'movePointer', attrs: [ 'j', 50 ] });
+			var flag = 0;
+			for (i = 0; i < functions.length; i++) {
+				setTimeout(()=>{
+					this.callUnit(functions[flag++]);
+				}, i*exchangeDuration*1000);
+			}
+		},
+		callUnit(action) {
+			switch(true) {
+				case action.functionName==="movePointer":
+					this.movePointer(action.attrs[0], action.attrs[1]);
+					break;
+				case action.functionName==="exchange":
+					this.exchange(action.attrs[0], action.attrs[1]);
+					break;
 			}
 		}
 	}
@@ -102,11 +143,17 @@ export default {
 
 <style>
 .nodes-comps {
-	transition: 0.2s;
+	transition: 0.5s;
 	position: absolute;
 	left: 700px;
 	top: 40px;
 	height: 460px;
 	width: 60px;
+}
+.nodes-pointer {
+	transition: 0.5s;
+	position: absolute;
+	width: 60px;
+	top: 510px;
 }
 </style>
