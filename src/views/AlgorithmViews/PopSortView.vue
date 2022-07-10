@@ -1,25 +1,31 @@
 <template>
 	<div>
+		<ListInput v-if="showInputIndex"></ListInput>
 		<HoverTips class="hover-tips"
-			:style="{'left':String(canvasWidth-700)+'px'}" />
+			v-if="!showInputIndex"
+			:style="{'left':String(canvasWidth-580)+'px'}" />
 		<AlgorithmCanvas id="pop-sort-canvas"
+			v-if="!showInputIndex"
 			:nodelist="list"
 			:style="{'width':String(canvasWidth)+'px'}" />
 	</div>
 </template>
 
 <script>
-import AlgorithmCanvas from '../../components/algorithmViewComps/PopSortCanvas.vue'
-import HoverTips from '../../components/algorithmViewComps/HoverTips.vue'
+import AlgorithmCanvas from '../../components/algorithmViewComps/PopSortCanvas.vue';
+import HoverTips from '../../components/algorithmViewComps/HoverTips.vue';
+import ListInput from '../../components/algorithmViewComps/LinearAlgorithmInput.vue';
 
 export default {
 	name: 'PopSortHomeView',
 	components: {
 		AlgorithmCanvas,
-		HoverTips
+		HoverTips,
+		ListInput
 	},
 	data() {
 		return {
+			showInputIndex: true,
 			canvasWidth: 1400,
 			list: [11,2,33,5,14,23]
 		}
@@ -30,8 +36,8 @@ export default {
 	methods: {
 		formCanvasSize() {
 			var appWidth=document.documentElement.clientWidth;
-			this.canvasWidth = appWidth-400;
-			if (this.canvasWidth<1400) { this.canvasWidth=1400; }
+			this.canvasWidth = appWidth-450;
+			if (this.canvasWidth<1250) { this.canvasWidth=1250; }
 		}
 	}
 }
@@ -43,9 +49,8 @@ export default {
 	border: 1px solid #C0C4CC;
 	border-radius: 10px;
 	top: 100px;
-	left: 100px;
-	height: 720px;
-	
+	left: 200px;
+	height: 750px;
 }
 .hover-tips {
 	position: absolute;

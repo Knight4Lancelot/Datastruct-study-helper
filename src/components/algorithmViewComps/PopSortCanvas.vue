@@ -59,7 +59,7 @@ export default {
 			this.initNodeList.push(this.nodelist[i]);
 			this.rankNodeList.push(this.nodelist[i]);
 			this.pillarHeights.push(this.nodelist[i]);
-			this.pillarLeftX.push(140+i*60);
+			this.pillarLeftX.push(200+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
@@ -173,8 +173,7 @@ export default {
 .nodes-comps {
 	transition: 0.5s;
 	position: absolute;
-	left: 700px;
-	top: 40px;
+	top: 50px;
 	height: 560px;
 	width: 60px;
 }
@@ -182,6 +181,6 @@ export default {
 	transition: 0.5s;
 	position: absolute;
 	width: 60px;
-	top: 610px;
+	top: 620px;
 }
 </style>
