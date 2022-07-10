@@ -64,7 +64,7 @@
 
 <script>
 import graphcanvas from '../../components/designViewComps/GraphDesignCanvas.vue'
-import hovermenu from '../../components/HoverMenu.vue'
+import hovermenu from '../../components/DesignHoverMenu.vue'
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';

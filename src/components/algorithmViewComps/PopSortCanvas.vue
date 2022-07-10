@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div>
 		<node class="nodes-comps"
 			v-for="(n, k) in rankNodeList"
 			ref="nodeComps"
@@ -8,7 +8,9 @@
 			:nodeStatus="0"
 			:initStatus="0"
 			:valElement="String(n)"
-			:style="{'left':String(pillarLeftX[k])+'px'}"/>
+			:style="{'left':String(pillarLeftX[k])+'px',
+				'height': String(canvasHeight-170)+'px'
+				}"/>
 		<node class="nodes-comps"
 			:initStatus="3"
 			:valElement="'指针i'"
@@ -41,6 +43,8 @@ export default {
 	},
 	data() {
 		return {
+			canvasHeight: 0,
+			canvasWidth: 0,
 			initNodeList: [],
 			rankNodeList: [],
 			pillarHeights: [],
@@ -52,46 +56,50 @@ export default {
 		nodelist: Array
 	},
 	mounted() {
-		var min = this.nodelist[0], max = this.nodelist[0];
-		var di_min = 0, di_max = 0;
-		for (var i = 0; i < this.nodelist.length; i++) {
-			this.list2Comp_Map.push(i);
-			this.initNodeList.push(this.nodelist[i]);
-			this.rankNodeList.push(this.nodelist[i]);
-			this.pillarHeights.push(this.nodelist[i]);
-			this.pillarLeftX.push(140+i*60);
-			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
-			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
-		}
-		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
-		if (min<0) {
-			min = -min;
-			max += (2*min);
-			for (i = 0; i < this.pillarHeights.length; i++) {
-				this.pillarHeights[i] += (2*min);
+		setTimeout(()=>{
+			this.canvasHeight = this.$parent.canvasHeight;
+			this.canvasWidth = this.$parent.canvasWidth;
+			var min = this.nodelist[0], max = this.nodelist[0];
+			var di_min = 0, di_max = 0;
+			for (var i = 0; i < this.nodelist.length; i++) {
+				this.list2Comp_Map.push(i);
+				this.initNodeList.push(this.nodelist[i]);
+				this.rankNodeList.push(this.nodelist[i]);
+				this.pillarHeights.push(this.nodelist[i]);
+				this.pillarLeftX.push(140+i*60);
+				if (min>this.nodelist[i]) { min=this.nodelist[i]; }
+				if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 			}
-		}
-		di_min = String(min).length;
-		di_max = String(max).length;
-		switch(true) {
-			case di_max-di_min<2:
+			// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
+			if (min<0) {
+				min = -min;
+				max += (2*min);
 				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*this.pillarHeights[i]/max;
+					this.pillarHeights[i] += (2*min);
 				}
-				break;
-			case di_max-di_min<3:
-				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max);
-				}
-				break;
-			default:
-				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max, 3);
-				}
-				break;
-		}
-		this.movePointer('i', 10);
-		this.movePointer('j', 70);
+			}
+			di_min = String(min).length;
+			di_max = String(max).length;
+			switch(true) {
+				case di_max-di_min<2:
+					for (i = 0; i < this.pillarHeights.length; i++) {
+						this.pillarHeights[i] = 400*this.pillarHeights[i]/max;
+					}
+					break;
+				case di_max-di_min<3:
+					for (i = 0; i < this.pillarHeights.length; i++) {
+						this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max);
+					}
+					break;
+				default:
+					for (i = 0; i < this.pillarHeights.length; i++) {
+						this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max, 3);
+					}
+					break;
+			}
+			this.movePointer('i', 10);
+			this.movePointer('j', 70);
+		}, 1)
 	},
 	methods: {
 		exchange(index_1, index_2) {
@@ -175,7 +183,7 @@ export default {
 	position: absolute;
 	left: 700px;
 	top: 40px;
-	height: 460px;
+	/* height: 460px; */
 	width: 60px;
 }
 .nodes-pointer {
