@@ -8,16 +8,27 @@
 			@focus="changeClass(true)"
 			@blur="changeClass(false)"
 			@input="updateListData()"/>
-		<el-button class="commit-user-choice"
-			type="primary"
-			style="left: 60%;"
-			round
-			plain>开始排序</el-button>
-		<el-button class="commit-user-choice"
-			type="warning"
-			style="left: 70%;"
-			round
-			plain>重新输入</el-button>
+		<button class="commit-user-choice"
+			:style="{'background-color':'#ECF5FF',
+				'left':'300px',
+				'color':'#409EFF',
+				'border':'1px solid #409EFF'}">
+			生成预览
+		</button>
+		<button class="commit-user-choice"
+			:style="{'background-color':'#ECF5FF',
+				'left':'500px',
+				'color':'#409EFF',
+				'border':'1px solid #409EFF'}">
+			开始排序
+		</button>
+		<button class="commit-user-choice"
+			:style="{'background-color':'#FFF6E9',
+				'left':'700px',
+				'color':'#FF9B09',
+				'border':'1px solid #FF9B09'}">
+			重新输入
+		</button>
 	</div>
 </template>
 
@@ -51,6 +62,7 @@ export default {
 
 <style>
 #tip-1 {
+	user-select: none;
 	position: absolute;
 	left: 20%;
 	top: 8%;
@@ -58,8 +70,15 @@ export default {
 	color: #606266;
 }
 .commit-user-choice {
+	user-select: none;
+	cursor: pointer;
 	position: absolute;
+	font-size: 16px;
+	height: 40px;
+	width: 120px;
 	top: 390px;
+	border-radius: 20px;
+	font-family: "Microsoft YaHei";
 }
 .input-list {
 	transition: 0.5s;
