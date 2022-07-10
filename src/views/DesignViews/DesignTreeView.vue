@@ -86,7 +86,7 @@
 
 <script>
 import treecanvas from '../../components/designViewComps/TreeDesignCanvas.vue'
-import hovermenu from '../../components/HoverMenu.vue'
+import hovermenu from '../../components/DesignHoverMenu.vue'
 
 import { Queue } from '../../utils/DatastructUtils.js'
 import { init_binarytree_code } from '../../utils/init_binarytree.js'

@@ -89,7 +89,7 @@
 
 <script>
 import linkcanvas from '../../components/designViewComps/LinkDesignCanvas.vue'
-import hovermenu from '../../components/HoverMenu.vue'
+import hovermenu from '../../components/DesignHoverMenu.vue'
 
 import { init_linknode_code } from '../../utils/init_linknode.js'
 
