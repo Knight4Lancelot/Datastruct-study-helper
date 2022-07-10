@@ -54,7 +54,6 @@ export default {
 		updateListData() {
 			this.textarea = this.textarea.replaceAll('，', ',');
 			this.rankList = this.textarea.split(',');
-			console.log(this.rankList)
 		}
 	}
 }
