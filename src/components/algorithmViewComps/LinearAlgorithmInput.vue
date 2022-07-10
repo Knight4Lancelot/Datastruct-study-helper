@@ -3,8 +3,13 @@
 		<span id="tip-1">
 			输入待排序数组：</span>
 		<textarea :class="isTextAreaActive"
+			ref="inputArea"
+			v-model="textarea"
 			@focus="changeClass(true)"
-			@blur="changeClass(false)"/>
+			@blur="changeClass(false)"
+			@input="updateListData()"/>
+		<button class="commit-user-choice">开始排序</button>
+		<button class="commit-user-choice">重新输入</button>
 	</div>
 </template>
 
@@ -13,6 +18,7 @@ export default {
 	name: 'inputPopSortList',
 	data() {
 		return {
+			rankList: [],
 			textAreaClass: false,
 			textarea: ''
 		}
@@ -25,6 +31,11 @@ export default {
 	methods: {
 		changeClass(status) {
 			this.textAreaClass=status;
+		},
+		updateListData() {
+			this.textarea = this.textarea.replaceAll('，', ',');
+			this.rankList = this.textarea.split(',');
+			console.log(this.rankList)
 		}
 	}
 }
