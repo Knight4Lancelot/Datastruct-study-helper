@@ -76,17 +76,17 @@ export default {
 		switch(true) {
 			case di_max-di_min<2:
 				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*this.pillarHeights[i]/max;
+					this.pillarHeights[i] = 500*this.pillarHeights[i]/max;
 				}
 				break;
 			case di_max-di_min<3:
 				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max);
+					this.pillarHeights[i] = 500*Math.sqrt(this.pillarHeights[i]/max);
 				}
 				break;
 			default:
 				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 400*Math.sqrt(this.pillarHeights[i]/max, 3);
+					this.pillarHeights[i] = 500*Math.sqrt(this.pillarHeights[i]/max, 3);
 				}
 				break;
 		}
@@ -175,13 +175,13 @@ export default {
 	position: absolute;
 	left: 700px;
 	top: 40px;
-	height: 460px;
+	height: 560px;
 	width: 60px;
 }
 .nodes-pointer {
 	transition: 0.5s;
 	position: absolute;
 	width: 60px;
-	top: 510px;
+	top: 610px;
 }
 </style>
