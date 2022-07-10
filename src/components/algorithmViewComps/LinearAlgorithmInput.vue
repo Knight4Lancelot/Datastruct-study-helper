@@ -8,8 +8,16 @@
 			@focus="changeClass(true)"
 			@blur="changeClass(false)"
 			@input="updateListData()"/>
-		<button class="commit-user-choice">开始排序</button>
-		<button class="commit-user-choice">重新输入</button>
+		<el-button class="commit-user-choice"
+			type="primary"
+			style="left: 60%;"
+			round
+			plain>开始排序</el-button>
+		<el-button class="commit-user-choice"
+			type="warning"
+			style="left: 70%;"
+			round
+			plain>重新输入</el-button>
 	</div>
 </template>
 
@@ -48,6 +56,10 @@ export default {
 	top: 8%;
 	font-size: 30px;
 	color: #606266;
+}
+.commit-user-choice {
+	position: absolute;
+	top: 390px;
 }
 .input-list {
 	transition: 0.5s;
