@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<ListInput v-if="showInputIndex"
-			ref="inputSource"></ListInput>
+			ref="inputSource" />
+		<HoverMenu />
 		<HoverTips class="hover-tips"
 			v-if="!showInputIndex"
 			:style="{'left':String(canvasWidth-580)+'px'}" />
@@ -16,13 +17,15 @@
 import AlgorithmCanvas from '../../components/algorithmViewComps/PopSortCanvas.vue';
 import HoverTips from '../../components/algorithmViewComps/HoverTips.vue';
 import ListInput from '../../components/algorithmViewComps/LinearAlgorithmInput.vue';
+import HoverMenu from '../../components/LinearAlgorithmHoverMenu.vue'
 
 export default {
 	name: 'PopSortHomeView',
 	components: {
 		AlgorithmCanvas,
 		HoverTips,
-		ListInput
+		ListInput,
+		HoverMenu
 	},
 	data() {
 		return {

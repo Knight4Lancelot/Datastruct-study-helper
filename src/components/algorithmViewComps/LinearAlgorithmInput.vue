@@ -9,6 +9,7 @@
 		<textarea :class="isTextAreaActive"
 			ref="inputArea"
 			v-model="textarea"
+			:placeholder="'示例数组 ：'+defaultList"
 			:style="{'width':String(mainPartWidth)+'px'}"
 			@focus="changeClass(true)"
 			@blur="changeClass(false)"
@@ -78,6 +79,7 @@ export default {
 	},
 	data() {
 		return {
+			defaultList: '10,9,8,7,6,5,4,3,2,1',
 			mainPartWidth: 0,
 			rankList: [],
 			textAreaClass: false,
@@ -128,12 +130,14 @@ export default {
 		},
 		startPopSort() {
 			if (this.textarea.length===0) {
-				this.$message({
-					showClose: true,
-					message: '当前待排序数组为空！',
-					type: 'error',
-				});
-				return;
+				// this.$message({
+				// 	showClose: true,
+				// 	message: '当前待排序数组为空！',
+				// 	type: 'error',
+				// });
+				// return;
+				this.textarea = this.defaultList;
+				this.updateListData();
 			}
 			this.$parent.startPopSort();
 			this.$message({
