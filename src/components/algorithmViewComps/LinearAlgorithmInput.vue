@@ -1,7 +1,11 @@
 <template>
 	<div>
-		<span id="tip-1">
-			输入待排序数组：</span>
+		<span class="head-input-tip"
+			style="top: 60px;">
+			输入待排序数组：
+			<span style="font-size: 16px;">
+				输入的单个节点字符长度不超过5个字符</span>
+		</span>
 		<textarea :class="isTextAreaActive"
 			ref="inputArea"
 			v-model="textarea"
@@ -10,26 +14,37 @@
 			@blur="changeClass(false)"
 			@input="updateListData()"/>
 		<button class="commit-user-choice"
+			:style="{'background-color':'#FFF6E9',
+				'left':String(mainPartWidth-120)+'px',
+				'color':'#FF9B09',
+				'border':'1px solid #FF9B09'}">
+			重新输入
+		</button>
+		<button class="commit-user-choice"
 			:style="{'background-color':'#ECF5FF',
-				'left':'300px',
+				'left':String(mainPartWidth+30)+'px',
 				'color':'#409EFF',
 				'border':'1px solid #409EFF'}">
 			生成预览
 		</button>
 		<button class="commit-user-choice"
 			:style="{'background-color':'#ECF5FF',
-				'left':'500px',
+				'left':String(mainPartWidth+180)+'px',
 				'color':'#409EFF',
 				'border':'1px solid #409EFF'}">
 			开始排序
 		</button>
-		<button class="commit-user-choice"
-			:style="{'background-color':'#FFF6E9',
-				'left':'700px',
-				'color':'#FF9B09',
-				'border':'1px solid #FF9B09'}">
-			重新输入
-		</button>
+		<span class="head-input-tip"
+			style="top: 460px;">
+			数组结构预览
+		</span>
+		<div class="preview-struct-area"
+			:style="{'width':String(mainPartWidth+40)+'px'}">
+			<el-empty
+				v-if="isPreviewEmpty"
+				description="暂无结构生成预览"
+				image-size="60"></el-empty>
+		</div>
 	</div>
 </template>
 
@@ -41,6 +56,7 @@ export default {
 			mainPartWidth: 0,
 			rankList: [],
 			textAreaClass: false,
+			isPreviewEmpty: true,
 			textarea: ''
 		}
 	},
@@ -55,7 +71,7 @@ export default {
 	methods: {
 		formSize() {
 			this.mainPartWidth = document.documentElement.clientWidth-600;
-			
+			if (this.mainPartWidth < 1000) { this.mainPartWidth=1000; }
 		},
 		changeClass(status) {
 			this.textAreaClass=status;
@@ -69,10 +85,9 @@ export default {
 </script>
 
 <style>
-#tip-1 {
+.head-input-tip {
 	user-select: none;
 	position: absolute;
-	top: 60px;
 	left: 250px;
 	font-size: 30px;
 	color: #606266;
@@ -89,7 +104,6 @@ export default {
 	font-family: "Microsoft YaHei";
 }
 .input-list {
-	transition: 0.5s;
 	outline: none;
 	resize: none;
 	position: absolute;
@@ -119,5 +133,15 @@ export default {
 	padding: 20px;
 	font-family: "Microsoft YaHei";
 	border: 2px solid #78BBFF;
+}
+.preview-struct-area {
+	position: absolute;
+	left: 250px;
+	top: 530px;
+	border-radius: 10px;
+	border: 1px solid #C0C4CC;
+	height: 200px;
+	overflow-x: scroll;
+	overflow-y: hidden;
 }
 </style>

@@ -63,9 +63,9 @@ export default {
 	width: 50px;
 	height: 30px;
 	bottom: 0;
-	font-size: 18px;
+	font-size: 16px;
 	text-align: center;
-	padding-top: 5px;
+	padding-top: 7px;
 	border-radius: 10px;
 	color: #535558;
 	font-family: 'Microsoft YaHei';

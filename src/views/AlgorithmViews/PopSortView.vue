@@ -27,7 +27,7 @@ export default {
 		return {
 			showInputIndex: true,
 			canvasWidth: 1400,
-			list: [11,2,33,5,14,23]
+			list: [11111,2,33,5,14,23]
 		}
 	},
 	mounted() {

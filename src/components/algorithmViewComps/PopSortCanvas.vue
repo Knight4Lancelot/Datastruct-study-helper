@@ -53,7 +53,7 @@ export default {
 	},
 	mounted() {
 		var min = this.nodelist[0], max = this.nodelist[0];
-		var di_min = 0, di_max = 0;
+		var digit_difference = 0;
 		for (var i = 0; i < this.nodelist.length; i++) {
 			this.list2Comp_Map.push(i);
 			this.initNodeList.push(this.nodelist[i]);
@@ -71,24 +71,19 @@ export default {
 				this.pillarHeights[i] += (2*min);
 			}
 		}
-		di_min = String(min).length;
-		di_max = String(max).length;
+		digit_difference = String(max-min).length;
 		switch(true) {
-			case di_max-di_min<2:
+			case digit_difference<2:
 				for (i = 0; i < this.pillarHeights.length; i++) {
 					this.pillarHeights[i] = 500*this.pillarHeights[i]/max;
 				}
 				break;
-			case di_max-di_min<3:
+			case digit_difference>=2:
 				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 500*Math.sqrt(this.pillarHeights[i]/max);
+					this.pillarHeights[i] = 500*Math.sqrt(this.pillarHeights[i]/max, digit_difference);
 				}
 				break;
-			default:
-				for (i = 0; i < this.pillarHeights.length; i++) {
-					this.pillarHeights[i] = 500*Math.sqrt(this.pillarHeights[i]/max, 3);
-				}
-				break;
+			default: break;
 		}
 		this.movePointer('i', 10);
 		this.movePointer('j', 70);
