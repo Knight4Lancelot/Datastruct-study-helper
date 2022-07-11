@@ -2,7 +2,7 @@
 	<div>
 		<ListInput v-if="showInputIndex"
 			ref="inputSource" />
-		<HoverMenu />
+		<HoverMenu class="linear-algorithm-hover-menu" />
 		<HoverTips class="hover-tips"
 			v-if="!showInputIndex"
 			:style="{'left':String(canvasWidth-580)+'px'}" />
@@ -31,7 +31,7 @@ export default {
 		return {
 			showInputIndex: true,
 			canvasWidth: 1400,
-			list: [11111,2,33,5,14,23]
+			list: []
 		}
 	},
 	mounted() {
@@ -63,6 +63,13 @@ export default {
 	top: 100px;
 	left: 200px;
 	height: 750px;
+}
+.linear-algorithm-hover-menu {
+	position: fixed;
+	margin-top: 100px;
+	margin-left: 50px;
+	height: 300px;
+	width: 50px;
 }
 .hover-tips {
 	position: absolute;

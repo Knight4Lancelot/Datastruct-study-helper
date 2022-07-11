@@ -1,6 +1,30 @@
 <template>
-	<div>
-		
+	<div style="user-select: none;">
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-s-opportunity"></i>
+			<span class="hover-menu-description">各个功能说明</span>
+		</button>
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-arrow-left"></i>
+			<span class="hover-menu-description">返回数组设计</span>
+		</button>
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-right"></i>
+			<span class="hover-menu-description">完成全部过程</span>
+		</button>
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-d-arrow-right"></i>
+			<span class="hover-menu-description">完成一趟排序</span>
+		</button>
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-arrow-right"></i>
+			<span class="hover-menu-description">完成一次比较</span>
+		</button>
 	</div>
 </template>
 
@@ -8,4 +32,55 @@
 </script>
 
 <style>
+.linear-algorithm-hover-menu-button {
+	transition: 0.3s;
+	position: relative;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 2px solid #C0C4CC;
+	/* border: 2px solid #ffffff; */
+	background-color: #ffffff;
+	margin: 5px;
+	overflow: hidden;
+}
+.linear-algorithm-hover-menu-button:hover {
+	transition: 0.3s;
+	width: 220px;
+	height: 70px;
+	/* border: 2px solid #C0C4CC; */
+	border-bottom-left-radius:50px;
+	border-top-left-radius:50px;
+	border-bottom-right-radius:50px;
+    border-top-right-radius:50px;
+}
+.linear-algorithm-hover-menu-button i {
+	position: absolute;
+	left: 8px;
+	top: 8px;
+	transition: 0.3s;
+	font-size: 20px;
+	color: #6A6A6A;
+}
+.linear-algorithm-hover-menu-button:hover i {
+	transition: 0.3s;
+	left: 20px;
+	top: 17px;
+	font-size: 30px;
+	color: #62AFFF;
+}
+.linear-algorithm-hover-menu-button:hover span {
+	transition: 0.3s;
+	font-size: 19px;
+	color: #62AFFF;
+}
+.hover-menu-description {
+	position: inherit;
+	margin-left: 20px;
+	color: #62AFFF;
+	width: 120px;
+	font-family: 'Microsoft YaHei';
+	font-size: 0px;
+}
 </style>

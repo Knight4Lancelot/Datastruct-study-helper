@@ -2,7 +2,7 @@
 	<div>
 		<span class="head-input-tip"
 			style="top: 60px;">
-			输入待排序数组：
+			输入待排序数组
 			<span style="font-size: 16px;">
 				（ 输入的单个节点字符长度不超过5个字符，且为+、-或数字 ）</span>
 		</span>
