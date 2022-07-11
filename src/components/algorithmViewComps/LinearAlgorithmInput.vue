@@ -5,6 +5,7 @@
 		<textarea :class="isTextAreaActive"
 			ref="inputArea"
 			v-model="textarea"
+			:style="{'width':String(mainPartWidth)+'px'}"
 			@focus="changeClass(true)"
 			@blur="changeClass(false)"
 			@input="updateListData()"/>
@@ -37,6 +38,7 @@ export default {
 	name: 'inputPopSortList',
 	data() {
 		return {
+			mainPartWidth: 0,
 			rankList: [],
 			textAreaClass: false,
 			textarea: ''
@@ -47,7 +49,14 @@ export default {
 			return this.textAreaClass?"input-list-active":"input-list"
 		}
 	},
+	mounted() {
+		this.formSize();
+	},
 	methods: {
+		formSize() {
+			this.mainPartWidth = document.documentElement.clientWidth-600;
+			
+		},
 		changeClass(status) {
 			this.textAreaClass=status;
 		},
@@ -63,8 +72,8 @@ export default {
 #tip-1 {
 	user-select: none;
 	position: absolute;
-	left: 20%;
-	top: 8%;
+	top: 60px;
+	left: 250px;
 	font-size: 30px;
 	color: #606266;
 }
@@ -84,9 +93,8 @@ export default {
 	outline: none;
 	resize: none;
 	position: absolute;
-	top: 15%;
-	left: 20%;
-	width: 55%;
+	top: 120px;
+	left: 250px;
 	max-height: 200px;
 	overflow-y: scroll;
 	height: 200px;
@@ -101,9 +109,8 @@ export default {
 	outline: none;
 	resize: none;
 	position: absolute;
-	top: 15%;
-	left: 20%;
-	width: 55%;
+	top: 120px;
+	left: 250px;
 	max-height: 200px;
 	overflow-y: scroll;
 	height: 200px;
