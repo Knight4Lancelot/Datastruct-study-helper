@@ -14,6 +14,7 @@
 			@blur="changeClass(false)"
 			@input="updateListData()"/>
 		<button class="commit-user-choice"
+			@click="clearInput()"
 			:style="{'background-color':'#FFF6E9',
 				'left':String(mainPartWidth-120)+'px',
 				'color':'#FF9B09',
@@ -89,6 +90,29 @@ export default {
 		updateListData() {
 			this.textarea = this.textarea.replaceAll('，', ',');
 			this.rankList = this.textarea.split(',');
+		},
+		clearInput() {
+			this.$confirm('当前操作会清空输入，是否确定执行？', '确认信息', {
+				distinguishCancelAndClose: true,
+				confirmButtonText: '确定',
+				cancelButtonText: '放弃'
+			})
+			.then(() => {
+				this.textarea = '';
+				this.isPreviewEmpty = true;
+				this.$message({
+					showClose: true,
+					message: '清除成功！',
+					type: 'success'
+				});
+			})
+			.catch(action => {
+				this.$message({
+					showClose: true,
+					message: '取消成功！',
+					type: 'info'
+				});
+			});
 		},
 		showPreview() {
 			this.updateListData();
