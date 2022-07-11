@@ -21,6 +21,7 @@
 			重新输入
 		</button>
 		<button class="commit-user-choice"
+			@click="showPreview()"
 			:style="{'background-color':'#ECF5FF',
 				'left':String(mainPartWidth+30)+'px',
 				'color':'#409EFF',
@@ -43,14 +44,26 @@
 			<el-empty
 				v-if="isPreviewEmpty"
 				description="暂无结构生成预览"
-				image-size="60"></el-empty>
+				:image-size="60"></el-empty>
+			<div v-if="!isPreviewEmpty">
+				<structPreview class="show-nodes"
+					v-for="(n, k) in rankList"
+					:valElement='rankList[k]'
+					:style="{'left':String(40+80*k)+'px'}"
+					:key="k"/>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import structPreview from './StructPreviewCanvas.vue'
+
 export default {
 	name: 'inputPopSortList',
+	components: {
+		structPreview
+	},
 	data() {
 		return {
 			mainPartWidth: 0,
@@ -73,13 +86,17 @@ export default {
 			this.mainPartWidth = document.documentElement.clientWidth-600;
 			if (this.mainPartWidth < 1000) { this.mainPartWidth=1000; }
 		},
-		changeClass(status) {
-			this.textAreaClass=status;
-		},
 		updateListData() {
 			this.textarea = this.textarea.replaceAll('，', ',');
 			this.rankList = this.textarea.split(',');
-		}
+		},
+		showPreview() {
+			this.updateListData();
+			this.isPreviewEmpty = !this.isPreviewEmpty;
+		},
+		changeClass(status) {
+			this.textAreaClass=status;
+		},
 	}
 }
 </script>
@@ -140,8 +157,14 @@ export default {
 	top: 530px;
 	border-radius: 10px;
 	border: 1px solid #C0C4CC;
-	height: 200px;
+	height: 200px; 
 	overflow-x: scroll;
 	overflow-y: hidden;
+}
+.show-nodes {
+	cursor: pointer;
+	position: absolute;
+	width: 70px;
+	height: 200px;
 }
 </style>
