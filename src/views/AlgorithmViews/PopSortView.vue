@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<ListInput v-if="showInputIndex"></ListInput>
+		<ListInput v-if="showInputIndex"
+			ref="inputSource"></ListInput>
 		<HoverTips class="hover-tips"
 			v-if="!showInputIndex"
 			:style="{'left':String(canvasWidth-580)+'px'}" />
@@ -38,6 +39,14 @@ export default {
 			var appWidth=document.documentElement.clientWidth;
 			this.canvasWidth = appWidth-450;
 			if (this.canvasWidth<1250) { this.canvasWidth=1250; }
+		},
+		startPopSort() {
+			while(this.list.length>0) { this.list.pop(); }
+			this.list = this.$refs['inputSource'].rankList.concat();
+			for (var i = 0; i < this.list.length; i++) {
+				this.list[i] = parseInt(this.list[i]);
+			}
+			this.showInputIndex = false;
 		}
 	}
 }

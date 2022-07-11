@@ -65,12 +65,13 @@ export default {
 		}
 		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
-			min = -min;
-			max += (2*min);
+			max -= (2*min);
 			for (i = 0; i < this.pillarHeights.length; i++) {
-				this.pillarHeights[i] += (2*min);
+				this.pillarHeights[i] -= (2*min);
 			}
+			min =- min;
 		}
+		console.log(this.pillarHeights)
 		digit_difference = String(max-min).length;
 		switch(true) {
 			case digit_difference<2:

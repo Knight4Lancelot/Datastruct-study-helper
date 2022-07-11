@@ -4,7 +4,7 @@
 			style="top: 60px;">
 			输入待排序数组：
 			<span style="font-size: 16px;">
-				输入的单个节点字符长度不超过5个字符，且为+、-或数字</span>
+				（ 输入的单个节点字符长度不超过5个字符，且为+、-或数字 ）</span>
 		</span>
 		<textarea :class="isTextAreaActive"
 			ref="inputArea"
@@ -22,7 +22,8 @@
 			重新输入
 		</button>
 		<button class="commit-user-choice"
-			@click="showPreview()"
+			v-if="!isShowPreview"
+			@click="showPreview(true)"
 			:style="{'background-color':'#ECF5FF',
 				'left':String(mainPartWidth+30)+'px',
 				'color':'#409EFF',
@@ -30,6 +31,16 @@
 			生成预览
 		</button>
 		<button class="commit-user-choice"
+			v-if="isShowPreview"
+			@click="showPreview(false)"
+			:style="{'background-color':'#FFF6E9',
+				'left':String(mainPartWidth+30)+'px',
+				'color':'#FF9B09',
+				'border':'1px solid #FF9B09'}">
+			关闭预览
+		</button>
+		<button class="commit-user-choice"
+			@click="startPopSort()"
 			:style="{'background-color':'#ECF5FF',
 				'left':String(mainPartWidth+180)+'px',
 				'color':'#409EFF',
@@ -43,10 +54,10 @@
 		<div class="preview-struct-area"
 			:style="{'width':String(mainPartWidth+40)+'px'}">
 			<el-empty
-				v-if="isPreviewEmpty"
+				v-if="!isShowPreview"
 				description="暂无结构生成预览"
 				:image-size="60"></el-empty>
-			<div v-if="!isPreviewEmpty">
+			<div v-if="isShowPreview">
 				<structPreview class="show-nodes"
 					v-for="(n, k) in rankList"
 					:valElement='rankList[k]'
@@ -70,7 +81,7 @@ export default {
 			mainPartWidth: 0,
 			rankList: [],
 			textAreaClass: false,
-			isPreviewEmpty: true,
+			isShowPreview: false,
 			textarea: ''
 		}
 	},
@@ -99,7 +110,8 @@ export default {
 			})
 			.then(() => {
 				this.textarea = '';
-				this.isPreviewEmpty = true;
+				this.isShowPreview = false;
+				while (this.rankList.length>0) { this.rankList.pop(); }
 				this.$message({
 					showClose: true,
 					message: '清除成功！',
@@ -114,9 +126,25 @@ export default {
 				});
 			});
 		},
-		showPreview() {
+		startPopSort() {
+			if (this.textarea.length===0) {
+				this.$message({
+					showClose: true,
+					message: '当前待排序数组为空！',
+					type: 'error',
+				});
+				return;
+			}
+			this.$parent.startPopSort();
+			this.$message({
+				showClose: true,
+				message: '开始冒泡排序！',
+				type: 'success'
+			});
+		},
+		showPreview(status) {
 			this.updateListData();
-			this.isPreviewEmpty = !this.isPreviewEmpty;
+			this.isShowPreview = status;
 		},
 		changeClass(status) {
 			this.textAreaClass=status;
