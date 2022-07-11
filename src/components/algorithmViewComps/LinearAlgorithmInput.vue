@@ -4,7 +4,7 @@
 			style="top: 60px;">
 			输入待排序数组：
 			<span style="font-size: 16px;">
-				输入的单个节点字符长度不超过5个字符</span>
+				输入的单个节点字符长度不超过5个字符，且为+、-或数字</span>
 		</span>
 		<textarea :class="isTextAreaActive"
 			ref="inputArea"
@@ -162,7 +162,6 @@ export default {
 	overflow-y: hidden;
 }
 .show-nodes {
-	cursor: pointer;
 	position: absolute;
 	width: 70px;
 	height: 200px;

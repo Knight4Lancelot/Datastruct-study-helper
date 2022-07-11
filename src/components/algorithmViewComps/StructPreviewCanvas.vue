@@ -1,13 +1,15 @@
 <template>
 	<div>
 		<div :class="nodeStatus"
+			id="el"
 			v-text="valElement"
 			@mouseenter="showErrorMsg(true)"
-			@mouseleave="showErrorMsg(false)"></div>
+			@mouseleave="showErrorMsg(false)"
+			/>
 		<transition name="errormsg-fade">
 			<div class="error-msg"
 				v-if="isShowErrorMsg"
-				v-text="123">
+				v-text="errorMsg">
 			</div>
 		</transition>
 	</div>
@@ -21,7 +23,8 @@ export default {
 	},
 	data() {
 		return {
-			currentStatus: 0,
+			element: '',
+			RegPattern: new RegExp('^\\+?-?\\d+$'),
 			errorMsg: '',
 			isError: false,
 			isShowErrorMsg: false,
@@ -32,18 +35,34 @@ export default {
 	},
 	computed: {
 		nodeStatus() {
-			switch(this.currentStatus) {
-				case 0: return this.normalNode;
-				case 1: return this.blankNode;
-				case 2: return this.dangerNode;
+			switch(true) {
+				case this.valElement.length===0: // 内容为空
+					return this.blankNode;
+				case this.valElement.length>5: // 长度过长
+				case this.valElement.match(this.RegPattern)===null: // 不符合数字的表达
+					return this.dangerNode;
 				default: break;
 			}
-			return 0;
+			return this.normalNode;
 		}
+	},
+	mounted() {
+		this.element = this.valElement;
 	},
 	methods: {
 		showErrorMsg(status) {
-			this.isShowErrorMsg = status;
+			if (this.valElement.length===0) {
+				this.errorMsg = '当前节点内容为空',
+				this.isShowErrorMsg = status;
+			} else if (this.valElement.length>5) {
+				this.errorMsg = '当前节点内容大于5个字符',
+				this.isShowErrorMsg = status;
+			} else if (this.valElement.match(this.RegPattern)===null) {
+				this.errorMsg = '当前节点内容不合法',
+				this.isShowErrorMsg = status;
+			} else {
+				this.errorMsg = '';			
+			}
 		}
 	}
 }
@@ -51,15 +70,15 @@ export default {
 
 <style>
 .error-msg {
-	position: inherit;
+	position: absolute;
 	height: 20px;
+	left: -65px;
 	top: 115px;
-	left: 10px;
 	border-radius: 5px;
 	border: 1px solid #909399;
 	width: 200px;
 	padding: 10px;
-	text-align: left;
+	text-align: center;
 }
 .preview-node-normal {
 	position: absolute;
@@ -71,8 +90,25 @@ export default {
 	border: 3px solid #909399;
 	text-align: center;
 }
-.preview-node-normal span {
-	font-size: 18px;
+.preview-node-blank {
+	position: absolute;
+	padding-top: 17px;
+	top: 40px;
+	height: 43px;
+	width: 60px;
+	border-radius: 50%;
+	border: 4px solid #E6A23C;
+	text-align: center;
+}
+.preview-node-danger {
+	position: absolute;
+	padding-top: 17px;
+	top: 40px;
+	height: 43px;
+	width: 60px;
+	border-radius: 50%;
+	border: 4px solid #FF7373;
+	text-align: center;
 }
 .errormsg-fade-enter-active, .errormsg-fade-leave-active { 
   transition:all 0.5s;
