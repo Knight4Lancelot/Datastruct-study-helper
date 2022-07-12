@@ -41,7 +41,15 @@
 				<i class="el-icon-arrow-right" />&nbsp;完成一次比较
 			</span>
 			<span class="introduction-text">&nbsp;&nbsp;&nbsp;&nbsp;
-				点击此按钮后，可视化数组会直接开始动画演示直到完成所有节点的排序。
+				点击此按钮后，可视化数组会直接开始动画演示一次比较的动画。
+			</span>
+		</div>
+		<div id="funtion-introduction-6">
+			<span class="introduction-head">
+				<i class="el-icon-bell" />&nbsp;附加提示
+			</span>
+			<span class="introduction-text">&nbsp;&nbsp;&nbsp;&nbsp;
+				以上的演示功能在各自执行过程中且未完成的时候，不允许中间执行其他的演示执行命令。但是其他功能还是可以正常使用。
 			</span>
 		</div>
 		<div id="last-blank-area"></div>
@@ -85,10 +93,16 @@ export default {
 	left: 40px;
 	top: 500px;
 }
+#funtion-introduction-6 {
+	position: inherit;
+	width: 100%;
+	left: 40px;
+	top: 590px;
+}
 #last-blank-area {
 	position: inherit;
 	width: 100%;
-	top: 500px;
+	top: 590px;
 	height: 200px;
 }
 .top-container {

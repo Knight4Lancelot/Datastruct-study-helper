@@ -6,27 +6,48 @@
 			<span class="hover-menu-description">各个功能说明</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.playPopSortAll(); }">
+			@click="()=>{ this.$parent.backToInputIndex(); }">
 			<i class="el-icon-arrow-left"></i>
 			<span class="hover-menu-description">返回数组设计</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent; }">
+			@click="()=>{ this.$parent.refreshPlayer(); }">
 			<i class="el-icon-refresh-right"></i>
 			<span class="hover-menu-description">刷新演示内容</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.playPopSortAll(); }">
+			@click="()=>{ 
+				if (this.$parent.playerMutex) {
+					this.$message({
+						showClose: true,
+						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
+						type: 'error'});
+				} else { this.$parent.playPopSortAll(); }
+			}">
 			<i class="el-icon-right"></i>
 			<span class="hover-menu-description">完成全部过程</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent; }">
+			@click="()=>{
+				if (this.$parent.playerMutex) {
+					this.$message({
+						showClose: true,
+						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
+						type: 'error'});
+				} else { this.$parent.playPopSortAll(); }
+			}">
 			<i class="el-icon-d-arrow-right"></i>
 			<span class="hover-menu-description">完成一趟排序</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent; }">
+			@click="()=>{
+				if (this.$parent.playerMutex) {
+					this.$message({
+						showClose: true,
+						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
+						type: 'error'});
+				} else { this.$parent.playPopSortAll(); }
+			}">
 			<i class="el-icon-arrow-right"></i>
 			<span class="hover-menu-description">完成一次比较</span>
 		</button>

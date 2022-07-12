@@ -1,16 +1,27 @@
 <template>
 	<div>
-		<div class="tips-node" style="left: 10px;">
+		<div class="current-status-show">
+			<div :style="{
+				'position': 'inherit',
+				'height': '20px',
+				'width': '20px',
+				'border-radius': '50%',
+				'background-color': currentStatus.lightColor
+			}" />
+			<span v-text="currentStatus.text"
+				style="margin-left:30px;"/>
+		</div>
+		<div class="tips-node" style="right: 770px;">
 			<div class="sample-node"
 				style="border:3px solid #218EFF;background-color:#E3F0FF;">node</div>
 			<span style="position:absolute;left:60px;width:200px">已经完成排序的节点</span>
 		</div>
-		<div class="tips-node" style="left: 280px;">
+		<div class="tips-node" style="right: 500px;">
 			<div class="sample-node"
 				style="border:3px solid #EEB155;background-color:#FEECD2;">node</div>
 			<span style="position:absolute;left:60px;width:200px">当前指针正指向的节点</span>
 		</div>
-		<div class="tips-node" style="left: 560px;">
+		<div class="tips-node" style="right: 220px;">
 			<div class="sample-node"
 				style="border:3px solid #909399;background-color:#EBEEF5;">node</div>
 			<span style="position:absolute;left:60px;width:200px">尚未完成排序的节点</span>
@@ -20,16 +31,37 @@
 
 <script>
 export default {
-	name: 'HoverTips'
+	name: 'HoverTips',
+	computed: {
+		currentStatus() {
+			return this.$parent.playerMutex ?
+				{ text: '当前正有动画执行中', lightColor: '#FF2C2C' }:
+				{ text: '当前无执行动画', lightColor: '#49DC00' };
+		}
+	}
 }
 </script>
 
 <style>
 .tips-node {
-	position: absolute;
+	position: inherit;
 	font-size: 18px;
 	color: #535558;
 	font-family: 'Microsoft YaHei';	
+}
+.current-status-show {
+	position: inherit;
+	width: 200px;
+}
+.current-status-show span {
+	position: inherit;
+	top: 20px;
+	color: #535558;
+	font-family: 'Microsoft YaHei';	
+}
+.current-status-show div {
+	position: inherit;
+	top: 20px;
 }
 .tips-node span {
 	user-select: none;

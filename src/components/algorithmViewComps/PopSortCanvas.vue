@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div>
 		<node class="nodes-comps"
 			v-for="(n, k) in rankNodeList"
 			ref="nodeComps"
@@ -44,7 +44,8 @@ export default {
 			rankNodeList: [],
 			pillarHeights: [],
 			pillarLeftX: [],
-			list2Comp_Map: []
+			list2Comp_Map: [],
+			Timers: []
 		}
 	},
 	props: {
@@ -70,7 +71,6 @@ export default {
 			}
 			min =- min;
 		}
-		console.log(this.pillarHeights)
 		digit_difference = String(max-min).length;
 		switch(true) {
 			case digit_difference<2:
@@ -87,6 +87,9 @@ export default {
 		}
 		this.movePointer('i', 10);
 		this.movePointer('j', 70);
+	},
+	beforeDestroy() {
+		this.clearAllTimer();
 	},
 	methods: {
 		exchange(index_1, index_2) {
@@ -107,8 +110,12 @@ export default {
 		changeNodeStatus(index, status) {
 			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status;
 		},
+		setMutex(status) {
+			this.$parent.playerMutex = status;
+		},
 		popSortAll() {
 			var functions = [], i = 0, j = 0;
+			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = 0; i < this.rankNodeList.length-1; i++) {
 				functions.push({ functionName: 'movePointer', attrs: [ 'i', this.pillarLeftX[i] ], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
@@ -130,11 +137,14 @@ export default {
 			functions.push({ functionName: 'movePointer', attrs: [ 'i', 10 ], duration: 500 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'j', 70 ], duration: 0 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
-				setTimeout(()=>{
-					this.callUnit(functions[flag++]);
-				}, workTime);
+				this.Timers.push(
+					setTimeout(()=>{
+						this.callUnit(functions[flag++]);
+					}, workTime)
+				);
 				workTime+=functions[i].duration;
 			}
 		},
@@ -146,18 +156,27 @@ export default {
 				changeNodeStatus函数修改节点状态时间：100ms
 				sleep延时函数：200ms
 			*/
-			switch(true) {
-				case action.functionName==="movePointer":
+			switch(action.functionName) {
+				case "movePointer":
 					this.movePointer(action.attrs[0], action.attrs[1]);
 					break;
-				case action.functionName==="exchange":
+				case "exchange":
 					this.exchange(action.attrs[0], action.attrs[1]);
 					break;
-				case action.functionName==="changeNodeStatus":
+				case "changeNodeStatus":
 					this.changeNodeStatus(action.attrs[0], action.attrs[1]);
 					break;
-				case action.functionName==="sleep":
+				case "setMutex":
+					this.setMutex(action.attrs[0]);
+					break;
+				case "sleep":
 				default: break;
+			}
+		},
+		clearAllTimer() {
+			while(this.Timers.length > 0) {
+				clearTimeout(this.Timers[this.Timers.length-1]);
+				this.Timers.pop();
 			}
 		}
 	}

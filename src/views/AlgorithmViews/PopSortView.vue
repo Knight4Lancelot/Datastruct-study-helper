@@ -1,19 +1,27 @@
 <template>
 	<div>
-		<ListInput v-if="showInputIndex"
-			ref="inputSource" />
+		<transition name="input-index-fade">
+			<ListInput v-if="showInputIndex"
+				ref="inputSource" />
+		</transition>
 		<div class="show-helper-cover-layer"
 			v-if="showHelper"/>
-		<HoverMenu class="linear-algorithm-hover-menu"
-			v-if="!showInputIndex"/>
-		<HoverTips class="top-tips"
-			v-if="!showInputIndex"
-			:style="{'left':String(canvasWidth-580)+'px'}" />
-		<AlgorithmCanvas id="pop-sort-canvas"
-			ref="showPlayer"
-			v-if="!showInputIndex"
-			:nodelist="list"
-			:style="{'width':String(canvasWidth)+'px'}" />
+		<transition name="player-index-fade">
+			<HoverMenu class="linear-algorithm-hover-menu"
+				v-if="!showInputIndex"/>
+		</transition>
+		<transition name="player-index-fade">
+			<HoverTips class="top-tips"
+				v-if="!showInputIndex"
+				:style="{'width':String(canvasWidth)+'px'}" />
+		</transition>
+		<transition name="player-index-fade">
+			<AlgorithmCanvas id="pop-sort-canvas"
+				ref="showPlayer"
+				v-if="!showInputIndex"
+				:nodelist="list"
+				:style="{'width':String(canvasWidth)+'px'}" />
+		</transition>
 		<transition name="introduction-fade">
 			<FunctionHelper class="function-introduction"
 				v-if="showHelper"
@@ -46,7 +54,8 @@ export default {
 			showInputIndex: true,
 			showHelper: false,
 			canvasWidth: 1400,
-			list: []
+			list: [],
+			playerMutex: false
 		}
 	},
 	mounted() {
@@ -73,6 +82,17 @@ export default {
 		changeHelperStatus(status) {
 			this.showHelper = status;
 			this.$parent.isHideScrollY(!status);
+		},
+		backToInputIndex() {
+			this.playerMutex = false;
+			this.showInputIndex=true;
+		},
+		refreshPlayer() {
+			this.playerMutex = false;
+			this.showInputIndex=true;
+			this.$nextTick(()=>{
+				this.showInputIndex=false;
+			});
 		}
 	}
 }
@@ -89,7 +109,7 @@ export default {
 }
 .show-helper-cover-layer {
 	position: absolute;
-	z-index: 2;
+	z-index: 3;
 	width: 100%;
 	height: 110%;
 	background-color: #909399;
@@ -101,7 +121,7 @@ export default {
 }
 .linear-algorithm-hover-menu {
 	position: fixed;
-	z-index: 10;
+	z-index: 2;
 	margin-top: 100px;
 	margin-left: 50px;
 	height: 300px;
@@ -110,6 +130,7 @@ export default {
 .top-tips {
 	position: absolute;
 	/* border: 1px solid; */
+	left: 200px;
 	top: 30px;
 	height: 40px;
 	width: 800px;
@@ -125,5 +146,27 @@ export default {
 .introduction-fade-leave-to { 
   opacity:0;
   transform:translateY(-700px);
+}
+.input-index-fade-enter-active, .input-index-fade-leave-active { 
+  transition:all 1s;
+}
+.input-index-fade-enter {
+  opacity:0;
+  transform:translateX(-100px);
+}
+.input-index-fade-leave-to { 
+  opacity:0;
+  transform:translateX(-100px);
+}
+.player-index-fade-enter-active, .player-index-fade-leave-active { 
+  transition:all 1s;
+}
+.player-index-fade-enter {
+  opacity:0;
+  transform:translateX(1000px);
+}
+.player-index-fade-leave-to { 
+  opacity:0;
+  transform:translateX(1000px);
 }
 </style>
