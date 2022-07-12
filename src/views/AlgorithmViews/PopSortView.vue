@@ -2,14 +2,20 @@
 	<div>
 		<ListInput v-if="showInputIndex"
 			ref="inputSource" />
-		<HoverMenu class="linear-algorithm-hover-menu" />
-		<HoverTips class="hover-tips"
+		<div class="show-helper-cover-layer"
+			v-if="showHelper"/>
+		<HoverMenu class="linear-algorithm-hover-menu"
+			v-if="!showInputIndex"/>
+		<HoverTips class="top-tips"
 			v-if="!showInputIndex"
 			:style="{'left':String(canvasWidth-580)+'px'}" />
 		<AlgorithmCanvas id="pop-sort-canvas"
 			v-if="!showInputIndex"
 			:nodelist="list"
 			:style="{'width':String(canvasWidth)+'px'}" />
+		<FunctionHelper class="function-introduction"
+			v-if="showHelper"
+			:style="{'left':String((appWidth-1000)/2-40)+'px'}"/>
 	</div>
 </template>
 
@@ -17,7 +23,8 @@
 import AlgorithmCanvas from '../../components/algorithmViewComps/PopSortCanvas.vue';
 import HoverTips from '../../components/algorithmViewComps/HoverTips.vue';
 import ListInput from '../../components/algorithmViewComps/LinearAlgorithmInput.vue';
-import HoverMenu from '../../components/LinearAlgorithmHoverMenu.vue'
+import HoverMenu from '../../components/LinearAlgorithmHoverMenu.vue';
+import FunctionHelper from '../../components/FunctionHelper.vue';
 
 export default {
 	name: 'PopSortHomeView',
@@ -25,11 +32,14 @@ export default {
 		AlgorithmCanvas,
 		HoverTips,
 		ListInput,
-		HoverMenu
+		HoverMenu,
+		FunctionHelper
 	},
 	data() {
 		return {
+			appWidth: 0,
 			showInputIndex: true,
+			showHelper: false,
 			canvasWidth: 1400,
 			list: []
 		}
@@ -39,8 +49,8 @@ export default {
 	},
 	methods: {
 		formCanvasSize() {
-			var appWidth=document.documentElement.clientWidth;
-			this.canvasWidth = appWidth-450;
+			this.appWidth=document.documentElement.clientWidth;
+			this.canvasWidth = this.appWidth-450;
 			if (this.canvasWidth<1250) { this.canvasWidth=1250; }
 		},
 		startPopSort() {
@@ -50,6 +60,9 @@ export default {
 				this.list[i] = parseInt(this.list[i]);
 			}
 			this.showInputIndex = false;
+		},
+		changeHelperStatus(status) {
+			this.showHelper = status;
 		}
 	}
 }
@@ -64,14 +77,26 @@ export default {
 	left: 200px;
 	height: 750px;
 }
+.show-helper-cover-layer {
+	position: absolute;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	background-color: burlywood;
+}
+.function-introduction {
+	position: absolute;
+	z-index: 5;
+}
 .linear-algorithm-hover-menu {
 	position: fixed;
+	z-index: 10;
 	margin-top: 100px;
 	margin-left: 50px;
 	height: 300px;
 	width: 50px;
 }
-.hover-tips {
+.top-tips {
 	position: absolute;
 	/* border: 1px solid; */
 	top: 30px;

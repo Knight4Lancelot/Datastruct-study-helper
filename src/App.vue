@@ -228,7 +228,6 @@ export default {
 }
 .cover-layer {
 	position: inherit;
-	
 	background-color: #909399;
 	z-index: 1;
 	opacity: 0.35;

@@ -1,7 +1,7 @@
 <template>
 	<div style="user-select: none;">
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent.changeHelperStatus(true); }">
 			<i class="el-icon-s-opportunity"></i>
 			<span class="hover-menu-description">各个功能说明</span>
 		</button>
@@ -9,6 +9,11 @@
 			@click="()=>{ this.$parent.jumpTo(2); }">
 			<i class="el-icon-arrow-left"></i>
 			<span class="hover-menu-description">返回数组设计</span>
+		</button>
+		<button class="linear-algorithm-hover-menu-button"
+			@click="()=>{ this.$parent.jumpTo(2); }">
+			<i class="el-icon-refresh-right"></i>
+			<span class="hover-menu-description">刷新演示内容</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
 			@click="()=>{ this.$parent.jumpTo(2); }">
