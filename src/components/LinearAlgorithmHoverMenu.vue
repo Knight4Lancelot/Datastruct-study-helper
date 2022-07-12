@@ -11,7 +11,7 @@
 			<span class="hover-menu-description">返回数组设计</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent; }">
 			<i class="el-icon-refresh-right"></i>
 			<span class="hover-menu-description">刷新演示内容</span>
 		</button>
@@ -21,12 +21,12 @@
 			<span class="hover-menu-description">完成全部过程</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent; }">
 			<i class="el-icon-d-arrow-right"></i>
 			<span class="hover-menu-description">完成一趟排序</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent; }">
 			<i class="el-icon-arrow-right"></i>
 			<span class="hover-menu-description">完成一次比较</span>
 		</button>
