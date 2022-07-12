@@ -6,7 +6,7 @@
 			<span class="hover-menu-description">各个功能说明</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent.playPopSortAll(); }">
 			<i class="el-icon-arrow-left"></i>
 			<span class="hover-menu-description">返回数组设计</span>
 		</button>
@@ -16,7 +16,7 @@
 			<span class="hover-menu-description">刷新演示内容</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{ this.$parent.jumpTo(2); }">
+			@click="()=>{ this.$parent.playPopSortAll(); }">
 			<i class="el-icon-right"></i>
 			<span class="hover-menu-description">完成全部过程</span>
 		</button>

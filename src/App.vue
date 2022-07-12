@@ -66,10 +66,7 @@
 			</div>
 		</div>
 		<div class="main-body-show"
-			:style="{'opacity':mainOpacity,'overflow-y':'scroll',
-					'width':String(appWidth-80)+'px',
-					'height': String(appHeight-80)+'px',
-					'max-height': String(appHeight-80)+'px'}">
+			:style="mainBodyShowStyle">
 			<transition name="main-view-show">
 				<router-view ref='target-view'></router-view>				
 			</transition>
@@ -101,6 +98,7 @@ export default {
 			mainOpacity: 1,
 			showHeadWord: false,
 			headWordSize: 0.1,
+			mainBodyShowStyle: null,
 			showDesignHidden: false, // 控制设计数据结构的隐藏组件是否显示
 			showMakeHidden: false, // 控制生成代码的隐藏组件是否显示
 			showViewAlgorithm: false, // 控制可视化算法的隐藏组件是否显示
@@ -112,6 +110,11 @@ export default {
 	},
 	mounted() {
 		this.formSize()
+		this.mainBodyShowStyle = {'opacity':this.mainOpacity,
+					'overflow-y':'scroll',
+					'width':String(this.appWidth-80)+'px',
+					'height': String(this.appHeight-80)+'px',
+					'max-height': String(this.appHeight-80)+'px'};
 		window.onresize = () => {
 			if(!this.timer) {
 				this.timer = true
@@ -128,6 +131,9 @@ export default {
 		}	
 	},
 	methods: {
+		isHideScrollY(status) {
+			this.mainBodyShowStyle['overflow-y'] = status ? 'scroll':'hidden';
+		},
 		formSize() {
 			this.appHeight = document.documentElement.clientHeight
 			this.appWidth = document.documentElement.clientWidth

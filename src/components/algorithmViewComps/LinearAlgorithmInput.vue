@@ -139,7 +139,7 @@ export default {
 				this.textarea = this.defaultList;
 				this.updateListData();
 			}
-			this.$parent.startPopSort();
+			this.$parent.openPopSort();
 			this.$message({
 				showClose: true,
 				message: '开始冒泡排序！',

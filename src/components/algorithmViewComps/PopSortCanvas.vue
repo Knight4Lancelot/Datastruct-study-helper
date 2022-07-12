@@ -23,7 +23,6 @@
 		<pointer class="nodes-pointer"
 			ref="pointer-j"
 			:pointerText="'j'" />
-		<button @click="popSortAll()">开始冒泡排序</button>
 	</div>
 </template>
 

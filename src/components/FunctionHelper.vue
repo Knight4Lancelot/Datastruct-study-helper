@@ -1,7 +1,7 @@
 <template>
 	<div class="top-container">
 		<button @click="()=>{ this.$parent.changeHelperStatus(false); }"
-			style="position:inherit;background-color:#FBFBFB;border:none;">
+			style="position:absolute;background-color:#FBFBFB;border:none;">
 			<i class="el-icon-close" style="font-size:30px;color:#909399;cursor:pointer;"></i>
 		</button>
 		<div id="funtion-introduction-1">
