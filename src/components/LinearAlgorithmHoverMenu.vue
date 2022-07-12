@@ -34,20 +34,13 @@
 						showClose: true,
 						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
 						type: 'error'});
-				} else { this.$parent.playPopSortAll(); }
+				} else { this.$parent.playPopSortOneTime(); }
 			}">
 			<i class="el-icon-arrow-right"></i>
 			<span class="hover-menu-description">完成一趟比较</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
-			@click="()=>{
-				if (this.$parent.playerMutex) {
-					this.$message({
-						showClose: true,
-						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
-						type: 'error'});
-				} else { this.$parent.playPopSortAll(); }
-			}">
+			@click="()=>{ this.$parent.ShowFinalList(); }">
 			<i class="el-icon-d-arrow-right"></i>
 			<span class="hover-menu-description">直接展示结果</span>
 		</button>

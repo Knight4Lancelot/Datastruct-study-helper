@@ -117,6 +117,12 @@ export default {
 			this.$nextTick(()=>{
 				this.showInputIndex=false;
 			});
+		},
+		playPopSortOneTime() {
+			
+		},
+		ShowFinalList() {
+			
 		}
 	}
 }

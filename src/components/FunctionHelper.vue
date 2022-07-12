@@ -30,7 +30,7 @@
 		</div>
 		<div id="funtion-introduction-4">
 			<span class="introduction-head">
-				<i class="el-icon-d-arrow-right" />&nbsp;完成一趟排序
+				<i class="el-icon-arrow-right" />&nbsp;完成一趟排序
 			</span>
 			<span class="introduction-text">&nbsp;&nbsp;&nbsp;&nbsp;
 				点击此按钮后，可视化数组动画演示一趟排序的过程，不会直接演示所有的过程，后续每一趟需要用户继续点击各种执行功能按钮进行。
@@ -38,10 +38,10 @@
 		</div>
 		<div id="funtion-introduction-5">
 			<span class="introduction-head">
-				<i class="el-icon-arrow-right" />&nbsp;完成一次比较
+				<i class="el-icon-d-arrow-right" />&nbsp;直接展示结果
 			</span>
 			<span class="introduction-text">&nbsp;&nbsp;&nbsp;&nbsp;
-				点击此按钮后，可视化数组会直接开始动画演示一次比较的动画。
+				点击此按钮后，页面会跳过动画直接展示排序后的数组结果。
 			</span>
 		</div>
 		<div id="funtion-introduction-6">
