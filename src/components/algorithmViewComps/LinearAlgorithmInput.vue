@@ -130,21 +130,10 @@ export default {
 		},
 		startPopSort() {
 			if (this.textarea.length===0) {
-				// this.$message({
-				// 	showClose: true,
-				// 	message: '当前待排序数组为空！',
-				// 	type: 'error',
-				// });
-				// return;
 				this.textarea = this.defaultList;
 				this.updateListData();
 			}
 			this.$parent.openPopSort();
-			this.$message({
-				showClose: true,
-				message: '开始冒泡排序！',
-				type: 'success'
-			});
 		},
 		showPreview(status) {
 			this.updateListData();

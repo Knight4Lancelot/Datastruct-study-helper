@@ -24,7 +24,7 @@
 						type: 'error'});
 				} else { this.$parent.playPopSortAll(); }
 			}">
-			<i class="el-icon-right"></i>
+			<i class="el-icon-caret-right"></i>
 			<span class="hover-menu-description">完成全部过程</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
@@ -36,8 +36,8 @@
 						type: 'error'});
 				} else { this.$parent.playPopSortAll(); }
 			}">
-			<i class="el-icon-d-arrow-right"></i>
-			<span class="hover-menu-description">完成一趟排序</span>
+			<i class="el-icon-arrow-right"></i>
+			<span class="hover-menu-description">完成一趟比较</span>
 		</button>
 		<button class="linear-algorithm-hover-menu-button"
 			@click="()=>{
@@ -48,8 +48,8 @@
 						type: 'error'});
 				} else { this.$parent.playPopSortAll(); }
 			}">
-			<i class="el-icon-arrow-right"></i>
-			<span class="hover-menu-description">完成一次比较</span>
+			<i class="el-icon-d-arrow-right"></i>
+			<span class="hover-menu-description">直接展示结果</span>
 		</button>
 	</div>
 </template>

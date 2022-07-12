@@ -55,7 +55,8 @@ export default {
 			showHelper: false,
 			canvasWidth: 1400,
 			list: [],
-			playerMutex: false
+			playerMutex: false,
+			RegPattern: new RegExp('^\\+?-?\\d+$')
 		}
 	},
 	mounted() {
@@ -69,11 +70,34 @@ export default {
 			if (this.canvasWidth<1250) { this.canvasWidth=1250; }
 		},
 		openPopSort() {
+			var isDataLegal = true;
+			var i = 0;
+			var list = this.$refs['inputSource'].rankList;
+			for (i = 0; i < list.length; i++) {
+				if (list[i].length===0 ||
+					list[i].length>5 ||
+					list[i].match(this.RegPattern)===null) {
+						isDataLegal = false;
+						break;
+					}
+			}
+			if (!isDataLegal) {
+				this.$message({
+					showClose: true,
+					message: '当前输入存在不合法数据，具体可以打开预览进行查看',
+					type: 'error'});
+				return;
+			}
 			while(this.list.length>0) { this.list.pop(); }
 			this.list = this.$refs['inputSource'].rankList.concat();
-			for (var i = 0; i < this.list.length; i++) {
+			for (i = 0; i < this.list.length; i++) {
 				this.list[i] = parseInt(this.list[i]);
 			}
+			this.$message({
+				showClose: true,
+				message: '开始冒泡排序！',
+				type: 'success'
+			});
 			this.showInputIndex = false;
 		},
 		playPopSortAll() {
