@@ -138,6 +138,7 @@ export default {
 			functions.push({ functionName: 'movePointer', attrs: [ 'j', 70 ], duration: 0 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
+			functions.push({ functionName: 'endTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
 				this.Timers.push(
@@ -168,6 +169,9 @@ export default {
 					break;
 				case "setMutex":
 					this.setMutex(action.attrs[0]);
+					break;
+				case "endTip":
+					this.$alert('动画执行完毕！', '提示', { confirmButtonText: '确定' });
 					break;
 				case "sleep":
 				default: break;
