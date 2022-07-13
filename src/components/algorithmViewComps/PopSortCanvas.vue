@@ -202,9 +202,19 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			var functions = [], i = 0, j = 0;
-			
-			for (j = i+1; j < this.rankNodeList.length; j++) {
+			var functions = [], i, j;
+			if (this.pointerI===this.rankNodeList.length - 2) {
+				this.isEnded = true;
+				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
+				while(this.Timers.length > 0) { this.Timers.pop(); }
+				this.pointerI = -1;
+				this.pointerJ = -1;
+			}
+			i = (this.pointerI++)+1;
+			this.pointerJ = this.pointerI + 1;
+			functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
+			for (j = this.pointerJ; j < this.rankNodeList.length; j++) {
 				functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
 				if (this.rankNodeList[i]>this.rankNodeList[j]) {
