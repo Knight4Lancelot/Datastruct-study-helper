@@ -203,7 +203,19 @@ export default {
 				return;
 			}
 			var functions = [], i = 0, j = 0;
-			functions.push({ functionName: 'endTip', attrs: [], duration: 0 });
+			
+			for (j = i+1; j < this.rankNodeList.length; j++) {
+				functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
+				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
+				if (this.rankNodeList[i]>this.rankNodeList[j]) {
+					functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
+				} else {
+					functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
+				}
+				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
+			}
+			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
 				this.Timers.push(
@@ -278,6 +290,7 @@ export default {
 				case "endTip":
 					this.isEnded = true;
 					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
+					while(this.Timers.length > 0) { this.Timers.pop(); }
 					break;
 				case "sleep":
 				default: break;
