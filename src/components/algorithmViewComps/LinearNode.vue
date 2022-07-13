@@ -3,7 +3,7 @@
 		<div class="table-node-pillar"
 			:style="{'height':String(pillarH)+'px'}"/>
 		<div class="linear-table-node"
-			v-text="valElement"
+			v-text="showElement"
 			:style="currentNodeStyle"/>
 	</div>
 </template>
@@ -18,6 +18,7 @@ export default {
 	},
 	data() {
 		return {
+			showElement: '',
 			pillarH: 0,
 			currentStatus: 0,
 			statusStyle: [
@@ -34,6 +35,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.showElement = this.valElement;
 		this.pillarH = this.pillarHeight;
 		this.currentStatus = this.initStatus;
 	},

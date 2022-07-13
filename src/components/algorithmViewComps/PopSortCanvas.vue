@@ -202,16 +202,24 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			var functions = [], i, j;
 			if (this.pointerI===this.rankNodeList.length - 2) {
 				this.isEnded = true;
 				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
+				var nodes = this.$refs['nodeComps'];
+				for (i = 0; i < nodes.length; i++) {
+					nodes[i].currentStatus = 2;
+				}
 				while(this.Timers.length > 0) { this.Timers.pop(); }
 				this.pointerI = -1;
 				this.pointerJ = -1;
+				this.movePointer('i', -1);
+				this.movePointer('j', -1);
+				return;
 			}
+			var functions = [], i, j;
 			i = (this.pointerI++)+1;
 			this.pointerJ = this.pointerI + 1;
+			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
 			for (j = this.pointerJ; j < this.rankNodeList.length; j++) {
@@ -225,6 +233,8 @@ export default {
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
 			}
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
+			functions.push({ functionName: 'endOnceTip', attrs: [], duration: 0 });
 			
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
@@ -244,9 +254,23 @@ export default {
 					type: 'warning'});
 				return;
 			}
+			if (this.pointerI===this.rankNodeList.length - 2) {
+				this.isEnded = true;
+				var nodes = this.$refs['nodeComps'];
+				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
+				for (i = 0; i < nodes.length; i++) {
+					nodes[i].currentStatus = 2;
+				}
+				while(this.Timers.length > 0) { this.Timers.pop(); }
+				this.pointerI = -1;
+				this.pointerJ = -1;
+				this.movePointer('i', -1);
+				this.movePointer('j', -1);
+				return;
+			}
 			var functions = [], i = 0, j = 0;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = 0; i < this.rankNodeList.length-1; i++) {
+			for (i = this.pointerI+1; i < this.rankNodeList.length-1; i++) {
 				functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				for (j = i+1; j < this.rankNodeList.length; j++) {
@@ -265,7 +289,7 @@ export default {
 			functions.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
-			functions.push({ functionName: 'endTip', attrs: [], duration: 0 });
+			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
 				this.Timers.push(
@@ -297,9 +321,13 @@ export default {
 				case "setMutex":
 					this.setMutex(action.attrs[0]);
 					break;
-				case "endTip":
+				case "endAllTip":
 					this.isEnded = true;
 					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
+					while(this.Timers.length > 0) { this.Timers.pop(); }
+					break;
+				case "endOnceTip":
+					this.$alert('该趟次排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 					while(this.Timers.length > 0) { this.Timers.pop(); }
 					break;
 				case "sleep":
