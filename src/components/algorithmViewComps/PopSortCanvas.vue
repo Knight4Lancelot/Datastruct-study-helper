@@ -308,7 +308,7 @@ export default {
 				changeNodeStatus函数修改节点状态时间：100ms
 				sleep延时函数：200ms
 			*/
-			switch(action.functionName) {
+			switch(action.functionName) { 
 				case "movePointer":
 					this.movePointer(action.attrs[0], action.attrs[1]);
 					break;
