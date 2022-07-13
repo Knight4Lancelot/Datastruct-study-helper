@@ -5,6 +5,7 @@
 				ref="inputSource" />
 		</transition>
 		<div class="show-helper-cover-layer"
+			:style="{'width':String(appWidth)+'px'}"
 			v-if="showHelper"/>
 		<transition name="player-index-fade">
 			<HoverMenu class="linear-algorithm-hover-menu"
@@ -25,7 +26,7 @@
 		<transition name="introduction-fade">
 			<FunctionHelper class="function-introduction"
 				v-if="showHelper"
-				:style="{'left':String((appWidth-1000)/2-40)+'px',
+				:style="{'left':String(((appWidth-1000)/2-40)<200 ? 200 : ((appWidth-1000)/2-40))+'px',
 					'top':String((appHeight-500)/2-50)+'px'}"/>
 		</transition>
 	</div>
@@ -61,6 +62,11 @@ export default {
 	},
 	mounted() {
 		this.formCanvasSize();
+	},
+	computed: {
+		// calculateIntroductionLeft() {
+		// 	return ((appWidth-1000)/2-40)<200 ? 200 : ((appWidth-1000)/2-40);
+		// }
 	},
 	methods: {
 		formCanvasSize() {
@@ -102,7 +108,7 @@ export default {
 		},
 		changeHelperStatus(status) {
 			this.showHelper = status;
-			this.$parent.isHideScrollY(!status);
+			this.$parent.isHideScroll(!status);
 		},
 		backToInputIndex() {
 			this.playerMutex = false;
@@ -140,7 +146,6 @@ export default {
 .show-helper-cover-layer {
 	position: absolute;
 	z-index: 3;
-	width: 100%;
 	height: 110%;
 	background-color: #909399;
 	opacity: 0.35;

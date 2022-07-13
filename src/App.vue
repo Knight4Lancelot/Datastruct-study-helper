@@ -131,8 +131,9 @@ export default {
 		}	
 	},
 	methods: {
-		isHideScrollY(status) {
+		isHideScroll(status) {
 			this.mainBodyShowStyle['overflow-y'] = status ? 'scroll':'hidden';
+			// this.mainBodyShowStyle['overflow-x'] = status ? 'scroll':'hidden';
 		},
 		formSize() {
 			this.appHeight = document.documentElement.clientHeight
