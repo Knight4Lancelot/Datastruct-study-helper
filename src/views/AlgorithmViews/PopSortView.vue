@@ -119,10 +119,10 @@ export default {
 			});
 		},
 		playPopSortOneTime() {
-			
+			this.$refs['showPlayer'].popSortOneTime();
 		},
 		ShowFinalList() {
-			
+			this.$refs['showPlayer'].showFinalList();
 		}
 	}
 }

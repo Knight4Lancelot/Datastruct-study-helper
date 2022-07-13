@@ -1,5 +1,20 @@
 <template>
 	<div>
+		<div class="show-current-pointers"
+			style="margin-left:10px;width: 200px;">
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:20px;">
+				当前指针 i 指向：</div>
+			<div style="color:#409EFF;"
+				v-text="pointerI===-1?'指针存放处':'数组节点 '+String(pointerI)" />
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
+				当前指针 j 指向：</div>
+			<div style="color:#409EFF;"
+				v-text="pointerJ===-1?'指针存放处':'数组节点 '+String(pointerJ)" />
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
+				比较结果：</div>
+			<div style="color:#409EFF;"
+				v-text="comparePointer_I_J" />
+		</div>
 		<node class="nodes-comps"
 			v-for="(n, k) in rankNodeList"
 			ref="nodeComps"
@@ -40,11 +55,17 @@ export default {
 	},
 	data() {
 		return {
+			pointerI: -1,
+			pointerJ: -1,
 			initNodeList: [],
 			rankNodeList: [],
 			pillarHeights: [],
 			pillarLeftX: [],
 			list2Comp_Map: [],
+			sortTimeInfo: {
+				time: 0,
+				isEnded: false
+			},
 			Timers: []
 		}
 	},
@@ -85,26 +106,53 @@ export default {
 				break;
 			default: break;
 		}
-		this.movePointer('i', 10);
-		this.movePointer('j', 70);
+		this.movePointer('i', -1);
+		this.movePointer('j', -1);
 	},
 	beforeDestroy() {
 		this.clearAllTimer();
 	},
+	computed: {
+		comparePointer_I_J() {
+			switch(true) {
+				case this.pointerI===-1&&this.pointerJ===-1:
+					return '均在指针存放处'
+				case this.pointerI===-1&&this.pointerJ!==-1:
+				case this.pointerI!==-1&&this.pointerJ===-1:
+					return '当前无法比较'
+				default:
+					return this.rankNodeList[this.pointerI]>this.rankNodeList[this.pointerJ]?
+						'节点 i > 节点 j' : '节点 i < 节点 j';
+			}
+		}
+	},
 	methods: {
+		refreshList2CompMap() {
+			while (this.list2Comp_Map.length>0) { this.list2Comp_Map.pop(); }
+			for (var i = 0; i < this.initNodeList.length; i++) {
+				this.list2Comp_Map.push(i);
+			}
+		},
 		exchange(index_1, index_2) {
 			var nodes = this.$refs['nodeComps'];
 			var temp = this.list2Comp_Map[index_1];
 			this.list2Comp_Map[index_1] = this.list2Comp_Map[index_2];
 			this.list2Comp_Map[index_2] = temp;
+			temp = this.rankNodeList[index_1];
+			this.rankNodeList[index_1] = this.rankNodeList[index_2];
+			this.rankNodeList[index_2] = temp;
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
 		movePointer(name, aimLocation) {
 			if (name==='i') {
-				this.$refs['pointer-i'].$el.style.left = String(aimLocation+5)+'px';
+				if (aimLocation === -1) { this.$refs['pointer-i'].$el.style.left = '15px'; }
+				else { this.$refs['pointer-i'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
+				this.pointerI = aimLocation;
 			} else {
-				this.$refs['pointer-j'].$el.style.left = String(aimLocation+5)+'px';
+				if (aimLocation === -1) { this.$refs['pointer-j'].$el.style.left = '75px'; }
+				else { this.$refs['pointer-j'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
+				this.pointerJ = aimLocation;
 			}
 		},
 		changeNodeStatus(index, status) {
@@ -113,19 +161,62 @@ export default {
 		setMutex(status) {
 			this.$parent.playerMutex = status;
 		},
+		showFinalList() {
+			if (this.sortTimeInfo.isEnded) {
+				this.$message({
+					showClose: true,
+					message: '当前数组已处于完成排序状态，若有必要请刷新内容后重试',
+					type: 'warning'});
+				return;
+			}
+			if (this.$parent.playerMutex) {
+				this.clearAllTimer();
+				this.$parent.playerMutex=false;
+			}
+			var temp, i, j;
+			var nodes = this.$refs['nodeComps'];
+			this.movePointer('i', -1);
+			this.movePointer('j', -1);
+			for (i = 0; i < nodes.length; i++) {
+				nodes[i].currentStatus = 2;
+			}
+			for (i = 0; i < this.rankNodeList.length-1; i++) {
+				for (j = i+1; j < this.rankNodeList.length; j++) {
+					if (this.rankNodeList[i]>this.rankNodeList[j]) {
+						temp = this.list2Comp_Map[i];
+						this.list2Comp_Map[i] = this.list2Comp_Map[j];
+						this.list2Comp_Map[j] = temp;
+						temp = this.rankNodeList[i];
+						this.rankNodeList[i] = this.rankNodeList[j];
+						this.rankNodeList[j] = temp;
+					}
+				}
+			}
+			for (i = 0; i < this.rankNodeList.length; i++) {
+				nodes[this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
+			}
+			this.sortTimeInfo.isEnded = true;
+		},
+		popSortOneTime() {
+			
+		},
 		popSortAll() {
+			if (this.sortTimeInfo.isEnded) {
+				this.$message({
+					showClose: true,
+					message: '当前数组已处于完成排序状态，若有必要请刷新内容后重试',
+					type: 'warning'});
+				return;
+			}
 			var functions = [], i = 0, j = 0;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = 0; i < this.rankNodeList.length-1; i++) {
-				functions.push({ functionName: 'movePointer', attrs: [ 'i', this.pillarLeftX[i] ], duration: 500 });
+				functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				for (j = i+1; j < this.rankNodeList.length; j++) {
-					functions.push({ functionName: 'movePointer', attrs: [ 'j', this.pillarLeftX[j]], duration: 500 });
+					functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
 					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
 					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						var temp = this.rankNodeList[i];
-						this.rankNodeList[i] = this.rankNodeList[j];
-						this.rankNodeList[j] = temp;
 						functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 					} else {
 						functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
@@ -134,8 +225,8 @@ export default {
 				}
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
-			functions.push({ functionName: 'movePointer', attrs: [ 'i', 10 ], duration: 500 });
-			functions.push({ functionName: 'movePointer', attrs: [ 'j', 70 ], duration: 0 });
+			functions.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
+			functions.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endTip', attrs: [], duration: 0 });
@@ -171,7 +262,8 @@ export default {
 					this.setMutex(action.attrs[0]);
 					break;
 				case "endTip":
-					this.$alert('动画执行完毕！', '提示', { confirmButtonText: '确定' });
+					this.sortTimeInfo.isEnded = true;
+					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 					break;
 				case "sleep":
 				default: break;
