@@ -100,9 +100,6 @@ export default {
 			});
 			this.showInputIndex = false;
 		},
-		playPopSortAll() {
-			this.$refs['showPlayer'].popSortAll();
-		},
 		changeHelperStatus(status) {
 			this.showHelper = status;
 			this.$parent.isHideScrollY(!status);
@@ -117,6 +114,9 @@ export default {
 			this.$nextTick(()=>{
 				this.showInputIndex=false;
 			});
+		},
+		playPopSortAll() {
+			this.$refs['showPlayer'].popSortAll();
 		},
 		playPopSortOneTime() {
 			this.$refs['showPlayer'].popSortOneTime();

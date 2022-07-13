@@ -62,10 +62,7 @@ export default {
 			pillarHeights: [],
 			pillarLeftX: [],
 			list2Comp_Map: [],
-			sortTimeInfo: {
-				time: 0,
-				isEnded: false
-			},
+			isEnded: false,
 			Timers: []
 		}
 	},
@@ -162,7 +159,7 @@ export default {
 			this.$parent.playerMutex = status;
 		},
 		showFinalList() {
-			if (this.sortTimeInfo.isEnded) {
+			if (this.isEnded) {
 				this.$message({
 					showClose: true,
 					message: '当前数组已处于完成排序状态，若有必要请刷新内容后重试',
@@ -195,13 +192,30 @@ export default {
 			for (i = 0; i < this.rankNodeList.length; i++) {
 				nodes[this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
 			}
-			this.sortTimeInfo.isEnded = true;
+			this.isEnded = true;
 		},
 		popSortOneTime() {
-			
+			if (this.isEnded) {
+				this.$message({
+					showClose: true,
+					message: '当前数组已处于完成排序状态，若有必要请刷新内容后重试',
+					type: 'warning'});
+				return;
+			}
+			var functions = [], i = 0, j = 0;
+			functions.push({ functionName: 'endTip', attrs: [], duration: 0 });
+			var flag = 0, workTime = 0;
+			for (i = 0; i < functions.length; i++) {
+				this.Timers.push(
+					setTimeout(()=>{
+						this.callUnit(functions[flag++]);
+					}, workTime)
+				);
+				workTime+=functions[i].duration;
+			}
 		},
 		popSortAll() {
-			if (this.sortTimeInfo.isEnded) {
+			if (this.isEnded) {
 				this.$message({
 					showClose: true,
 					message: '当前数组已处于完成排序状态，若有必要请刷新内容后重试',
@@ -262,7 +276,7 @@ export default {
 					this.setMutex(action.attrs[0]);
 					break;
 				case "endTip":
-					this.sortTimeInfo.isEnded = true;
+					this.isEnded = true;
 					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 					break;
 				case "sleep":
