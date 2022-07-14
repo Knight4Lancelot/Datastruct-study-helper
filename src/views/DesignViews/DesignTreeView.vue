@@ -17,7 +17,7 @@
 				'max-height': String(canvasHeight)+'px',
 				'width': String(canvasWidth)+'px',
 				'height': String(canvasHeight)+'px'}"/>
-	<button class="additional-function"
+	<button class="additional-function-canvas"
 		@click="adjustAim_canvas()"
 		:style="{
 			'top': String(canvasHeight+50)+'px',
@@ -60,19 +60,19 @@
 			line-numbers
 			readonly></prism-editor>
 	</div>
-	<button class="additional-function"
+	<button class="additional-function-code"
 		@click="copy_codeEditor()"
 		:style="{
-			'top': String(canvasHeight+1150)+'px',
-			'left': String(canvasWidth+100)+'px'
+			'top': String(canvasHeight+1200)+'px',
+			'left': String(canvasWidth+120)+'px'
 		}">
 		<i class="el-icon-copy-document"></i>
 	</button>
-	<button class="additional-function"
+	<button class="additional-function-code"
 		@click="adjustAim_codeEditor()"
 		:style="{
-			'top': String(canvasHeight+1230)+'px',
-			'left': String(canvasWidth+100)+'px'
+			'top': String(canvasHeight+1260)+'px',
+			'left': String(canvasWidth+120)+'px'
 		}">
 		<i class="el-icon-aim"></i>
 	</button>
@@ -344,7 +344,7 @@ export default {
 	font-family: 'Microsoft YaHei';
 	background-color: #FDD18F;
 }
-.additional-function {
+.additional-function-canvas, .additional-function-code {
 	transition: 0.5s;
 	z-index: 10;
 	position: absolute;
@@ -358,7 +358,12 @@ export default {
 	border-radius: 50%;
 	border: 2px solid #C0C4CC;
 }
-.additional-function:hover {
+.additional-function-code {
+	height: 50px;
+	width: 50px;
+	font-size: 25px;
+}
+.additional-function-canvas:hover, .additional-function-code:hover {
 	transition: 0.5s;
 	cursor: pointer;
 	opacity: 1;

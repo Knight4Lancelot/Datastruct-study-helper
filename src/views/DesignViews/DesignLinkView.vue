@@ -18,7 +18,7 @@
 			'max-height': String(canvasHeight)+'px',
 			'width': String(canvasWidth)+'px',
 			'height': String(canvasHeight)+'px'}"/>
-		<button class="additional-function"
+		<button class="additional-function-canvas"
 			@click="adjustAim_canvas()"
 			:style="{
 				'top': String(canvasHeight+50)+'px',
@@ -63,19 +63,19 @@
 				line-numbers
 				readonly></prism-editor>
 		</div>
-		<button class="additional-function"
+		<button class="additional-function-code"
 			@click="copy_codeEditor()"
 			:style="{
-				'top': String(canvasHeight+1150)+'px',
-				'left': String(canvasWidth+100)+'px'
+				'top': String(canvasHeight+1200)+'px',
+				'left': String(canvasWidth+120)+'px'
 			}">
 			<i class="el-icon-copy-document"></i>
 		</button>
-		<button class="additional-function"
+		<button class="additional-function-code"
 			@click="adjustAim_codeEditor()"
 			:style="{
-				'top': String(canvasHeight+1230)+'px',
-				'left': String(canvasWidth+100)+'px'
+				'top': String(canvasHeight+1260)+'px',
+				'left': String(canvasWidth+120)+'px'
 			}">
 			<i class="el-icon-aim"></i>
 		</button>
