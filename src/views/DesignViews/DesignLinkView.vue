@@ -88,10 +88,10 @@
 </template>
 
 <script>
-import linkcanvas from '../../components/designViewComps/LinkDesignCanvas.vue'
-import hovermenu from '../../components/DesignHoverMenu.vue'
+import linkcanvas from '../../components/designViewComps/LinkDesignCanvas.vue';
+import hovermenu from '../../components/DesignHoverMenu.vue';
 
-import { init_linknode_code } from '../../utils/init_linknode.js'
+import { init_linknode_code } from '../../utils/init_linknode.js';
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -100,8 +100,8 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
 
-const durationTime=5
-var lc = new init_linknode_code()
+const durationTime=5;
+var lc = new init_linknode_code();
 
 export default {
   name: 'LinkDesignHomeView',
@@ -127,10 +127,8 @@ export default {
   },
   mounted() {
 	this.formCanvasSize()
-	if (this.LinkList.length > 10)
-		this.LinkListString = '\n\t\t\t';
-	else
-		this.LinkListString = '';
+	if (this.LinkList.length > 10) { this.LinkListString = '\n\t\t\t'; }
+	else { this.LinkListString = ''; }
 	for (var i = 0; i < this.LinkList.length; i++) {
 		this.LinkListString += ('"'+((String(this.LinkList[i])==='nil')?'null':String(this.LinkList[i]))+'"');
 		if (i!==this.LinkList.length-1) this.LinkListString+=',';
@@ -170,18 +168,18 @@ export default {
 		var that = this
 		document.oncopy = function (e) {
 			e.clipboardData.setData('text', that.LinkListString);
-			e.preventDefault()
-			document.oncopy = null
+			e.preventDefault();
+			document.oncopy = null;
 		}
-		document.execCommand('Copy')
+		document.execCommand('Copy');
 		this.$message({
 			duration: durationTime*1000,
 			showClose: true,
 			message: '成功复制内容  [ 链表数组形式 ]  到粘贴板',
-			type: 'success'})
+			type: 'success'});
 	},
 	copy_codeEditor() {
-		var that = this
+		var that = this;
 		document.oncopy = function (e) {
 			e.clipboardData.setData('text', that.code);
 			e.preventDefault();
@@ -192,7 +190,7 @@ export default {
 			duration: durationTime*1000,
 			showClose: true,
 			message: '成功复制内容  [ 链表实现代码 ]  到粘贴板',
-			type: 'success'})
+			type: 'success'});
 	},
 	jumpTo(focus) {
 		var page = document.getElementsByClassName('main-body-show')[0];
@@ -208,27 +206,27 @@ export default {
 		return highlight(this.code, languages.js, "js");
 	},
 	formCanvasSize() {
-		this.appHeight=document.documentElement.clientHeight
-		this.appWidth=document.documentElement.clientWidth
-		this.canvasHeight = this.appHeight-160
-		this.canvasWidth = this.appWidth-450
-		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
-		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
+		this.appHeight=document.documentElement.clientHeight;
+		this.appWidth=document.documentElement.clientWidth;
+		this.canvasHeight = this.appHeight-160;
+		this.canvasWidth = this.appWidth-450;
+		if (this.canvasHeight < 500) { this.canvasHeight = 500; }
+		if (this.canvasWidth < 1000) { this.canvasWidth = 1000; }
 		this.$refs['canvasElement'].formCanvasSize();
 		this.$refs['canvasElement'].setAxiosSize(this.canvasWidth, this.canvasHeight);
 		this.$refs['canvasElement'].drawAxios();
 	},
 	changeList() {
 		// 修改卡片显示字符串
-		var res = this.LinkList.concat()
+		var res = this.LinkList.concat();
 		if (res.length > 51) {
 			while (res.length > 51) {
-				res.splice(40,1)
+				res.splice(40,1);
 			}
-			res[40]=' ... '
+			res[40]=' ... ';
 		}
 		this.holdResString = '（对应数组共计节点数：'+String(this.LinkList.length)+'个）："'+
-				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
+				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"';
 		// 修改结果数组
 		if (this.LinkList.length > 10)
 			this.LinkListString = '\n\t\t\t';
@@ -239,7 +237,7 @@ export default {
 				'"'+((String(this.LinkList[i])==='nil') ? 
 				'null' : String(this.LinkList[i]))+'"'
 			);
-			if (i!==this.LinkList.length-1) this.LinkListString+=','
+			if (i!==this.LinkList.length-1) this.LinkListString+=',';
 			if ((i+1)%10===0&&i!==this.LinkList.length-1) this.LinkListString+='\n\t\t\t';
 		}
 		if (this.LinkList.length > 10)
