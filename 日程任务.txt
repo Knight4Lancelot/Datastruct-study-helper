@@ -17,9 +17,9 @@
 		init_binarytree.js				<已完成>
 		init_linknode.js				<已完成>
 	3、views目录：
-		DesignGraphView.vue				已完成
-		DesignTreeView.vue				未完成
-		DesignLinkView.vue				已完成
+		DesignGraphView.vue				<已完成>
+		DesignTreeView.vue				<已完成>
+		DesignLinkView.vue				<已完成>
 		HomeView.vue					未完成
 		MakeGraphView.vue				未完成
 		MakeLinkView.vue				未完成

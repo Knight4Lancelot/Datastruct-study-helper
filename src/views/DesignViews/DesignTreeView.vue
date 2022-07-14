@@ -85,11 +85,11 @@
 </template>
 
 <script>
-import treecanvas from '../../components/designViewComps/TreeDesignCanvas.vue'
-import hovermenu from '../../components/DesignHoverMenu.vue'
+import treecanvas from '../../components/designViewComps/TreeDesignCanvas.vue';
+import hovermenu from '../../components/DesignHoverMenu.vue';
 
-import { Queue } from '../../utils/DatastructUtils.js'
-import { init_binarytree_code } from '../../utils/init_binarytree.js'
+import { Queue } from '../../utils/DatastructUtils.js';
+import { init_binarytree_code } from '../../utils/init_binarytree.js';
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -98,8 +98,8 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
 
-const durationTime=5
-var tc = new init_binarytree_code()
+const durationTime=5;
+var tc = new init_binarytree_code();
 
 export default {
   name: 'TreeDesignHomeView',
@@ -127,10 +127,8 @@ export default {
 	}
   },
   mounted() {
-	if (this.TreeList.length > 10)
-		this.TreeListString = '\n\t\t\t';
-	else
-		this.TreeListString = '';
+	if (this.TreeList.length > 10) { this.TreeListString = '\n\t\t\t'; }
+	else { this.TreeListString = ''; }
 	for (var i = 0; i < this.TreeList.length; i++) {
 		this.TreeListString += ('"'+((String(this.TreeList[i])==='nil')?'null':String(this.TreeList[i]))+'"');
 		if (i!==this.TreeList.length-1) this.TreeListString+=',';
@@ -139,8 +137,6 @@ export default {
 	}
 	this.loadCode(1);
 	this.formCanvasSize();
-  },
-  computed: {
   },
   methods: {
 	adjustAim_canvas() {
@@ -245,41 +241,39 @@ export default {
 			duration: durationTime*1000,
 			showClose: true,
 			message: '成功复制内容  [ 二叉树实现代码 ]  到粘贴板',
-			type: 'success'})
+			type: 'success'});
 	},
 	formCanvasSize() {
-		this.appHeight=document.documentElement.clientHeight
-		this.appWidth=document.documentElement.clientWidth
-		this.canvasHeight = this.appHeight-160
-		this.canvasWidth = this.appWidth-450
-		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
-		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
-		this.$refs['canvasElement'].setAxiosSize(this.canvasWidth, this.canvasHeight)
-		this.$refs['canvasElement'].drawEdge()
-		this.$refs['canvasElement'].drawAxios()
+		this.appHeight=document.documentElement.clientHeight;
+		this.appWidth=document.documentElement.clientWidth;
+		this.canvasHeight = this.appHeight-160;
+		this.canvasWidth = this.appWidth-450;
+		if (this.canvasHeight < 500) { this.canvasHeight = 500; }
+		if (this.canvasWidth < 1000) { this.canvasWidth = 1000; }
+		this.$refs['canvasElement'].setAxiosSize(this.canvasWidth, this.canvasHeight);
+		this.$refs['canvasElement'].drawEdge();
+		this.$refs['canvasElement'].drawAxios();
 	},
 	changeList() {
 		// 修改卡片显示字符串
-		var res = this.TreeList.concat()
+		var res = this.TreeList.concat();
 		if (res.length > 51) {
 			while (res.length > 51) {
-				res.splice(40,1)
+				res.splice(40,1);
 			}
-			res[40]=' ... '
+			res[40]=' ... ';
 		}
 		this.holdResString = '（对应数组共计节点数：'+String(this.TreeList.length)+'个）："'+
-				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"'
+				String(res).replaceAll('nil', 'null').replaceAll(',', '", "')+'"';
 		// 修改结果数组
-		if (this.TreeList.length > 10)
-			this.TreeListString = '\n\t\t\t';
-		else
-			this.TreeListString = '';
+		if (this.TreeList.length > 10) { this.TreeListString = '\n\t\t\t'; }
+		else { this.TreeListString = ''; }
 		for (var i = 0; i < this.TreeList.length; i++) {
 			this.TreeListString += (
 				'"'+((String(this.TreeList[i])==='nil') ? 
 				'null' : String(this.TreeList[i]))+'"'
 			);
-			if (i!==this.TreeList.length-1) this.TreeListString+=','
+			if (i!==this.TreeList.length-1) this.TreeListString+=',';
 			if ((i+1)%10===0&&i!==this.TreeList.length-1) this.TreeListString+='\n\t\t\t';
 		}
 		if (this.TreeList.length > 10)
