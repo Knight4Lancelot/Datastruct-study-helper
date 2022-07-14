@@ -23,10 +23,10 @@ export default {
 	},
 	methods: {
 		add() {
-			this.list.push(this.list.length+1)
+			this.list.push(this.list.length+1);
 		},
 		decrease() {
-			this.list.pop()
+			this.list.pop();
 		}
 	}
 }

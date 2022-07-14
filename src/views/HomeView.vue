@@ -8,20 +8,7 @@
 
 <script>
 export default {
-	name: 'HomeView',
-	data() {
-		return {
-			
-		}
-	},
-	mounted() {
-		
-	},
-	computed: {
-	},
-	methods: {
-		
-	}
+	name: 'HomeView'
 }
 </script>
 

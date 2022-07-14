@@ -193,15 +193,15 @@ export default {
 		this.$parent.changeList();
 	},
 	delNode(index) {
-		var res = []
+		var res = [];
 		var q = new Queue(), i, n; 
 		q.push(index);
 		while (!q.isEmpty()) {
-			i = q.pop()
-			res.push(i)
-			n = this.nodeArray[i]
-			if (this.nodeArray.length-1>=2*i+1 && this.nodeArray[2*i+1]!=='nil') { q.push(2*i+1) }
-			if (this.nodeArray.length-1>=2*i+2 && this.nodeArray[2*i+2]!=='nil') { q.push(2*i+2) }
+			i = q.pop();
+			res.push(i);
+			n = this.nodeArray[i];
+			if (this.nodeArray.length-1>=2*i+1 && this.nodeArray[2*i+1]!=='nil') { q.push(2*i+1); }
+			if (this.nodeArray.length-1>=2*i+2 && this.nodeArray[2*i+2]!=='nil') { q.push(2*i+2); }
 		}
 		for (i = 0; i < res.length; i++) {
 			this.nodeArray[res[i]]='nil';

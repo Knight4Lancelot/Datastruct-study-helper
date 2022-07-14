@@ -23,11 +23,10 @@
 </template>
 
 <script>
-const durationTime=5
+const durationTime=5;
 
 export default {
 	name: 'LinkNode',
-	components: {},
 	props: {
 		valElement: String,
 		index: Number
@@ -49,10 +48,10 @@ export default {
 		},
 		changeStatus() {
 			if (!this.isShowInfo) {
-				this.$parent.hideAllNodeInfo()
-				this.nodeTextBuffer=this.nodeText
+				this.$parent.hideAllNodeInfo();
+				this.nodeTextBuffer=this.nodeText;
 			}
-			this.isShowInfo = !this.isShowInfo
+			this.isShowInfo = !this.isShowInfo;
 		},
 		changeText() {
 			if (this.nodeTextBuffer.length===0) {
@@ -60,20 +59,20 @@ export default {
 					duration: durationTime*1000,
 					showClose: true,
 					message: '注意，节点的文本长度不能小于1！',
-					type: 'error'})
-				return
+					type: 'error'});
+				return;
 			}
 			if (this.nodeTextBuffer==='nil') {
 				this.$message({
 					duration: durationTime*1000,
 					showClose: true,
 					message: '若要修改为nil，建议直接删除该节点',
-					type: 'warning'})
-				return
+					type: 'warning'});
+				return;
 			}
-			this.nodeText = this.nodeTextBuffer
-			this.$parent.modifyNode(this.index, this.nodeTextBuffer)
-			this.isShowInfo=false
+			this.nodeText = this.nodeTextBuffer;
+			this.$parent.modifyNode(this.index, this.nodeTextBuffer);
+			this.isShowInfo=false;
 		},
 		addLinkNode(status) {
 			if (this.index===0&&status===0) {
@@ -85,8 +84,8 @@ export default {
 				this.isShowInfo=false;
 				return;
 			}
-			this.$parent.addNode(this.index, status)
-			this.isShowInfo=false
+			this.$parent.addNode(this.index, status);
+			this.isShowInfo=false;
 		},
 		delLinkNode() {
 			if (this.index===0) {
@@ -98,8 +97,8 @@ export default {
 				this.isShowInfo=false;
 				return;
 			}
-			this.$parent.delNode(this.index)
-			this.isShowInfo=false
+			this.$parent.delNode(this.index);
+			this.isShowInfo=false;
 		},
 	}
 }

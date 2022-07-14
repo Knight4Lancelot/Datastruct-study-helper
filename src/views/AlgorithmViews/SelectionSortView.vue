@@ -1,6 +1,6 @@
 <template>
 	<div>
-		้€ๆฉๆ’ๅบ
+		ักิ๑ลละ๒
 	</div>
 </template>
 
