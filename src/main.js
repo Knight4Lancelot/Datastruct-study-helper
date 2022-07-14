@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-// import { PrismEditor } from 'vue-prism-editor'
-// import 'vue-prism-editor/dist/prismeditor.min.css'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+// import { PrismEditor } from 'vue-prism-editor';
+// import 'vue-prism-editor/dist/prismeditor.min.css';
 
 // Vue.component('PrismEditor', PrismEditor);
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   router,

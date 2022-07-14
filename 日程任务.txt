@@ -27,7 +27,7 @@
 		testPage.vue					未完成
 	4、主目录：
 		App.vue							<已完成>
-		main.js							未完成
+		main.js							<已完成>
 		
 任务二：编写设计结构的相应C++、Java、Python代码
 	1、二叉树：
