@@ -79,11 +79,11 @@
 </template>
 
 <script>
-import { Stack, Queue, BinaryTree } from "./utils/DatastructUtils.js"
-import homehead from './components/homeHead/HomeHead.vue'
+import { Stack, Queue, BinaryTree } from "./utils/DatastructUtils.js";
+import homehead from './components/homeHead/HomeHead.vue';
 
-const initHeight=document.documentElement.clientHeight
-const initWidth=document.documentElement.clientWidth
+const initHeight=document.documentElement.clientHeight;
+const initWidth=document.documentElement.clientWidth;
 
 export default {
 	name: 'App',
@@ -109,7 +109,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.formSize()
+		this.formSize();
 		this.mainBodyShowStyle = {'opacity':this.mainOpacity,
 					'overflow-y':'scroll',
 					'width':String(this.appWidth-80)+'px',
@@ -117,18 +117,18 @@ export default {
 					'max-height': String(this.appHeight-80)+'px'};
 		window.onresize = () => {
 			if(!this.timer) {
-				this.timer = true
-				let that = this
+				this.timer = true;
+				let that = this;
 				setTimeout(function(){
-					that.formSize()
-					that.timer = false
+					that.formSize();
+					that.timer = false;
 				},400)
 			}
-			if (this.appWidth < 1000) { this.appWidth = 1000 }
+			if (this.appWidth < 1000) { this.appWidth = 1000; }
 			if (document.location.href !== document.location.origin+'/') {
-				this.$refs['target-view'].formCanvasSize()
+				this.$refs['target-view'].formCanvasSize();
 			}
-		}	
+		}
 	},
 	methods: {
 		isHideScroll(status) {
@@ -136,35 +136,35 @@ export default {
 			// this.mainBodyShowStyle['overflow-x'] = status ? 'scroll':'hidden';
 		},
 		formSize() {
-			this.appHeight = document.documentElement.clientHeight
-			this.appWidth = document.documentElement.clientWidth
+			this.appHeight = document.documentElement.clientHeight;
+			this.appWidth = document.documentElement.clientWidth;
 			// if (this.appHeight < 1000) { this.appHeight = 1000 }
 			if (this.appWidth < initWidth) { this.appWidth = initWidth; }
 		},
 		changeOpacity(status) {
-			this.isCover=status
-			this.mainOpacity = status ? 0.6 : 1
-			this.showHeadWord = status
-			this.headWordSize = status ? 16 : 0.1
+			this.isCover=status;
+			this.mainOpacity = status ? 0.6 : 1;
+			this.showHeadWord = status;
+			this.headWordSize = status ? 16 : 0.1;
 		},
 		openHiddenComs(index, status) {
 			switch (index) {
 				// 加上隐藏组件后link-container基础高度为40，每多一个子入口加30
 				case 1:
-					this.showDesignHidden=true&&status
+					this.showDesignHidden=true&&status;
 					document.getElementById('design-struct').style.height=
-						this.showDesignHidden ? (130+'px') : (30+'px')
-					break
+						this.showDesignHidden ? (130+'px') : (30+'px');
+					break;
 				case 2:
-					this.showMakeHidden=true&&status
+					this.showMakeHidden=true&&status;
 					document.getElementById('make-code').style.height=
-						this.showMakeHidden ? (130+'px') : (30+'px')
-					break
+						this.showMakeHidden ? (130+'px') : (30+'px');
+					break;
 				case 3:
-					this.showViewAlgorithm=true&&status
+					this.showViewAlgorithm=true&&status;
 					document.getElementById('view-algorithm').style.height=
-						this.showViewAlgorithm ? (120+'px') : (30+'px')
-					break
+						this.showViewAlgorithm ? (120+'px') : (30+'px');
+					break;
 			}
 		}
 	}
