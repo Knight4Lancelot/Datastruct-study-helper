@@ -1,7 +1,7 @@
 任务一：为所以JS代码部分加上逗号			未完成
 	1、components目录：
 		graphDesign目录：
-			GraphDesignCanvas.vue		未完成
+			GraphDesignCanvas.vue		已完成
 			GraphDesignNode.vue			未完成
 		homeHead目录：
 			HomeHead.vue				未完成

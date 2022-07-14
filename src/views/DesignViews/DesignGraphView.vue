@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import graphcanvas from '../../components/designViewComps/GraphDesignCanvas.vue'
-import hovermenu from '../../components/DesignHoverMenu.vue'
+import graphcanvas from '../../components/designViewComps/GraphDesignCanvas.vue';
+import hovermenu from '../../components/DesignHoverMenu.vue';
 
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -72,7 +72,7 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
-const durationTime=5
+const durationTime=5;
 
 export default {
   name: 'graphDesignHomeView',
@@ -95,7 +95,7 @@ export default {
 	}
   },
   mounted() {
-	this.formCanvasSize()
+	this.formCanvasSize();
   },
   methods: {
 	jumpTo(focus) {
@@ -112,12 +112,12 @@ export default {
 		return highlight(this.code, languages.js, "js");
 	},
 	formCanvasSize() {
-		this.appHeight=document.documentElement.clientHeight
-		this.appWidth=document.documentElement.clientWidth
-		this.canvasHeight = this.appHeight-160
-		this.canvasWidth = this.appWidth-450
-		if (this.canvasHeight < 500) { this.canvasHeight = 500 }
-		if (this.canvasWidth < 1000) { this.canvasWidth = 1000 }
+		this.appHeight=document.documentElement.clientHeight;
+		this.appWidth=document.documentElement.clientWidth;
+		this.canvasHeight = this.appHeight-160;
+		this.canvasWidth = this.appWidth-450;
+		if (this.canvasHeight < 500) { this.canvasHeight = 500; }
+		if (this.canvasWidth < 1000) { this.canvasWidth = 1000; }
 	}
   }
 }
