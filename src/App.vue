@@ -58,8 +58,8 @@
 						<div><router-link to="/algorithm/popsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>冒泡排序</span>
 						</router-link></div>
-						<div><router-link to="/algorithm/selectionsort" exact style="text-decoration: none;">
-							<i class="el-icon-caret-right"/><span>选择排序</span>
+						<div><router-link to="/algorithm/insertAsort" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>直接插入排序</span>
 						</router-link></div>
 					</div>
 				</transition>
@@ -268,7 +268,7 @@ export default {
 	cursor: pointer;
 }
 .hidden-components {
-	width: 60%;
+	width: 80%;
 	padding-top:10px;
 	position: inherit;
 	margin-left: 20%;

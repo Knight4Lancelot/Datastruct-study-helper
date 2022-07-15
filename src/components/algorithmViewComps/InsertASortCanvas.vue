@@ -3,19 +3,15 @@
 		<div class="show-current-pointers"
 			style="margin-left:10px;width: 200px;">
 			<div style="font-size:25px;font-family:'Microsoft YaHei';margin-top:20px;"
-				>冒泡排序</div>
+				>直接插入排序</div>
 			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:20px;">
 				当前指针 i 指向：</div>
 			<div style="color:#409EFF;"
 				v-text="pointerI===-1?'指针存放处':'数组节点 '+String(pointerI)" />
-			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
-				当前指针 j 指向：</div>
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:20px;">
+				当前指针 i 携带值：</div>
 			<div style="color:#409EFF;"
-				v-text="pointerJ===-1?'指针存放处':'数组节点 '+String(pointerJ)" />
-			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
-				比较结果：</div>
-			<div style="color:#409EFF;"
-				v-text="comparePointer_I_J" />
+				v-text="pointerI===-1?'指针存放处':String(rankNodeList[pointerI])" />
 		</div>
 		<node class="nodes-comps"
 			v-for="(n, k) in rankNodeList"
@@ -30,16 +26,9 @@
 			:initStatus="3"
 			:valElement="'指针i'"
 			:style="{'left':String(10)+'px'}"/>
-		<node class="nodes-comps"
-			:initStatus="3"
-			:valElement="'指针j'"
-			:style="{'left':String(70)+'px'}"/>
 		<pointer class="nodes-pointer"
 			ref="pointer-i"
 			:pointerText="'i'" />
-		<pointer class="nodes-pointer"
-			ref="pointer-j"
-			:pointerText="'j'" />
 	</div>
 </template>
 
@@ -58,7 +47,6 @@ export default {
 	data() {
 		return {
 			pointerI: -1,
-			pointerJ: -1,
 			initNodeList: [],
 			rankNodeList: [],
 			pillarHeights: [],
@@ -105,25 +93,10 @@ export default {
 				break;
 			default: break;
 		}
-		this.movePointer('i', -1);
-		this.movePointer('j', -1);
+		this.movePointer(-1);
 	},
 	beforeDestroy() {
 		this.clearAllTimer();
-	},
-	computed: {
-		comparePointer_I_J() {
-			switch(true) {
-				case this.pointerI===-1&&this.pointerJ===-1:
-					return '均在指针存放处'
-				case this.pointerI===-1&&this.pointerJ!==-1:
-				case this.pointerI!==-1&&this.pointerJ===-1:
-					return '当前无法比较'
-				default:
-					return this.rankNodeList[this.pointerI]>this.rankNodeList[this.pointerJ]?
-						'节点 i > 节点 j' : '节点 i < 节点 j';
-			}
-		}
 	},
 	methods: {
 		refreshList2CompMap() {
@@ -142,17 +115,19 @@ export default {
 			this.rankNodeList[index_2] = temp;
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
+			console.log(this.rankNodeList)
 		},
-		movePointer(name, aimLocation) {
-			if (name==='i') {
-				if (aimLocation === -1) { this.$refs['pointer-i'].$el.style.left = '15px'; }
-				else { this.$refs['pointer-i'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
-				this.pointerI = aimLocation;
+		movePointer(aimLocation) {
+			var pI = this.$refs['pointer-i']
+			if (aimLocation === -1) {
+				pI.$el.style.left = '15px';
+				pI.isShowCarryValue = false;
 			} else {
-				if (aimLocation === -1) { this.$refs['pointer-j'].$el.style.left = '75px'; }
-				else { this.$refs['pointer-j'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
-				this.pointerJ = aimLocation;
+				pI.$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px';
+				pI.isShowCarryValue = true;
+				pI.carryValue = this.rankNodeList[aimLocation];
 			}
+			this.pointerI = aimLocation;
 		},
 		changeNodeStatus(index, status) {
 			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status;
@@ -167,9 +142,7 @@ export default {
 			this.$parent.playerMutex = false;
 			this.isEnded = false;
 			this.pointerI = -1;
-			this.pointerJ = -1;
-			this.movePointer('i', -1);
-			this.movePointer('j', -1);
+			this.movePointer(-1);
 			this.refreshList2CompMap();
 			for (var i = 0; i < this.rankNodeList.length; i++) {
 				this.changeNodeStatus(i, 0);
@@ -190,7 +163,7 @@ export default {
 			}
 			var temp, i, j;
 			var nodes = this.$refs['nodeComps'];
-			this.movePointer('i', -1);
+			this.movePointer(-1);
 			this.movePointer('j', -1);
 			for (i = 0; i < nodes.length; i++) {
 				nodes[i].currentStatus = 2;
@@ -212,7 +185,7 @@ export default {
 			}
 			this.isEnded = true;
 		},
-		popSortOneTime() {
+		InsertASortOneTime() {
 			if (this.isEnded) {
 				this.$message({
 					showClose: true,
@@ -229,14 +202,11 @@ export default {
 				}
 				while(this.Timers.length > 0) { this.Timers.pop(); }
 				this.pointerI = -1;
-				this.pointerJ = -1;
-				this.movePointer('i', -1);
-				this.movePointer('j', -1);
+				this.movePointer(-1);
 				return;
 			}
 			var functions = [], i, j;
 			i = (this.pointerI++)+1;
-			this.pointerJ = this.pointerI + 1;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
@@ -264,7 +234,7 @@ export default {
 				workTime+=functions[i].duration;
 			}
 		},
-		popSortAll() {
+		InsertASortAll() {
 			if (this.isEnded) {
 				this.$message({
 					showClose: true,
@@ -281,30 +251,26 @@ export default {
 				}
 				while(this.Timers.length > 0) { this.Timers.pop(); }
 				this.pointerI = -1;
-				this.pointerJ = -1;
-				this.movePointer('i', -1);
-				this.movePointer('j', -1);
+				this.movePointer(-1);
 				return;
 			}
 			var functions = [], i = 0, j = 0;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = this.pointerI+1; i < this.rankNodeList.length-1; i++) {
-				functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+				functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
-				for (j = i+1; j < this.rankNodeList.length; j++) {
-					functions.push({ functionName: 'movePointer', attrs: [ 'j', j ], duration: 500 });
-					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
-					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
+				for (j = i - 1; j >= 0; j--) {
+					functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
+					if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
+						functions.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
 					} else {
-						functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
+						functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 2 ], duration: 100 });
+						break;
 					}
-					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
 				}
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
-			functions.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
-			functions.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
+			functions.push({ functionName: 'movePointer', attrs: [ -1 ], duration: 500 });
 			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
@@ -328,7 +294,7 @@ export default {
 			*/
 			switch(action.functionName) { 
 				case "movePointer":
-					this.movePointer(action.attrs[0], action.attrs[1]);
+					this.movePointer(action.attrs[0]);
 					break;
 				case "exchange":
 					this.exchange(action.attrs[0], action.attrs[1]);

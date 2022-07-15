@@ -17,7 +17,7 @@
 				:style="{'width':String(canvasWidth)+'px'}" />
 		</transition>
 		<transition name="player-index-fade">
-			<AlgorithmCanvas id="pop-sort-canvas"
+			<AlgorithmCanvas id="InsertA-sort-canvas"
 				ref="showPlayer"
 				v-if="!showInputIndex"
 				:nodelist="list"
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import AlgorithmCanvas from '../../components/algorithmViewComps/PopSortCanvas.vue';
+import AlgorithmCanvas from '../../components/algorithmViewComps/InsertASortCanvas.vue';
 import HoverTips from '../../components/algorithmViewComps/HoverTips.vue';
 import ListInput from '../../components/algorithmViewComps/LinearAlgorithmInput.vue';
 import HoverMenu from '../../components/LinearAlgorithmHoverMenu.vue';
 import FunctionHelper from '../../components/FunctionHelper.vue';
 
 export default {
-	name: 'PopSortHomeView',
+	name: 'InsertASortHomeView',
 	components: {
 		AlgorithmCanvas,
 		HoverTips,
@@ -89,7 +89,7 @@ export default {
 					type: 'error'});
 				return;
 			}
-			while(this.list.length>0) { this.list.pop(); }
+			while(this.list.length>0) { this.list.InsertA(); }
 			this.list = this.$refs['inputSource'].rankList.concat();
 			for (i = 0; i < this.list.length; i++) {
 				this.list[i] = parseInt(this.list[i]);
@@ -118,10 +118,10 @@ export default {
 			this.$refs['showPlayer'].refreshAll()
 		},
 		playSortAll() {
-			this.$refs['showPlayer'].popSortAll();
+			this.$refs['showPlayer'].InsertASortAll();
 		},
 		playSortOneTime() {
-			this.$refs['showPlayer'].popSortOneTime();
+			this.$refs['showPlayer'].InsertASortOneTime();
 		},
 		ShowFinalList() {
 			this.$refs['showPlayer'].showFinalList();
@@ -131,7 +131,7 @@ export default {
 </script>
 
 <style>
-#pop-sort-canvas {
+#InsertA-sort-canvas {
 	position: absolute;
 	border: 1px solid #C0C4CC;
 	border-radius: 10px;
@@ -139,7 +139,7 @@ export default {
 	left: 200px;
 	height: 750px;
 }
-.show-helper-cover-layer {
+/* .show-helper-cover-layer {
 	position: absolute;
 	z-index: 3;
 	height: 110%;
@@ -160,7 +160,6 @@ export default {
 }
 .top-tips {
 	position: absolute;
-	/* border: 1px solid; */
 	left: 200px;
 	top: 30px;
 	height: 40px;
@@ -199,5 +198,5 @@ export default {
 .player-index-fade-leave-to { 
   opacity:0;
   transform:translateX(1000px);
-}
+} */
 </style>

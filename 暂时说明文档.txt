@@ -2,4 +2,4 @@
 
 当前的全局公用的CSS样式：
 	1、一键复制和定位到头部按钮的样式在data-struct-helper/src/views/DesignTreeView.vue中，
-	样式类为additional-function与additional-function:hover
+	样式类为additional-function-design与additional-function-code:hover

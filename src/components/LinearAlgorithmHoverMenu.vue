@@ -22,7 +22,7 @@
 						showClose: true,
 						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
 						type: 'error'});
-				} else { this.$parent.playPopSortAll(); }
+				} else { this.$parent.playSortAll(); }
 			}">
 			<i class="el-icon-caret-right"></i>
 			<span class="hover-menu-description">完成全部过程</span>
@@ -34,7 +34,7 @@
 						showClose: true,
 						message: '当前有动画正在执行中，请等待完成后再开始下一段演示',
 						type: 'error'});
-				} else { this.$parent.playPopSortOneTime(); }
+				} else { this.$parent.playSortOneTime(); }
 			}">
 			<i class="el-icon-arrow-right"></i>
 			<span class="hover-menu-description">完成一趟比较</span>

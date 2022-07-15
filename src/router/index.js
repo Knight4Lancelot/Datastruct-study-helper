@@ -1,14 +1,14 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import DesignTree from '../views/DesignViews/DesignTreeView.vue'
-import DesignLink from '../views/DesignViews/DesignLinkView.vue'
-import DesignGraph from '../views/DesignViews/DesignGraphView.vue'
-import PopSort from '../views/AlgorithmViews/PopSortView.vue'
-import SelectionSort from '../views/AlgorithmViews/SelectionSortView.vue'
-import TestPage from '../views/testPage.vue'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import DesignTree from '../views/DesignViews/DesignTreeView.vue';
+import DesignLink from '../views/DesignViews/DesignLinkView.vue';
+import DesignGraph from '../views/DesignViews/DesignGraphView.vue';
+import PopSort from '../views/AlgorithmViews/PopSortView.vue';
+import InsertASort from '../views/AlgorithmViews/InsertASortView.vue';
+import TestPage from '../views/testPage.vue';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -42,16 +42,16 @@ const routes = [
     component: PopSort
   },
   {
-    path: '/algorithm/selectionsort',
-    name: 'selectionSort',
-    component: SelectionSort
+    path: '/algorithm/insertAsort',
+    name: 'insertASort',
+    component: InsertASort
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

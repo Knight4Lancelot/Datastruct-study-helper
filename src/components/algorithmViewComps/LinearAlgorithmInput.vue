@@ -133,7 +133,7 @@ export default {
 				this.textarea = this.defaultList;
 				this.updateListData();
 			}
-			this.$parent.openPopSort();
+			this.$parent.openSortPlayer();
 		},
 		showPreview(status) {
 			this.updateListData();
