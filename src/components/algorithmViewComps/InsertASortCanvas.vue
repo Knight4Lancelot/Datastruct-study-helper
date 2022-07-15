@@ -115,7 +115,6 @@ export default {
 			this.rankNodeList[index_2] = temp;
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
-			console.log(this.rankNodeList)
 		},
 		movePointer(aimLocation) {
 			var pI = this.$refs['pointer-i']
@@ -129,8 +128,11 @@ export default {
 			}
 			this.pointerI = aimLocation;
 		},
-		changeNodeStatus(index, status) {
+		changeMapNodeStatus(index, status) {
 			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status;
+		},
+		changeRawNodeStatus(index, status) {
+			this.$refs['nodeComps'][index].currentStatus=status;
 		},
 		setMutex(status) {
 			this.$parent.playerMutex = status;
@@ -145,7 +147,7 @@ export default {
 			this.movePointer(-1);
 			this.refreshList2CompMap();
 			for (var i = 0; i < this.rankNodeList.length; i++) {
-				this.changeNodeStatus(i, 0);
+				this.changeMapNodeStatus(i, 0);
 				this.$refs['nodeComps'][this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
 			}
 		},
@@ -209,18 +211,18 @@ export default {
 			i = (this.pointerI++)+1;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
-			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
+			functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
 			for (j = this.pointerJ; j < this.rankNodeList.length; j++) {
 				functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
+				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ j, 1 ], duration: 100 });
 				if (this.rankNodeList[i]>this.rankNodeList[j]) {
 					functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 				} else {
 					functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
 				}
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
+				functions.push({ functionName: 'changeRawNodeStatus', attrs: [ j, 0 ], duration: 100 });
 			}
-			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endOnceTip', attrs: [], duration: 0 });
 			
@@ -256,22 +258,18 @@ export default {
 			}
 			var functions = [], i = 0, j = 0;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.pointerI+1; i < this.rankNodeList.length-1; i++) {
+			for (i = this.pointerI+1; i < this.rankNodeList.length; i++) {
 				functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
+				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				for (j = i - 1; j >= 0; j--) {
 					functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
 					if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
 						functions.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
-					} else {
-						functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 2 ], duration: 100 });
-						break;
-					}
+					} else { break; }
 				}
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+				functions.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
 			functions.push({ functionName: 'movePointer', attrs: [ -1 ], duration: 500 });
-			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
@@ -289,7 +287,8 @@ export default {
 				设定函数执行事件：
 				exchange函数交换时间：200ms
 				movePointer函数移动指针时间间隔：500ms
-				changeNodeStatus函数修改节点状态时间：100ms
+				changeRawNodeStatus函数修改节点状态时间：100ms
+				changeMapNodeStatus函数修改节点状态时间：100ms
 				sleep延时函数：200ms
 			*/
 			switch(action.functionName) { 
@@ -299,8 +298,11 @@ export default {
 				case "exchange":
 					this.exchange(action.attrs[0], action.attrs[1]);
 					break;
-				case "changeNodeStatus":
-					this.changeNodeStatus(action.attrs[0], action.attrs[1]);
+				case "changeRawNodeStatus":
+					this.changeRawNodeStatus(action.attrs[0], action.attrs[1]);
+					break;
+				case "changeMapNodeStatus":
+					this.changeMapNodeStatus(action.attrs[0], action.attrs[1]);
 					break;
 				case "setMutex":
 					this.setMutex(action.attrs[0]);
