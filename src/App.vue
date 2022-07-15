@@ -61,6 +61,9 @@
 						<div><router-link to="/algorithm/insertAsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>直接插入排序</span>
 						</router-link></div>
+						<div><router-link to="/algorithm/insertBsort" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>折半插入排序</span>
+						</router-link></div>
 					</div>
 				</transition>
 			</div>

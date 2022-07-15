@@ -6,6 +6,7 @@ import DesignLink from '../views/DesignViews/DesignLinkView.vue';
 import DesignGraph from '../views/DesignViews/DesignGraphView.vue';
 import PopSort from '../views/AlgorithmViews/PopSortView.vue';
 import InsertASort from '../views/AlgorithmViews/InsertASortView.vue';
+import InsertBSort from '../views/AlgorithmViews/InsertBSortView.vue';
 import TestPage from '../views/testPage.vue';
 
 Vue.use(VueRouter);
@@ -45,6 +46,11 @@ const routes = [
     path: '/algorithm/insertAsort',
     name: 'insertASort',
     component: InsertASort
+  },
+  {
+    path: '/algorithm/insertBsort',
+    name: 'insertBSort',
+    component: InsertBSort
   }
 ];
 
