@@ -3,3 +3,4 @@
 当前的全局公用的CSS样式：
 	1、一键复制和定位到头部按钮的样式在data-struct-helper/src/views/DesignTreeView.vue中，
 	样式类为additional-function-design与additional-function-code:hover
+	2、views目录下的AlgorithmViews目录下的排序可视化页面的Home页的组件样式都在PopSortView.vue中

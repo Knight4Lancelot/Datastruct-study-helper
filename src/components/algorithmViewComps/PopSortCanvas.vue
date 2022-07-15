@@ -137,9 +137,6 @@ export default {
 			var temp = this.list2Comp_Map[index_1];
 			this.list2Comp_Map[index_1] = this.list2Comp_Map[index_2];
 			this.list2Comp_Map[index_2] = temp;
-			temp = this.rankNodeList[index_1];
-			this.rankNodeList[index_1] = this.rankNodeList[index_2];
-			this.rankNodeList[index_2] = temp;
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
@@ -234,7 +231,7 @@ export default {
 				this.movePointer('j', -1);
 				return;
 			}
-			var functions = [], i, j;
+			var functions = [], i, j, temp;
 			i = (this.pointerI++)+1;
 			this.pointerJ = this.pointerI + 1;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
@@ -244,6 +241,9 @@ export default {
 				functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
 				functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
 				if (this.rankNodeList[i]>this.rankNodeList[j]) {
+					temp = this.rankNodeList[i];
+					this.rankNodeList[i] = this.rankNodeList[j];
+					this.rankNodeList[j] = temp;
 					functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 				} else {
 					functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
@@ -286,7 +286,7 @@ export default {
 				this.movePointer('j', -1);
 				return;
 			}
-			var functions = [], i = 0, j = 0;
+			var functions = [], i = 0, j = 0, temp;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = this.pointerI+1; i < this.rankNodeList.length-1; i++) {
 				functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
@@ -295,6 +295,9 @@ export default {
 					functions.push({ functionName: 'movePointer', attrs: [ 'j', j ], duration: 500 });
 					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
 					if (this.rankNodeList[i]>this.rankNodeList[j]) {
+						temp = this.rankNodeList[i];
+						this.rankNodeList[i] = this.rankNodeList[j];
+						this.rankNodeList[j] = temp;
 						functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 					} else {
 						functions.push({ functionName: 'sleep', attrs: [], duration: 300 });

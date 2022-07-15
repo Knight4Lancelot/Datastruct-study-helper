@@ -47,6 +47,7 @@ export default {
 	data() {
 		return {
 			pointerI: -1,
+			times: 0, // 因为实现逻辑的问题，这里需要用一个单独的变量来存取趟次
 			initNodeList: [],
 			rankNodeList: [],
 			pillarHeights: [],
@@ -110,9 +111,6 @@ export default {
 			var temp = this.list2Comp_Map[index_1];
 			this.list2Comp_Map[index_1] = this.list2Comp_Map[index_2];
 			this.list2Comp_Map[index_2] = temp;
-			temp = this.rankNodeList[index_1];
-			this.rankNodeList[index_1] = this.rankNodeList[index_2];
-			this.rankNodeList[index_2] = temp;
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
@@ -143,6 +141,7 @@ export default {
 			this.rankNodeList = this.initNodeList.concat();
 			this.$parent.playerMutex = false;
 			this.isEnded = false;
+			this.times = 0;
 			this.pointerI = -1;
 			this.movePointer(-1);
 			this.refreshList2CompMap();
@@ -195,7 +194,7 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			if (this.pointerI===this.rankNodeList.length - 2) {
+			if (this.times===this.rankNodeList.length) {
 				this.isEnded = true;
 				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 				var nodes = this.$refs['nodeComps'];
@@ -207,25 +206,23 @@ export default {
 				this.movePointer(-1);
 				return;
 			}
-			var functions = [], i, j;
-			i = (this.pointerI++)+1;
+			var functions = [], i, j, temp;
+			i = (this.times++);
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+			functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
 			functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
-			for (j = this.pointerJ; j < this.rankNodeList.length; j++) {
-				functions.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
-				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ j, 1 ], duration: 100 });
-				if (this.rankNodeList[i]>this.rankNodeList[j]) {
-					functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
-				} else {
-					functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
-				}
-				functions.push({ functionName: 'changeRawNodeStatus', attrs: [ j, 0 ], duration: 100 });
+			for (j = i - 1; j >= 0; j--) {
+				functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
+				if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
+					temp = this.rankNodeList[j];
+					this.rankNodeList[j] = this.rankNodeList[j+1];
+					this.rankNodeList[j+1] = temp;
+					functions.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
+				} else { break; }
 			}
-			functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			functions.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endOnceTip', attrs: [], duration: 0 });
-			
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
 				this.Timers.push(
@@ -244,7 +241,7 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			if (this.pointerI===this.rankNodeList.length - 2) {
+			if (this.times===this.rankNodeList.length) {
 				this.isEnded = true;
 				var nodes = this.$refs['nodeComps'];
 				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
@@ -256,14 +253,17 @@ export default {
 				this.movePointer(-1);
 				return;
 			}
-			var functions = [], i = 0, j = 0;
+			var functions = [], i = 0, j = 0, temp;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.pointerI+1; i < this.rankNodeList.length; i++) {
+			for (i = this.times; i < this.rankNodeList.length; i++) {
 				functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
 				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				for (j = i - 1; j >= 0; j--) {
 					functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
 					if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
+						temp = this.rankNodeList[j];
+						this.rankNodeList[j] = this.rankNodeList[j+1];
+						this.rankNodeList[j+1] = temp;
 						functions.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
 					} else { break; }
 				}
