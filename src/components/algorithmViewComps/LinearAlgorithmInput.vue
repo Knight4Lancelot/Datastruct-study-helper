@@ -2,7 +2,7 @@
 	<div>
 		<span class="head-input-tip"
 			style="top: 60px;">
-			输入待排序数组
+			<span style="color:#67C23A;">{{sortType}}</span>&nbsp;&nbsp;输入待排序数组
 			<span style="font-size: 16px;">
 				（ 输入的单个节点字符长度不超过5个字符，且为+、-或数字 ）</span>
 		</span>
@@ -50,7 +50,7 @@
 		</button>
 		<span class="head-input-tip"
 			style="top: 460px;">
-			数组结构预览
+			<span style="color:#67C23A;">{{sortType}}</span>&nbsp;&nbsp;数组结构预览
 		</span>
 		<div class="preview-struct-area"
 			:style="{'width':String(mainPartWidth+40)+'px'}">
@@ -76,6 +76,9 @@ export default {
 	name: 'inputPopSortList',
 	components: {
 		structPreview
+	},
+	props: {
+		sortType: String
 	},
 	data() {
 		return {

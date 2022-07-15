@@ -2,6 +2,7 @@
 	<div>
 		<transition name="input-index-fade">
 			<ListInput v-if="showInputIndex"
+				:sortType = "'冒泡排序'"
 				ref="inputSource" />
 		</transition>
 		<div class="show-helper-cover-layer"
