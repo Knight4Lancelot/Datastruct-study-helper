@@ -44,11 +44,11 @@
 				</transition>
 			</div>
 			<div class="link-container" id="view-algorithm"
-				@mouseover="openHiddenComs(3,true)"
-				@mouseleave="openHiddenComs(3,false)">
+				@mouseover="openHiddenComs(2,true)"
+				@mouseleave="openHiddenComs(2,false)">
 				<div class="selector-head"
 					style="width: 50%;">
-					<i class="el-icon-collection"/>
+					<i class="el-icon-video-camera"/>
 					<transition name="head-word-transform">
 						<span class="selector-head-word" v-if="showHeadWord">算法可视化</span>
 					</transition>
@@ -58,11 +58,32 @@
 						<div><router-link to="/algorithm/popsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>冒泡排序</span>
 						</router-link></div>
+						<div><router-link to="/algorithm/quicksort" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>快速排序</span>
+						</router-link></div>
 						<div><router-link to="/algorithm/insertAsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>直接插入排序</span>
 						</router-link></div>
 						<div><router-link to="/algorithm/insertBsort" exact style="text-decoration: none;">
 							<i class="el-icon-caret-right"/><span>折半插入排序</span>
+						</router-link></div>
+					</div>
+				</transition>
+			</div>
+			<div class="link-container" id="view-knowledge"
+				@mouseover="openHiddenComs(3,true)"
+				@mouseleave="openHiddenComs(3,false)">
+				<div class="selector-head"
+					style="width: 50%;">
+					<i class="el-icon-collection"/>
+					<transition name="head-word-transform">
+						<span class="selector-head-word" v-if="showHeadWord">知识介绍</span>
+					</transition>
+				</div>
+				<transition name="hidden-list-transform">
+					<div class="hidden-components" v-if="showViewKnowledge&&mainOpacity!==1">
+						<div><router-link to="/algorithm/popsort" exact style="text-decoration: none;">
+							<i class="el-icon-caret-right"/><span>冒泡排序</span>
 						</router-link></div>
 					</div>
 				</transition>
@@ -103,7 +124,7 @@ export default {
 			headWordSize: 0.1,
 			mainBodyShowStyle: null,
 			showDesignHidden: false, // 控制设计数据结构的隐藏组件是否显示
-			showMakeHidden: false, // 控制生成代码的隐藏组件是否显示
+			showViewKnowledge: false, // 控制显示知识点介绍的隐藏组件是否显示
 			showViewAlgorithm: false, // 控制可视化算法的隐藏组件是否显示
 			elLinkStyle: {
 				'color': 'white',
@@ -159,14 +180,14 @@ export default {
 						this.showDesignHidden ? (130+'px') : (30+'px');
 					break;
 				case 2:
-					this.showMakeHidden=true&&status;
-					document.getElementById('make-code').style.height=
-						this.showMakeHidden ? (130+'px') : (30+'px');
-					break;
-				case 3:
 					this.showViewAlgorithm=true&&status;
 					document.getElementById('view-algorithm').style.height=
-						this.showViewAlgorithm ? (120+'px') : (30+'px');
+						this.showViewAlgorithm ? (170+'px') : (30+'px');
+					break;
+				case 3:
+					this.showViewKnowledge=true&&status;
+					document.getElementById('view-knowledge').style.height=
+						this.showMakeHidden ? (130+'px') : (30+'px');
 					break;
 			}
 		}

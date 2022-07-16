@@ -90,14 +90,14 @@ export default {
 					type: 'error'});
 				return;
 			}
-			while(this.list.length>0) { this.list.InsertA(); }
+			while(this.list.length>0) { this.list.pop(); }
 			this.list = this.$refs['inputSource'].rankList.concat();
 			for (i = 0; i < this.list.length; i++) {
 				this.list[i] = parseInt(this.list[i]);
 			}
 			this.$message({
 				showClose: true,
-				message: '开始冒泡排序！',
+				message: '开始直接插入排序！',
 				type: 'success'
 			});
 			this.showInputIndex = false;

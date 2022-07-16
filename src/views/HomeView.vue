@@ -2,7 +2,8 @@
   <div class="home-view">
 	<img src="../assets/home_logo.png" id="home-logo">
 	<img src="../assets/home_webname.png" id="home-webname">
-	<div id="divider"></div>
+	<!-- <div id="divider"></div> -->
+	
   </div>
 </template>
 
@@ -23,15 +24,16 @@ export default {
 	top: 10%;
 	left: 25%;
 	width: 18%;
+	height: 28%;
 	user-select: none;
 	/* border: 10px solid black; */
 }
 #home-webname {
 	position: inherit;
-	width: 26%;
+	width: 24%;
 	height: 6%;
 	top: 40%;
-	left: 21%;
+	left: 22%;
 	user-select: none;
 }
 #divider {

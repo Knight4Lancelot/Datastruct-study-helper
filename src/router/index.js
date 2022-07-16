@@ -7,6 +7,7 @@ import DesignGraph from '../views/DesignViews/DesignGraphView.vue';
 import PopSort from '../views/AlgorithmViews/PopSortView.vue';
 import InsertASort from '../views/AlgorithmViews/InsertASortView.vue';
 import InsertBSort from '../views/AlgorithmViews/InsertBSortView.vue';
+import QuickSort from '../views/AlgorithmViews/QuickSortView.vue';
 import TestPage from '../views/testPage.vue';
 
 Vue.use(VueRouter);
@@ -51,6 +52,11 @@ const routes = [
     path: '/algorithm/insertBsort',
     name: 'insertBSort',
     component: InsertBSort
+  },
+  {
+    path: '/algorithm/quicksort',
+    name: 'quickSort',
+    component: QuickSort
   }
 ];
 

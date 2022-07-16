@@ -2,7 +2,7 @@
 	<div>
 		<transition name="input-index-fade">
 			<ListInput v-if="showInputIndex"
-				:sortType="'折半插入排序'"
+				:sortType = "'快速排序'"
 				ref="inputSource" />
 		</transition>
 		<div class="show-helper-cover-layer"
@@ -18,7 +18,7 @@
 				:style="{'width':String(canvasWidth)+'px'}" />
 		</transition>
 		<transition name="player-index-fade">
-			<AlgorithmCanvas id="InsertA-sort-canvas"
+			<AlgorithmCanvas id="pop-sort-canvas"
 				ref="showPlayer"
 				v-if="!showInputIndex"
 				:nodelist="list"
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import AlgorithmCanvas from '../../components/algorithmViewComps/InsertBSortCanvas.vue';
+import AlgorithmCanvas from '../../components/algorithmViewComps/QuickSortCanvas.vue';
 import HoverTips from '../../components/algorithmViewComps/HoverTips.vue';
 import ListInput from '../../components/algorithmViewComps/LinearAlgorithmInput.vue';
 import HoverMenu from '../../components/LinearAlgorithmHoverMenu.vue';
 import FunctionHelper from '../../components/FunctionHelper.vue';
 
 export default {
-	name: 'InsertBSortHomeView',
+	name: 'QuickSortHomeView',
 	components: {
 		AlgorithmCanvas,
 		HoverTips,
@@ -97,7 +97,7 @@ export default {
 			}
 			this.$message({
 				showClose: true,
-				message: '开始折半插入排序！',
+				message: '开始快速排序！',
 				type: 'success'
 			});
 			this.showInputIndex = false;
@@ -119,10 +119,10 @@ export default {
 			this.$refs['showPlayer'].refreshAll()
 		},
 		playSortAll() {
-			this.$refs['showPlayer'].InsertASortAll();
+			this.$refs['showPlayer'].popSortAll();
 		},
 		playSortOneTime() {
-			this.$refs['showPlayer'].InsertASortOneTime();
+			this.$refs['showPlayer'].popSortOneTime();
 		},
 		ShowFinalList() {
 			this.$refs['showPlayer'].showFinalList();
@@ -132,7 +132,7 @@ export default {
 </script>
 
 <style>
-#InsertA-sort-canvas {
+#pop-sort-canvas {
 	position: absolute;
 	border: 1px solid #C0C4CC;
 	border-radius: 10px;
@@ -140,7 +140,7 @@ export default {
 	left: 200px;
 	height: 750px;
 }
-/* .show-helper-cover-layer {
+.show-helper-cover-layer {
 	position: absolute;
 	z-index: 3;
 	height: 110%;
@@ -161,6 +161,7 @@ export default {
 }
 .top-tips {
 	position: absolute;
+	/* border: 1px solid; */
 	left: 200px;
 	top: 30px;
 	height: 40px;
@@ -199,5 +200,5 @@ export default {
 .player-index-fade-leave-to { 
   opacity:0;
   transform:translateX(1000px);
-} */
+}
 </style>
