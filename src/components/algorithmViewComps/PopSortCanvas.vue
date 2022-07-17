@@ -61,9 +61,12 @@ export default {
 			pointerJ: -1,
 			initNodeList: [],
 			rankNodeList: [],
+			finalNodeList: [],
+			list2Comp_Map: [],
+			finalList_Map: [],
 			pillarHeights: [],
 			pillarLeftX: [],
-			list2Comp_Map: [],
+			
 			isEnded: false,
 			Timers: []
 		}
@@ -74,11 +77,13 @@ export default {
 	mounted() {
 		var min = this.nodelist[0], max = this.nodelist[0];
 		var digit_difference = 0;
+		this.initNodeList = this.nodelist.concat();
+		this.rankNodeList = this.nodelist.concat();
+		this.finalNodeList = this.nodelist.concat();
+		this.pillarHeights = this.nodelist.concat();
 		for (var i = 0; i < this.nodelist.length; i++) {
 			this.list2Comp_Map.push(i);
-			this.initNodeList.push(this.nodelist[i]);
-			this.rankNodeList.push(this.nodelist[i]);
-			this.pillarHeights.push(this.nodelist[i]);
+			this.finalList_Map.push(i);
 			this.pillarLeftX.push(200+i*60);
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
@@ -192,6 +197,7 @@ export default {
 			for (i = 0; i < nodes.length; i++) {
 				nodes[i].currentStatus = 2;
 			}
+			
 			for (i = 0; i < this.rankNodeList.length-1; i++) {
 				for (j = i+1; j < this.rankNodeList.length; j++) {
 					if (this.rankNodeList[i]>this.rankNodeList[j]) {
