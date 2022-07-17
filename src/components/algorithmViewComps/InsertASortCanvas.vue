@@ -114,7 +114,7 @@ export default {
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
-		movePointer(aimLocation) {
+		movePointer(aimLocation, isChange) {
 			var pI = this.$refs['pointer-i']
 			if (aimLocation === -1) {
 				pI.$el.style.left = '15px';
@@ -122,7 +122,9 @@ export default {
 			} else {
 				pI.$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px';
 				pI.isShowCarryValue = true;
-				pI.carryValue = this.rankNodeList[aimLocation];
+				if (isChange) {
+					pI.carryValue = this.$refs['nodeComps'][aimLocation].showElement;
+				}
 			}
 			this.pointerI = aimLocation;
 		},
@@ -164,8 +166,7 @@ export default {
 			}
 			var temp, i, j;
 			var nodes = this.$refs['nodeComps'];
-			this.movePointer(-1);
-			this.movePointer('j', -1);
+			this.movePointer(-1, false);
 			for (i = 0; i < nodes.length; i++) {
 				nodes[i].currentStatus = 2;
 			}
@@ -209,10 +210,10 @@ export default {
 			var functions = [], i, j, temp;
 			i = (this.times++);
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
+			functions.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
 			functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
 			for (j = i - 1; j >= 0; j--) {
-				functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
+				functions.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
 				if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
 					temp = this.rankNodeList[j];
 					this.rankNodeList[j] = this.rankNodeList[j+1];
@@ -256,10 +257,10 @@ export default {
 			var functions = [], i = 0, j = 0, temp;
 			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = this.times; i < this.rankNodeList.length; i++) {
-				functions.push({ functionName: 'movePointer', attrs: [ i ], duration: 500 });
+				functions.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
 				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				for (j = i - 1; j >= 0; j--) {
-					functions.push({ functionName: 'movePointer', attrs: [ j ], duration: 500 });
+					functions.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
 					if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
 						temp = this.rankNodeList[j];
 						this.rankNodeList[j] = this.rankNodeList[j+1];
@@ -269,7 +270,7 @@ export default {
 				}
 				functions.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			}
-			functions.push({ functionName: 'movePointer', attrs: [ -1 ], duration: 500 });
+			functions.push({ functionName: 'movePointer', attrs: [ -1, true ], duration: 500 });
 			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
@@ -293,7 +294,7 @@ export default {
 			*/
 			switch(action.functionName) { 
 				case "movePointer":
-					this.movePointer(action.attrs[0]);
+					this.movePointer(action.attrs[0], action.attrs[1]);
 					break;
 				case "exchange":
 					this.exchange(action.attrs[0], action.attrs[1]);
