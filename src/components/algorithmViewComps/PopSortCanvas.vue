@@ -59,16 +59,19 @@ export default {
 		return {
 			pointerI: -1,
 			pointerJ: -1,
-			initNodeList: [],
-			rankNodeList: [],
-			finalNodeList: [],
-			list2Comp_Map: [],
-			finalList_Map: [],
+			initNodeList: [], // 存储原始的数组
+			rankNodeList: [], // 存储用于排序的数组
+			finalNodeList: [], // 存储最终结果的数组
+			list2Comp_Map: [], // 存储演示过程中映射组件的数组
+			finalList_Map: [], // 存储最终结果对应映射组件的数组
 			pillarHeights: [],
 			pillarLeftX: [],
-			
 			isEnded: false,
-			Timers: []
+			playerCollection: {
+				playAll: [],
+				playOneTime: []
+			},
+			executeCollection: [] // 执行栈
 		}
 	},
 	props: {
@@ -230,7 +233,7 @@ export default {
 				for (i = 0; i < nodes.length; i++) {
 					nodes[i].currentStatus = 2;
 				}
-				while(this.Timers.length > 0) { this.Timers.pop(); }
+				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
 				this.pointerJ = -1;
 				this.movePointer('i', -1);
@@ -262,7 +265,7 @@ export default {
 			
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
-				this.Timers.push(
+				this.executeCollection.push(
 					setTimeout(()=>{
 						this.callUnit(functions[flag++]);
 					}, workTime)
@@ -285,7 +288,7 @@ export default {
 				for (i = 0; i < nodes.length; i++) {
 					nodes[i].currentStatus = 2;
 				}
-				while(this.Timers.length > 0) { this.Timers.pop(); }
+				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
 				this.pointerJ = -1;
 				this.movePointer('i', -1);
@@ -319,7 +322,7 @@ export default {
 			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
-				this.Timers.push(
+				this.executeCollection.push(
 					setTimeout(()=>{
 						this.callUnit(functions[flag++]);
 					}, workTime)
@@ -351,20 +354,20 @@ export default {
 				case "endAllTip":
 					this.isEnded = true;
 					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
-					while(this.Timers.length > 0) { this.Timers.pop(); }
+					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 					break;
 				case "endOnceTip":
 					this.$alert('该趟次排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
-					while(this.Timers.length > 0) { this.Timers.pop(); }
+					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 					break;
 				case "sleep":
 				default: break;
 			}
 		},
 		clearAllTimer() {
-			while(this.Timers.length > 0) {
-				clearTimeout(this.Timers[this.Timers.length-1]);
-				this.Timers.pop();
+			while(this.executeCollection.length > 0) {
+				clearTimeout(this.executeCollection[this.executeCollection.length-1]);
+				this.executeCollection.pop();
 			}
 		}
 	}
