@@ -79,6 +79,7 @@ export default {
 		nodelist: Array
 	},
 	mounted() {
+		// 整体预填充所有数组
 		var min = this.nodelist[0], max = this.nodelist[0];
 		var digit_difference = 0;
 		this.initNodeList = this.nodelist.concat();
@@ -92,9 +93,11 @@ export default {
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
+		// 预加载一些数据
 		this.preloadFinalList();
 		this.preloadPlayerCollection();
-		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
+		// 条形图高度缩放
+		// 法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			max -= (2*min);
 			for (i = 0; i < this.pillarHeights.length; i++) {
