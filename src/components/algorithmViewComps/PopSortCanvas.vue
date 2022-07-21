@@ -91,6 +91,7 @@ export default {
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
+		this.preloadFinalList();
 		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			max -= (2*min);
@@ -134,6 +135,23 @@ export default {
 		}
 	},
 	methods: {
+		// 加载得到最终排序结果与映射关系
+		preloadFinalList() {
+			var temp;
+			for (var i = 0; i < this.finalNodeList.length-1; i++) {
+				for (var j = i+1; j < this.finalNodeList.length; j++) {
+					if (this.finalNodeList[i]>this.finalNodeList[j]) {
+						temp = this.finalList_Map[i];
+						this.finalList_Map[i] = this.finalList_Map[j];
+						this.finalList_Map[j] = temp;
+						temp = this.finalNodeList[i];
+						this.finalNodeList[i] = this.finalNodeList[j];
+						this.finalNodeList[j] = temp;
+					}
+				}
+			}
+		},
+		
 		refreshList2CompMap() {
 			while (this.list2Comp_Map.length>0) { this.list2Comp_Map.pop(); }
 			for (var i = 0; i < this.initNodeList.length; i++) {
@@ -197,24 +215,9 @@ export default {
 			var nodes = this.$refs['nodeComps'];
 			this.movePointer('i', -1);
 			this.movePointer('j', -1);
-			for (i = 0; i < nodes.length; i++) {
-				nodes[i].currentStatus = 2;
-			}
-			
-			for (i = 0; i < this.rankNodeList.length-1; i++) {
-				for (j = i+1; j < this.rankNodeList.length; j++) {
-					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						temp = this.list2Comp_Map[i];
-						this.list2Comp_Map[i] = this.list2Comp_Map[j];
-						this.list2Comp_Map[j] = temp;
-						temp = this.rankNodeList[i];
-						this.rankNodeList[i] = this.rankNodeList[j];
-						this.rankNodeList[j] = temp;
-					}
-				}
-			}
 			for (i = 0; i < this.rankNodeList.length; i++) {
-				nodes[this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
+				nodes[i].currentStatus = 2;
+				nodes[this.finalList_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
 			}
 			this.isEnded = true;
 		},
