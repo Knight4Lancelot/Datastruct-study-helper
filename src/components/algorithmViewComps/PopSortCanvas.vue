@@ -92,6 +92,7 @@ export default {
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
 		this.preloadFinalList();
+		this.preloadPlayAllStack();
 		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			max -= (2*min);
@@ -135,7 +136,7 @@ export default {
 		}
 	},
 	methods: {
-		// 加载得到最终排序结果与映射关系
+		// 页面加载的同时，预加载得到最终排序结果与映射关系
 		preloadFinalList() {
 			var temp;
 			for (var i = 0; i < this.finalNodeList.length-1; i++) {
@@ -151,7 +152,38 @@ export default {
 				}
 			}
 		},
-		
+		// 页面加载的同时，预加载得到单次演示的执行栈
+		preloadPlayOneTimeStack() {
+			
+		},
+		// 页面加载的同时，预加载得到全部演示的执行栈
+		preloadPlayAllStack() {
+			var i = 0, j = 0, temp, tempList = this.rankNodeList.concat();
+			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
+			for (i = this.pointerI+1; i < tempList.length-1; i++) {
+				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
+				for (j = i+1; j < tempList.length; j++) {
+					this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'j', j ], duration: 500 });
+					this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
+					if (tempList[i]>tempList[j]) {
+						temp = tempList[i];
+						tempList[i] = tempList[j];
+						tempList[j] = temp;
+						this.playerCollection.playAll.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
+					} else {
+						this.playerCollection.playAll.push({ functionName: 'sleep', attrs: [], duration: 300 });
+					}
+					this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
+				}
+				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			}
+			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
+			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
+			this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
+			this.playerCollection.playAll.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
+		},
 		refreshList2CompMap() {
 			while (this.list2Comp_Map.length>0) { this.list2Comp_Map.pop(); }
 			for (var i = 0; i < this.initNodeList.length; i++) {
@@ -298,39 +330,14 @@ export default {
 				this.movePointer('j', -1);
 				return;
 			}
-			var functions = [], i = 0, j = 0, temp;
-			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.pointerI+1; i < this.rankNodeList.length-1; i++) {
-				functions.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
-				for (j = i+1; j < this.rankNodeList.length; j++) {
-					functions.push({ functionName: 'movePointer', attrs: [ 'j', j ], duration: 500 });
-					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
-					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						temp = this.rankNodeList[i];
-						this.rankNodeList[i] = this.rankNodeList[j];
-						this.rankNodeList[j] = temp;
-						functions.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
-					} else {
-						functions.push({ functionName: 'sleep', attrs: [], duration: 300 });
-					}
-					functions.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
-				}
-				functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
-			}
-			functions.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
-			functions.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
-			functions.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
-			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
-			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
-			for (i = 0; i < functions.length; i++) {
+			for (var i = 0; i < this.playerCollection.playAll.length; i++) {
 				this.executeCollection.push(
 					setTimeout(()=>{
-						this.callUnit(functions[flag++]);
+						this.callUnit(this.playerCollection.playAll[flag++]);
 					}, workTime)
 				);
-				workTime+=functions[i].duration;
+				workTime+=this.playerCollection.playAll[i].duration;
 			}
 		},
 		callUnit(action) {
@@ -367,6 +374,7 @@ export default {
 				default: break;
 			}
 		},
+		// 清空所有计时器的演示函数
 		clearAllTimer() {
 			while(this.executeCollection.length > 0) {
 				clearTimeout(this.executeCollection[this.executeCollection.length-1]);
