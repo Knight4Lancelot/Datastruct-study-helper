@@ -26,6 +26,7 @@
 			</span>
 			<span class="introduction-text">&nbsp;&nbsp;&nbsp;&nbsp;
 				点击此按钮后，可视化数组会直接开始动画演示直到完成所有节点的排序。
+				若已进行过一趟排序演示，会直接清空当前演示的进度，重新开始全部演示过程。
 			</span>
 		</div>
 		<div id="funtion-introduction-4">
@@ -85,24 +86,24 @@ export default {
 	position: inherit;
 	width: 100%;
 	left: 40px;
-	top: 380px;
+	top: 400px;
 }
 #funtion-introduction-5 {
 	position: inherit;
 	width: 100%;
 	left: 40px;
-	top: 500px;
+	top: 520px;
 }
 #funtion-introduction-6 {
 	position: inherit;
 	width: 100%;
 	left: 40px;
-	top: 590px;
+	top: 610px;
 }
 #last-blank-area {
 	position: inherit;
 	width: 100%;
-	top: 590px;
+	top: 610px;
 	height: 200px;
 }
 .top-container {

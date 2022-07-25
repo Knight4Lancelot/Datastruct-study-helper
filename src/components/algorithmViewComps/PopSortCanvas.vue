@@ -162,7 +162,7 @@ export default {
 			var tempList = this.rankNodeList.concat();
 			var playerOneTime = [];
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.pointerI+1; i < tempList.length-1; i++) {
+			for (i = 0; i < tempList.length-1; i++) {
 				// 添加演示所有的运行函数栈 - 外层
 				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
