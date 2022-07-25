@@ -47,14 +47,22 @@ export default {
 	data() {
 		return {
 			pointerI: -1,
+			pointerJ: -1,
 			times: 0, // 因为实现逻辑的问题，这里需要用一个单独的变量来存取趟次
-			initNodeList: [],
-			rankNodeList: [],
+			initNodeList: [], // 存储原始的数组
+			rankNodeList: [], // 存储用于排序的数组
+			finalNodeList: [], // 存储最终结果的数组
+			list2Comp_Map: [], // 存储演示过程中映射组件的数组
+			finalList_Map: [], // 存储最终结果对应映射组件的数组
 			pillarHeights: [],
 			pillarLeftX: [],
-			list2Comp_Map: [],
 			isEnded: false,
-			Timers: []
+			playerCollection: {
+				playAll: [],
+				playOneTime: [],
+				currentTime: 0
+			},
+			executeCollection: [] // 执行栈
 		}
 	},
 	props: {
@@ -72,6 +80,9 @@ export default {
 			if (min>this.nodelist[i]) { min=this.nodelist[i]; }
 			if (max<this.nodelist[i]) { max=this.nodelist[i]; }
 		}
+		// 预加载一些数据
+		this.preloadFinalList();
+		this.preloadPlayerCollection();
 		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			max -= (2*min);
@@ -202,7 +213,7 @@ export default {
 				for (i = 0; i < nodes.length; i++) {
 					nodes[i].currentStatus = 2;
 				}
-				while(this.Timers.length > 0) { this.Timers.pop(); }
+				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
 				this.movePointer(-1);
 				return;
@@ -226,7 +237,7 @@ export default {
 			functions.push({ functionName: 'endOnceTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
-				this.Timers.push(
+				this.executeCollection.push(
 					setTimeout(()=>{
 						this.callUnit(functions[flag++]);
 					}, workTime)
@@ -249,7 +260,7 @@ export default {
 				for (i = 0; i < nodes.length; i++) {
 					nodes[i].currentStatus = 2;
 				}
-				while(this.Timers.length > 0) { this.Timers.pop(); }
+				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
 				this.movePointer(-1);
 				return;
@@ -275,7 +286,7 @@ export default {
 			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 			var flag = 0, workTime = 0;
 			for (i = 0; i < functions.length; i++) {
-				this.Timers.push(
+				this.executeCollection.push(
 					setTimeout(()=>{
 						this.callUnit(functions[flag++]);
 					}, workTime)
@@ -311,20 +322,20 @@ export default {
 				case "endAllTip":
 					this.isEnded = true;
 					this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
-					while(this.Timers.length > 0) { this.Timers.pop(); }
+					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 					break;
 				case "endOnceTip":
 					this.$alert('该趟次排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
-					while(this.Timers.length > 0) { this.Timers.pop(); }
+					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 					break;
 				case "sleep":
 				default: break;
 			}
 		},
 		clearAllTimer() {
-			while(this.Timers.length > 0) {
-				clearTimeout(this.Timers[this.Timers.length-1]);
-				this.Timers.pop();
+			while(this.executeCollection.length > 0) {
+				clearTimeout(this.executeCollection[this.executeCollection.length-1]);
+				this.executeCollection.pop();
 			}
 		}
 	}
