@@ -158,12 +158,11 @@ export default {
 		},
 		// 页面加载的同时，预加载得到全部的演示的执行栈
 		preloadPlayerCollection() {
-			var i = 0, j = 0, temp, ischange = false;
+			var i = 0, j = 0, temp;
 			var tempList = this.rankNodeList.concat();
 			var playerOneTime = [];
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = this.pointerI+1; i < tempList.length-1; i++) {
-				ischange = false;
 				// 添加演示所有的运行函数栈 - 外层
 				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
@@ -182,7 +181,6 @@ export default {
 						temp = tempList[i];
 						tempList[i] = tempList[j];
 						tempList[j] = temp;
-						ischange = true;
 						// 添加演示所有的运行函数栈 - 内层if为true
 						this.playerCollection.playAll.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 						// 添加演示一趟的运行函数栈 - 内层if为true
