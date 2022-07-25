@@ -338,6 +338,7 @@ export default {
 				this.movePointer('j', -1);
 				return;
 			}
+			this.refreshAll();
 			var flag = 0, workTime = 0;
 			for (var i = 0; i < this.playerCollection.playAll.length; i++) {
 				this.executeCollection.push(

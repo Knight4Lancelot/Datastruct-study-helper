@@ -134,29 +134,8 @@ export default {
 			var i = 0, j = 0, temp, ischange = false;
 			var tempList = this.rankNodeList.concat();
 			var playerOneTime = [];
-			
-			var functions = [];
-			functions.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.times; i < this.rankNodeList.length; i++) {
-				functions.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
-				functions.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
-				for (j = i - 1; j >= 0; j--) {
-					functions.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
-					if (this.rankNodeList[j+1]<this.rankNodeList[j]) {
-						temp = this.rankNodeList[j];
-						this.rankNodeList[j] = this.rankNodeList[j+1];
-						this.rankNodeList[j+1] = temp;
-						functions.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
-					} else { break; }
-				}
-				functions.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
-			}
-			functions.push({ functionName: 'movePointer', attrs: [ -1, true ], duration: 500 });
-			functions.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
-			functions.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
-			
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = this.pointerI+1; i < tempList.length-1; i++) {
+			for (i = this.times; i < tempList.length; i++) {
 				ischange = false;
 				// 添加演示所有的运行函数栈 - 外层
 				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
@@ -165,33 +144,24 @@ export default {
 				playerOneTime.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 				playerOneTime.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
 				playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
-				for (j = i+1; j < tempList.length; j++) {
+				for (j = i - 1; j >= 0; j--) {
 					// 添加演示所有的运行函数栈 - 内层
 					this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
 					// 添加演示一趟的运行函数栈 - 内层
 					playerOneTime.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
 					playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
-					if (tempList[i]>tempList[j]) {
-						temp = this.rankNodeList[j];
-						this.rankNodeList[j] = this.rankNodeList[j+1];
-						this.rankNodeList[j+1] = temp;
+					if (tempList[j+1]<tempList[j]) {
+						temp = tempList[i];
+						tempList[i] = tempList[j];
+						tempList[j] = temp;
 						// 添加演示所有的运行函数栈 - 内层if为true
 						this.playerCollection.playAll.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
 						// 添加演示一趟的运行函数栈 - 内层if为true
 						playerOneTime.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
-					} else {
-						// 添加演示所有的运行函数栈 - 内层if为false
-						this.playerCollection.playAll.push({ functionName: 'sleep', attrs: [], duration: 300 });
-						// 添加演示一趟的运行函数栈 - 内层if为false
-						playerOneTime.push({ functionName: 'sleep', attrs: [], duration: 300 });
-					}
-					// 添加演示所有的运行函数栈 - 内层if判断后
-					this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
-					// 添加演示一趟的运行函数栈 - 内层if判断后
-					playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
+					} else { break; }
 				}
 				// 添加演示所有的运行函数栈 - 内层循环后
-				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
+				this.playerCollection.playAll.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
 				// 添加演示一趟的运行函数栈 - 内层循环后
 				playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 				playerOneTime.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
@@ -199,11 +169,9 @@ export default {
 				this.playerCollection.playOneTime.push(playerOneTime.concat());
 				while(playerOneTime.length>0) { playerOneTime.pop(); }
 			}
-			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
-			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
-			this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
-			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
-			this.playerCollection.playAll.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
+			this.playerCollection.playOneTime.push({ functionName: 'movePointer', attrs: [ -1, true ], duration: 500 });
+			this.playerCollection.playOneTime.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
+			this.playerCollection.playOneTime.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 		},
 		refreshList2CompMap() {
 			while (this.list2Comp_Map.length>0) { this.list2Comp_Map.pop(); }
