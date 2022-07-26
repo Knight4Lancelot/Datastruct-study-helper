@@ -133,6 +133,7 @@ export default {
 			var i = 0, j = 0, temp;
 			var tempList = this.rankNodeList.concat();
 			var playerOneTime = [];
+			
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
 			for (i = 0; i < tempList.length; i++) {
 				// 添加演示所有的运行函数栈 - 外层

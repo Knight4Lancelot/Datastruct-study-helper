@@ -119,10 +119,10 @@ export default {
 			this.$refs['showPlayer'].refreshAll()
 		},
 		playSortAll() {
-			this.$refs['showPlayer'].InsertASortAll();
+			this.$refs['showPlayer'].InsertBSortAll();
 		},
 		playSortOneTime() {
-			this.$refs['showPlayer'].InsertASortOneTime();
+			this.$refs['showPlayer'].InsertBSortOneTime();
 		},
 		ShowFinalList() {
 			this.$refs['showPlayer'].showFinalList();
