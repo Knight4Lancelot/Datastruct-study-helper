@@ -312,9 +312,6 @@ export default {
 				);
 				workTime+=this.playerCollection.playOneTime[this.playerCollection.currentTime][i].duration;
 			}
-			setTimeout(()=>{
-				this.playerCollection.currentTime++;
-			}, workTime);
 		},
 		popSortAll() {
 			if (this.isEnded) {
@@ -378,6 +375,7 @@ export default {
 				case "endOnceTip":
 					this.$alert('该趟次排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
+					this.playerCollection.currentTime++;
 					break;
 				case "sleep":
 				default: break;

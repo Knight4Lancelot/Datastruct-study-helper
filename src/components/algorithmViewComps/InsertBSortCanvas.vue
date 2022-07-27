@@ -8,10 +8,14 @@
 				当前指针 i 指向：</div>
 			<div style="color:#409EFF;"
 				v-text="pointerI===-1?'指针存放处':'数组节点 '+String(pointerI)" />
-			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:20px;">
-				当前指针 i 携带值：</div>
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
+				当前指针 j 指向：</div>
 			<div style="color:#409EFF;"
-				v-text="pointerI===-1?'指针存放处':String(rankNodeList[pointerI])" />
+				v-text="pointerJ===-1?'指针存放处':'数组节点 '+String(pointerJ)" />
+			<div style="font-size:16px;font-family:'Microsoft YaHei';margin-top:10px;">
+				比较结果：</div>
+			<div style="color:#409EFF;"
+				v-text="comparePointer_I_J" />
 		</div>
 		<node class="nodes-comps"
 			v-for="(n, k) in rankNodeList"
@@ -26,9 +30,16 @@
 			:initStatus="3"
 			:valElement="'指针i'"
 			:style="{'left':String(10)+'px'}"/>
+		<node class="nodes-comps"
+			:initStatus="3"
+			:valElement="'指针j'"
+			:style="{'left':String(70)+'px'}"/>
 		<pointer class="nodes-pointer"
 			ref="pointer-i"
 			:pointerText="'i'" />
+		<pointer class="nodes-pointer"
+			ref="pointer-j"
+			:pointerText="'j'" />
 	</div>
 </template>
 
@@ -39,7 +50,7 @@ import pointer from './LinearPointer.vue';
 const exchangeDuration = 0.5;
 
 export default {
-	name: 'PopSortCanvas',
+	name: 'InsertBCanvas',
 	components: {
 		node,
 		pointer
@@ -47,6 +58,7 @@ export default {
 	data() {
 		return {
 			pointerI: -1,
+			pointerJ: -1,
 			initNodeList: [], // 存储原始的数组
 			rankNodeList: [], // 存储用于排序的数组
 			finalNodeList: [], // 存储最终结果的数组
@@ -84,7 +96,8 @@ export default {
 		// 预加载一些数据
 		this.preloadFinalList();
 		this.preloadPlayerCollection();
-		// 条形图高度缩放法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
+		// 条形图高度缩放
+		// 法则：所有数据最大值和最小值数量级差一位以内用线性，差两位开根号，差三位开三次方
 		if (min<0) {
 			max -= (2*min);
 			for (i = 0; i < this.pillarHeights.length; i++) {
@@ -106,10 +119,25 @@ export default {
 				break;
 			default: break;
 		}
-		this.movePointer(-1);
+		this.movePointer('i', -1);
+		this.movePointer('j', -1);
 	},
 	beforeDestroy() {
 		this.clearAllTimer();
+	},
+	computed: {
+		comparePointer_I_J() {
+			switch(true) {
+				case this.pointerI===-1&&this.pointerJ===-1:
+					return '均在指针存放处'
+				case this.pointerI===-1&&this.pointerJ!==-1:
+				case this.pointerI!==-1&&this.pointerJ===-1:
+					return '当前无法比较'
+				default:
+					return this.rankNodeList[this.pointerI]>this.rankNodeList[this.pointerJ]?
+						'节点 i > 节点 j' : '节点 i < 节点 j';
+			}
+		}
 	},
 	methods: {
 		// 页面加载的同时，预加载得到最终排序结果与映射关系
@@ -130,44 +158,56 @@ export default {
 		},
 		// 页面加载的同时，预加载得到全部的演示的执行栈
 		preloadPlayerCollection() {
-			var i = 0, j = 0, temp;
+			var i = 0, j = 0, low, high, temp;
 			var tempList = this.rankNodeList.concat();
 			var playerOneTime = [];
-			
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-			for (i = 0; i < tempList.length; i++) {
+			for (i = 0; i < tempList.length-1; i++) {
 				// 添加演示所有的运行函数栈 - 外层
-				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
-				this.playerCollection.playAll.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
+				this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
 				// 添加演示一趟的运行函数栈 - 外层
 				playerOneTime.push({ functionName: 'setMutex', attrs: [ true ], duration: 100 });
-				playerOneTime.push({ functionName: 'movePointer', attrs: [ i, true ], duration: 500 });
-				playerOneTime.push({ functionName: 'changeMapNodeStatus', attrs: [ i, 1 ], duration: 100 });
-				for (j = i - 1; j >= 0; j--) {
+				playerOneTime.push({ functionName: 'movePointer', attrs: [ 'i', i ], duration: 500 });
+				playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ i, 1 ], duration: 100 });
+				for (j = i+1; j < tempList.length; j++) {
 					// 添加演示所有的运行函数栈 - 内层
-					this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
+					this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'j', j ], duration: 500 });
+					this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
 					// 添加演示一趟的运行函数栈 - 内层
-					playerOneTime.push({ functionName: 'movePointer', attrs: [ j, false ], duration: 500 });
-					if (tempList[j+1]<tempList[j]) {
-						temp = tempList[j];
-						tempList[j] = tempList[j+1];
-						tempList[j+1] = temp;
+					playerOneTime.push({ functionName: 'movePointer', attrs: [ 'j', j], duration: 500 });
+					playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ j, 1 ], duration: 100 });
+					if (tempList[i]>tempList[j]) {
+						temp = tempList[i];
+						tempList[i] = tempList[j];
+						tempList[j] = temp;
 						// 添加演示所有的运行函数栈 - 内层if为true
-						this.playerCollection.playAll.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
+						this.playerCollection.playAll.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
 						// 添加演示一趟的运行函数栈 - 内层if为true
-						playerOneTime.push({ functionName: 'exchange', attrs: [ j, j + 1 ], duration: 300 });
-					} else { break; }
+						playerOneTime.push({ functionName: 'exchange', attrs: [ i, j ], duration: 300 });
+					} else {
+						// 添加演示所有的运行函数栈 - 内层if为false
+						this.playerCollection.playAll.push({ functionName: 'sleep', attrs: [], duration: 300 });
+						// 添加演示一趟的运行函数栈 - 内层if为false
+						playerOneTime.push({ functionName: 'sleep', attrs: [], duration: 300 });
+					}
+					// 添加演示所有的运行函数栈 - 内层if判断后
+					this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
+					// 添加演示一趟的运行函数栈 - 内层if判断后
+					playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ j, 0 ], duration: 100 });
 				}
 				// 添加演示所有的运行函数栈 - 内层循环后
-				this.playerCollection.playAll.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
+				this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 				// 添加演示一趟的运行函数栈 - 内层循环后
-				playerOneTime.push({ functionName: 'changeRawNodeStatus', attrs: [ i, 2 ], duration: 100 });
+				playerOneTime.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 				playerOneTime.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 				playerOneTime.push({ functionName: 'endOnceTip', attrs: [], duration: 0 });
 				this.playerCollection.playOneTime.push(playerOneTime.concat());
 				while(playerOneTime.length>0) { playerOneTime.pop(); }
 			}
-			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ -1, true ], duration: 500 });
+			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'i', -1 ], duration: 500 });
+			this.playerCollection.playAll.push({ functionName: 'movePointer', attrs: [ 'j', -1 ], duration: 0 });
+			this.playerCollection.playAll.push({ functionName: 'changeNodeStatus', attrs: [ i, 2 ], duration: 100 });
 			this.playerCollection.playAll.push({ functionName: 'setMutex', attrs: [ false ], duration: 0 });
 			this.playerCollection.playAll.push({ functionName: 'endAllTip', attrs: [], duration: 0 });
 		},
@@ -185,25 +225,19 @@ export default {
 			nodes[this.list2Comp_Map[index_1]].$el.style.left = String(this.pillarLeftX[index_1])+'px';
 			nodes[this.list2Comp_Map[index_2]].$el.style.left = String(this.pillarLeftX[index_2])+'px';
 		},
-		movePointer(aimLocation, isChange) {
-			var pI = this.$refs['pointer-i']
-			if (aimLocation === -1) {
-				pI.$el.style.left = '15px';
-				pI.isShowCarryValue = false;
+		movePointer(name, aimLocation) {
+			if (name==='i') {
+				if (aimLocation === -1) { this.$refs['pointer-i'].$el.style.left = '15px'; }
+				else { this.$refs['pointer-i'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
+				this.pointerI = aimLocation;
 			} else {
-				pI.$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px';
-				pI.isShowCarryValue = true;
-				if (isChange) {
-					pI.carryValue = this.$refs['nodeComps'][aimLocation].showElement;
-				}
+				if (aimLocation === -1) { this.$refs['pointer-j'].$el.style.left = '75px'; }
+				else { this.$refs['pointer-j'].$el.style.left = String(this.pillarLeftX[aimLocation]+5)+'px'; }
+				this.pointerJ = aimLocation;
 			}
-			this.pointerI = aimLocation;
 		},
-		changeMapNodeStatus(index, status) {
+		changeNodeStatus(index, status) {
 			this.$refs['nodeComps'][this.list2Comp_Map[index]].currentStatus=status;
-		},
-		changeRawNodeStatus(index, status) {
-			this.$refs['nodeComps'][index].currentStatus=status;
 		},
 		setMutex(status) {
 			this.$parent.playerMutex = status;
@@ -214,13 +248,14 @@ export default {
 			this.rankNodeList = this.initNodeList.concat();
 			this.$parent.playerMutex = false;
 			this.isEnded = false;
-			this.times = 0;
 			this.pointerI = -1;
-			this.movePointer(-1);
+			this.pointerJ = -1;
+			this.movePointer('i', -1);
+			this.movePointer('j', -1);
 			this.refreshList2CompMap();
 			this.playerCollection.currentTime = 0;
 			for (var i = 0; i < this.rankNodeList.length; i++) {
-				this.changeMapNodeStatus(i, 0);
+				this.changeNodeStatus(i, 0);
 				this.$refs['nodeComps'][this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
 			}
 		},
@@ -238,24 +273,11 @@ export default {
 			}
 			var temp, i, j;
 			var nodes = this.$refs['nodeComps'];
-			this.movePointer(-1, false);
-			for (i = 0; i < nodes.length; i++) {
-				nodes[i].currentStatus = 2;
-			}
-			for (i = 0; i < this.rankNodeList.length-1; i++) {
-				for (j = i+1; j < this.rankNodeList.length; j++) {
-					if (this.rankNodeList[i]>this.rankNodeList[j]) {
-						temp = this.list2Comp_Map[i];
-						this.list2Comp_Map[i] = this.list2Comp_Map[j];
-						this.list2Comp_Map[j] = temp;
-						temp = this.rankNodeList[i];
-						this.rankNodeList[i] = this.rankNodeList[j];
-						this.rankNodeList[j] = temp;
-					}
-				}
-			}
+			this.movePointer('i', -1);
+			this.movePointer('j', -1);
 			for (i = 0; i < this.rankNodeList.length; i++) {
-				nodes[this.list2Comp_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
+				nodes[i].currentStatus = 2;
+				nodes[this.finalList_Map[i]].$el.style.left = String(this.pillarLeftX[i])+'px';
 			}
 			this.isEnded = true;
 		},
@@ -267,7 +289,7 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			if (this.times===this.rankNodeList.length) {
+			if (this.playerCollection.currentTime===this.rankNodeList.length - 2) {
 				this.isEnded = true;
 				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 				var nodes = this.$refs['nodeComps'];
@@ -276,7 +298,9 @@ export default {
 				}
 				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
-				this.movePointer(-1);
+				this.pointerJ = -1;
+				this.movePointer('i', -1);
+				this.movePointer('j', -1);
 				return;
 			}
 			var flag = 0, workTime = 0;
@@ -288,9 +312,6 @@ export default {
 				);
 				workTime+=this.playerCollection.playOneTime[this.playerCollection.currentTime][i].duration;
 			}
-			setTimeout(()=>{
-				this.playerCollection.currentTime++;
-			}, workTime);
 		},
 		InsertBSortAll() {
 			if (this.isEnded) {
@@ -300,7 +321,7 @@ export default {
 					type: 'warning'});
 				return;
 			}
-			if (this.times===this.rankNodeList.length) {
+			if (this.pointerI===this.rankNodeList.length - 2) {
 				this.isEnded = true;
 				var nodes = this.$refs['nodeComps'];
 				this.$alert('排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
@@ -309,7 +330,9 @@ export default {
 				}
 				while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
 				this.pointerI = -1;
-				this.movePointer(-1);
+				this.pointerJ = -1;
+				this.movePointer('i', -1);
+				this.movePointer('j', -1);
 				return;
 			}
 			this.refreshAll();
@@ -328,8 +351,7 @@ export default {
 				设定函数执行事件：
 				exchange函数交换时间：200ms
 				movePointer函数移动指针时间间隔：500ms
-				changeRawNodeStatus函数修改节点状态时间：100ms
-				changeMapNodeStatus函数修改节点状态时间：100ms
+				changeNodeStatus函数修改节点状态时间：100ms
 				sleep延时函数：200ms
 			*/
 			switch(action.functionName) { 
@@ -339,11 +361,8 @@ export default {
 				case "exchange":
 					this.exchange(action.attrs[0], action.attrs[1]);
 					break;
-				case "changeRawNodeStatus":
-					this.changeRawNodeStatus(action.attrs[0], action.attrs[1]);
-					break;
-				case "changeMapNodeStatus":
-					this.changeMapNodeStatus(action.attrs[0], action.attrs[1]);
+				case "changeNodeStatus":
+					this.changeNodeStatus(action.attrs[0], action.attrs[1]);
 					break;
 				case "setMutex":
 					this.setMutex(action.attrs[0]);
@@ -356,11 +375,13 @@ export default {
 				case "endOnceTip":
 					this.$alert('该趟次排序过程演示执行完毕！', '提示', { confirmButtonText: '确定' });
 					while(this.executeCollection.length > 0) { this.executeCollection.pop(); }
+					this.playerCollection.currentTime++;
 					break;
 				case "sleep":
 				default: break;
 			}
 		},
+		// 清空所有计时器的演示函数
 		clearAllTimer() {
 			while(this.executeCollection.length > 0) {
 				clearTimeout(this.executeCollection[this.executeCollection.length-1]);
